@@ -1,0 +1,20 @@
+{
+  "name": "hibernate-unmapped-objects",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com-personal:detomarco/hibernate-unmapped-objects.git"
+  },
+  "keywords": [
+    "hibernate",
+    "unmapped",
+    "cleanup"
+  ],
+  "author": "Marco De Toma",
+  "license": "MIT"
+}
