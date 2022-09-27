@@ -1,6 +1,6 @@
 import {getFiles, getEnvFile, getFileContentSanitized} from "./fs.utils";
 
-const javaFileRegex = "^[a-zA-Z0-9]+\\.java$";
+const javaFileRegex = new RegExp("^[a-zA-Z0-9]+\\.java$");
 
 const env = getEnvFile()
 const javaFiles = getFiles(env.entitiesFolderPath, javaFileRegex)

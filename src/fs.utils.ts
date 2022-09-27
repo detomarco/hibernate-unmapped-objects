@@ -20,25 +20,28 @@ export const getEnvFile = (): EnvProperties => {
     }
 }
 
-export const getFiles = (path: string, fileRegex: string): string[] => {
-    const files: string[] = [];
-    const regex = new RegExp(fileRegex)
+export const getFiles = (path: string, fileRegex: RegExp): string[] => {
 
     if (!fs.existsSync(path)) {
         throw Error(`Path ${path} does not exist`)
     }
 
     if (!fs.lstatSync(path).isDirectory()) {
-        return [path];
+        if (fileRegex.test(path)) {
+            return [path];
+        } else {
+            return []
+        }
     }
 
+    const files: string[] = [];
     fs.readdirSync(path)
         .forEach(file => {
             const filePath = `${path}/${file}`;
             if (fs.lstatSync(filePath).isDirectory()) {
                 return [...files, getFiles(filePath, fileRegex)]
             }
-            if (regex.test(file)) {
+            if (fileRegex.test(file)) {
                 files.push(filePath);
             }
         });
