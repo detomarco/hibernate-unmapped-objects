@@ -29,7 +29,7 @@ export const getFiles = (path: string, fileRegex: string): string[] => {
     }
 
     if (!fs.lstatSync(path).isDirectory()) {
-        return [];
+        return [path];
     }
 
     fs.readdirSync(path)
@@ -42,7 +42,6 @@ export const getFiles = (path: string, fileRegex: string): string[] => {
                 files.push(filePath);
             }
         });
-    // console.log(`files ${files.length}`);
     return files;
 }
 
@@ -54,15 +53,15 @@ const sanitizeMultilineComments = (s: string): string => {
     return s.replace(/\/[\*]+(.*)\*\//, "")
 }
 
-const sanitizeNewLines = (s: string): string => {
+const sanitizeEscapeCharacters = (s: string): string => {
     return s.replace(/  |\r\n|\n|\r|\t/gm, '');
 }
 
 export const getFileContentSanitized = (filePath: string) => {
     const content = fs.readFileSync(filePath, `utf-8`);
     const noInlineComments = sanitizeInlineComments(content);
-    const noNewLines = sanitizeNewLines(noInlineComments)
-    return sanitizeMultilineComments(noNewLines);
+    const noNewLines = sanitizeEscapeCharacters(noInlineComments)
+    return sanitizeMultilineComments(noNewLines)
 }
 
 
