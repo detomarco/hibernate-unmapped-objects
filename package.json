@@ -10,11 +10,14 @@
     "type": "git",
     "url": "git@github.com-personal:detomarco/hibernate-unmapped-objects.git"
   },
-  "keywords": [
-    "hibernate",
-    "unmapped",
-    "cleanup"
-  ],
+  "keywords": ["hibernate", "unmapped", "cleanup"],
   "author": "Marco De Toma",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^18.7.23",
+    "@typescript-eslint/eslint-plugin": "^5.38.1",
+    "@typescript-eslint/parser": "^5.38.1",
+    "eslint": "^8.24.0",
+    "typescript": "^4.8.4"
+  }
 }
