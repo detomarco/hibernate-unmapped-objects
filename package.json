@@ -4,13 +4,19 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "compile": "tsc",
+    "prestart": "npm run compile",
+    "start": "node dist/main.js"
   },
   "repository": {
     "type": "git",
     "url": "git@github.com-personal:detomarco/hibernate-unmapped-objects.git"
   },
-  "keywords": ["hibernate", "unmapped", "cleanup"],
+  "keywords": [
+    "hibernate",
+    "unmapped",
+    "cleanup"
+  ],
   "author": "Marco De Toma",
   "license": "MIT",
   "devDependencies": {
