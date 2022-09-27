@@ -4,7 +4,7 @@ export interface EnvProperties {
     entitiesFolderPath: string
 }
 
-export function readEnvFile(): EnvProperties {
+export const getEnvFile = (): EnvProperties => {
     const props: { [key: string]: string } = {}
     const envFile: string = fs.readFileSync('.env', `utf-8`)
     envFile.split('\n')
@@ -20,7 +20,7 @@ export function readEnvFile(): EnvProperties {
     }
 }
 
-export function getFilesPath(path: string, fileRegex: string): string[] {
+export const getFiles = (path: string, fileRegex: string): string[] => {
     const files: string[] = [];
     const regex = new RegExp(fileRegex)
 
@@ -36,7 +36,7 @@ export function getFilesPath(path: string, fileRegex: string): string[] {
         .forEach(file => {
             const filePath = `${path}/${file}`;
             if (fs.lstatSync(filePath).isDirectory()) {
-                return [...files, getFilesPath(filePath, fileRegex)]
+                return [...files, getFiles(filePath, fileRegex)]
             }
             if (regex.test(file)) {
                 files.push(filePath);
@@ -45,3 +45,25 @@ export function getFilesPath(path: string, fileRegex: string): string[] {
     // console.log(`files ${files.length}`);
     return files;
 }
+
+const sanitizeInlineComments = (s: string): string => {
+    return s.replace(/\/\/(.*)$/, "")
+}
+
+const sanitizeMultilineComments = (s: string): string => {
+    return s.replace(/\/[\*]+(.*)\*\//, "")
+}
+
+const sanitizeNewLines = (s: string): string => {
+    return s.replace(/  |\r\n|\n|\r|\t/gm, '');
+}
+
+export const getFileContentSanitized = (filePath: string) => {
+    const content = fs.readFileSync(filePath, `utf-8`);
+    const noInlineComments = sanitizeInlineComments(content);
+    const noNewLines = sanitizeNewLines(noInlineComments)
+    return sanitizeMultilineComments(noNewLines);
+}
+
+
+
