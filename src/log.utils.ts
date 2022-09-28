@@ -5,33 +5,33 @@ export class Logger {
 
     private static logLevel = getEnvFile().logLevel;
 
-    trace(message: string) {
+    trace(message: string, ...optionalParams: any[]) {
         if(Logger.logLevel >= LogLevel.TRACE) {
-            console.log("TRACE", message)
+            console.log("TRACE", message, optionalParams)
         }
     }
 
-    debug(message: string) {
+    debug(message: string, ...optionalParams: any[]) {
         if(Logger.logLevel >= LogLevel.DEBUG) {
-            console.debug("DEBUG", message)
+            console.debug("DEBUG", message, optionalParams)
         }
     }
 
-    info(message: string) {
+    info(message: string, ...optionalParams: any[]) {
         if(Logger.logLevel >= LogLevel.INFO) {
-            console.info("INFO", message)
+            console.info("INFO", message, optionalParams)
         }
     }
 
-    warn(message: string) {
+    warn(message: string, ...optionalParams: any[]) {
         if(Logger.logLevel >= LogLevel.WARN) {
-            console.warn("WARN", message)
+            console.warn("WARN", message, optionalParams)
         }
     }
 
-    error(message: string) {
+    error(message: string, ...optionalParams: any[]) {
         if(Logger.logLevel >= LogLevel.ERROR) {
-            console.error("ERROR", message)
+            console.error("ERROR", message, optionalParams)
         }
     }
 

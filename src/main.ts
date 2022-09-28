@@ -3,7 +3,7 @@ import {Logger} from "./log.utils";
 
 const log = new Logger();
 
-const javaFileRegex = new RegExp("^[a-zA-Z0-9]+\\.java$");
+const javaFileRegex = new RegExp(".*.java$");
 
 const env = getEnvFile()
 const javaFiles = getFiles(env.entitiesFolderPath, javaFileRegex)
@@ -13,4 +13,5 @@ const entities = javaFiles.filter(javaFilePath => {
     const content = getFileContentSanitized(javaFilePath)
     return content.includes("@Entity")
 });
-log.debug(`entities ${entities.length}`)
+log.trace(`entities`, entities)
+log.debug(`num entities`, entities.length)
