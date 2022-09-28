@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import {EnvProperties, LogLevel, LogLevelString} from "./model";
 
-export const getEnvFile = (): EnvProperties => {
+const getEnvFile = (): EnvProperties => {
     const props: { [key: string]: string } = {}
     const envFile: string = fs.readFileSync('.env', `utf-8`)
     envFile.split('\n')
@@ -65,5 +65,5 @@ export const getFileContentSanitized = (filePath: string) => {
     return sanitizeMultilineComments(noNewLines)
 }
 
-
+export const env = getEnvFile()
 

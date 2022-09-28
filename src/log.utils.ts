@@ -1,9 +1,9 @@
-import {getEnvFile} from "./fs.utils";
+import {env} from "./fs.utils";
 import {LogLevel} from "./model";
 
-export class Logger {
+class Logger {
 
-    private static logLevel = getEnvFile().logLevel;
+    private static logLevel = env.logLevel;
 
     trace(message: string, ...optionalParams: any[]) {
         if(Logger.logLevel >= LogLevel.TRACE) {
@@ -36,3 +36,5 @@ export class Logger {
     }
 
 }
+
+export const log = new Logger()
