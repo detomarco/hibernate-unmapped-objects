@@ -1,8 +1,5 @@
 import * as fs from 'fs';
-
-export interface EnvProperties {
-    entitiesFolderPath: string
-}
+import {EnvProperties, LogLevel, LogLevelString} from "./model";
 
 export const getEnvFile = (): EnvProperties => {
     const props: { [key: string]: string } = {}
@@ -16,6 +13,7 @@ export const getEnvFile = (): EnvProperties => {
             }
         })
     return {
+        logLevel: LogLevel[props["logLevel"] as LogLevelString],
         entitiesFolderPath: props["entities_folder_path"]
     }
 }
