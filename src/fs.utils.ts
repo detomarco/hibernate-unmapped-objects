@@ -55,7 +55,8 @@ const sanitizeMultilineComments = (s: string): string => {
 }
 
 const sanitizeEscapeCharacters = (s: string): string => {
-    return s.replace(/  |\r\n|\n|\r|\t/gm, '');
+    return s.replace(/\r\n|\n|\r|\t/gm, ' ')
+        .replace(/  /gm, '');
 }
 
 export const getFileContentSanitized = (filePath: string) => {

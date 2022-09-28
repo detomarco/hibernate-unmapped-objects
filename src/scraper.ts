@@ -10,10 +10,16 @@ export const scrape = (folder: string): Entity[] => {
     log.trace('java files', javaFiles)
     log.debug('num java files', javaFiles.length)
 
-    const entities = javaFiles.filter(javaFilePath => {
+    const entities: Entity[]  = javaFiles.map(javaFilePath => {
         const content = getFileContentSanitized(javaFilePath)
-        return content.includes("@Entity")
+        log.trace(`content file ${javaFilePath}`, content)
+        return {
+            filePath: javaFilePath,
+            annotations: [],
+            columns: []
+        }
     });
+
     log.trace(`entities`, entities)
     log.debug(`num entities`, entities.length)
 
