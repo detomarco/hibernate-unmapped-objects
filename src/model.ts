@@ -12,10 +12,11 @@ export enum LogLevel {
     TRACE
 }
 
-export interface Entity {
+export interface Table {
     filePath: string,
+    name: string,
     annotations: Annotation[],
-    columns: Column[]
+    columns: string[]
 }
 
 export interface Column {

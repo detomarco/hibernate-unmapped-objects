@@ -1,6 +1,13 @@
 import * as fs from 'fs';
 import {EnvProperties, LogLevel, LogLevelString} from "./model";
 
+const annotationRegex = new RegExp('((?:@\\w+\\(?[a-zA-Z= ",._]*\\)?)+),?', 'g')
+const annotationRegexWithField = new RegExp('((?:@\\w+\\(?[\\w= ",._]*\\)?)+,? private \\w+ \\w+);', 'g')
+const fieldRegex = new RegExp("private \\w+ \\w+;")
+const importRegex = new RegExp("(import .*;)", 'g')
+const packageRegex = new RegExp("(package .*;)")
+const javaFileRegex = new RegExp(".*.java$");
+
 const getEnvFile = (): EnvProperties => {
     const props: { [key: string]: string } = {}
     const envFile: string = fs.readFileSync('.env', `utf-8`)
@@ -18,14 +25,14 @@ const getEnvFile = (): EnvProperties => {
     }
 }
 
-export const getFiles = (path: string, fileRegex: RegExp): string[] => {
+export const getFiles = (path: string): string[] => {
 
     if (!fs.existsSync(path)) {
         throw Error(`Path ${path} does not exist`)
     }
 
     if (!fs.lstatSync(path).isDirectory()) {
-        if (fileRegex.test(path)) {
+        if (javaFileRegex.test(path)) {
             return [path];
         } else {
             return []
@@ -37,9 +44,9 @@ export const getFiles = (path: string, fileRegex: RegExp): string[] => {
         .forEach(file => {
             const filePath = `${path}/${file}`;
             if (fs.lstatSync(filePath).isDirectory()) {
-                return [...files, getFiles(filePath, fileRegex)]
+                return [...files, getFiles(filePath)]
             }
-            if (fileRegex.test(file)) {
+            if (javaFileRegex.test(file)) {
                 files.push(filePath);
             }
         });
@@ -61,8 +68,7 @@ const sanitizeEscapeCharacters = (s: string): string => {
 
 
 const removeImports = (s: string): string => {
-    const importRegex = new RegExp("(import .*;)", 'g')
-    const packageRegex = new RegExp("(package .*;)")
+
     return s.replace(importRegex, '')
         .replace(packageRegex, '');
 }

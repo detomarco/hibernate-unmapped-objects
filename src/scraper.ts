@@ -1,22 +1,33 @@
 import {getFiles, getFileContentSanitized} from "./fs.utils";
 import {log} from "./log.utils";
-import {Entity} from "./model";
+import {Table} from "./model";
 
-const javaFileRegex = new RegExp(".*.java$");
+const fieldRegex = new RegExp("(private \\w+ \\w+);", 'g')
 
-export const scrape = (folder: string): Entity[] => {
+const getColumns = (content: string): string[] => {
+    const columns: string[] = []
+    for (const match of content.matchAll(fieldRegex)) {
+        columns.push(match[1])
+    }
+    return columns;
+}
 
-    const javaFiles = getFiles(folder, javaFileRegex)
+export const scrape = (folder: string): Table[] => {
+
+    const javaFiles = getFiles(folder)
     log.trace('java files', javaFiles)
     log.debug('num java files', javaFiles.length)
 
-    const entities: Entity[]  = javaFiles.map(javaFilePath => {
+    const entities: Table[] = javaFiles.map(javaFilePath => {
         const content = getFileContentSanitized(javaFilePath)
         log.trace(`content file ${javaFilePath}`, content)
+        const columns = getColumns(content)
+        log.info(`columns ${javaFilePath}`, columns)
         return {
             filePath: javaFilePath,
+            name: '',
             annotations: [],
-            columns: []
+            columns: columns
         }
     });
 
