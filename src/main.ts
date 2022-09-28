@@ -1,7 +1,7 @@
 import {getFiles, getEnvFile, getFileContentSanitized} from "./fs.utils";
-import {Log} from "./log.utils";
+import {Logger} from "./log.utils";
 
-const log = new Log();
+const log = new Logger();
 
 const javaFileRegex = new RegExp("^[a-zA-Z0-9]+\\.java$");
 
