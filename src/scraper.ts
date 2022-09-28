@@ -1,9 +1,10 @@
 import {getFiles, getFileContentSanitized} from "./fs.utils";
 import {log} from "./log.utils";
+import {Entity} from "./model";
 
 const javaFileRegex = new RegExp(".*.java$");
 
-export const scrape = (folder: string) => {
+export const scrape = (folder: string): Entity[] => {
 
     const javaFiles = getFiles(folder, javaFileRegex)
     log.trace('java files', javaFiles)
@@ -16,4 +17,5 @@ export const scrape = (folder: string) => {
     log.trace(`entities`, entities)
     log.debug(`num entities`, entities.length)
 
+    return [];
 }

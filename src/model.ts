@@ -11,3 +11,22 @@ export enum LogLevel {
     DEBUG,
     TRACE
 }
+
+export interface Entity {
+    filePath: string,
+    annotations: Annotation[],
+    columns: Column[]
+}
+
+export interface Column {
+    name: string;
+    annotations: Annotation[]
+}
+
+export interface Annotation {
+    name: string,
+    attributes : [{
+        name: string,
+        value: string
+    }]
+}
