@@ -1,15 +1,27 @@
 import {getFiles, getFileContentSanitized} from "./fs.utils";
 import {log} from "./log.utils";
-import {Table} from "./model";
+import {Annotation, Column, Table} from "./model";
 
-const fieldRegex = new RegExp("(?:@[\\w =,\"\\(\\)@ .]+)? private \\w+ \\w+;", 'g')
-// get field with annotation @[\w =,"\(\)@ .]+ private
-const getColumns = (content: string): string[] => {
+const classFieldRegex = new RegExp("(?:@[\\w =,\"\\(\\)@ .]+)? private \\w+ \\w+;", 'g');
+
+const fieldRegex = new RegExp("(?:@[\\w =,\"\\(\\)@ .]+)? private \\w+ \\w+;", 'g');
+const captureFieldAnnotationRegex = new RegExp("(@\\w+(?:\\( [\\w= .,\"]+\\))?)", 'g');
+
+const getColumns = (content: string): Column[] => {
     const columns: string[] = []
-    for (const match of content.matchAll(fieldRegex)) {
+    for (const match of content.matchAll(classFieldRegex)) {
         columns.push(match[0].trim())
     }
-    return columns;
+    return columns.map(column => {
+        const annotations: Annotation[] = []
+        for (const matchC of column.matchAll(captureFieldAnnotationRegex)) {
+            annotations.push({
+                name: matchC[0].trim(),
+                attributes: []
+            })
+        }
+        return {name: column, annotations}
+    });
 }
 
 export const scrape = (folder: string): Table[] => {

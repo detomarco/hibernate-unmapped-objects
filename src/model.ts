@@ -16,7 +16,7 @@ export interface Table {
     filePath: string,
     name: string,
     annotations: Annotation[],
-    columns: string[]
+    columns: Column[]
 }
 
 export interface Column {
@@ -26,8 +26,8 @@ export interface Column {
 
 export interface Annotation {
     name: string,
-    attributes : [{
+    attributes : {
         name: string,
         value: string
-    }]
+    }[]
 }
