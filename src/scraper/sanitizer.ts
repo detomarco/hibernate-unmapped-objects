@@ -3,7 +3,7 @@ const packageRegex = new RegExp('(package .*;)');
 
 const sanitizeInlineComments = (s: string): string => s.replace(/\/\/(.*)$/, '');
 
-const sanitizeMultilineComments = (s: string): string => s.replace(/\/[]+(.*)\*\//, '');
+const sanitizeMultilineComments = (s: string): string => s.replace(/\/\*+(.*)\*\//, '');
 
 const sanitizeEscapeCharacters = (s: string): string => s.replace(/\r\n|\n|\r|\t/gm, ' ')
         .replace(/\s\s+/g, ' ');
