@@ -30,6 +30,6 @@ export interface Annotation {
 }
 
 export interface AnnotationAttribute {
-    name: string,
-    value: string
+    name: string | undefined,
+    value: string | undefined
 }

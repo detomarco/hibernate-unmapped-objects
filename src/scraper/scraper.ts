@@ -12,7 +12,7 @@ const captureAnnotationAttributesItems = new RegExp('(([\\w ])+=[\\w." ]+)', 'g'
 
 const capturePropertyNameAndAnnotations = new RegExp("(@[\\w =,\"()@ .]+)?private \\w+ (\\w+);");
 const captureClassNameAndAnnotations = new RegExp("(@[\\w =,\"()@ .]+)?public class (\\w+)");
-
+const captureNameAndValueAttribute = new RegExp("([\\w ]+)=(?:[ \"]+)?([\\w .]+)(?:\")?")
 const getClassInfo = (contentSanitized: string): { name: string | undefined, annotations: Annotation[] } => {
     const {first: annotationStrings, second: name} = matchGroups(contentSanitized, captureClassNameAndAnnotations)
     const annotations = getAnnotations(annotationStrings)
@@ -23,8 +23,8 @@ const getAnnotationAttributes = (attributesStringOptional: string | undefined): 
     try {
         const attributes = matchGroupMultiple(attributesStringOptional, captureAnnotationAttributesItems);
         return attributes?.map((attribute): AnnotationAttribute => {
-            const [name, value] = attribute.split('=');
-            return { name, value };
+            const {first: name, second: value} = matchGroups(attribute, captureNameAndValueAttribute)
+            return { name, value};
         }) || [];
     } catch (e) {
         log.error("Unable to parse annotation attributes for", attributesStringOptional, e)
