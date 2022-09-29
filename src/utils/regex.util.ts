@@ -15,8 +15,8 @@ export const matchGroups = (s: string, regex: RegExp): { first: string | undefin
     }
     const propertyParts = s.match(regex);
     if (propertyParts) {
-        const first = propertyParts[1].trim();
-        const second = propertyParts[2].trim();
+        const first = propertyParts[1]?.trim();
+        const second = propertyParts[2]?.trim();
         return { first, second }
     }
     return {first: undefined, second: undefined};

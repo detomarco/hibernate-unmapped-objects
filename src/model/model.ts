@@ -14,7 +14,7 @@ export enum LogLevel {
 
 export interface JavaClass {
     filePath: string,
-    name: string,
+    name: string | undefined,
     annotations: Annotation[],
     properties: ClassProperty[]
 }
@@ -25,7 +25,7 @@ export interface ClassProperty {
 }
 
 export interface Annotation {
-    name: string,
+    name: string | undefined,
     attributes : AnnotationAttribute[]
 }
 

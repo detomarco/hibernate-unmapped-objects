@@ -13,10 +13,8 @@ const captureAnnotationAttributesItems = new RegExp('(([\\w ])+=[\\w." ]+)', 'g'
 const capturePropertyNameAndAnnotations = new RegExp("(@[\\w =,\"()@ .]+)?private \\w+ (\\w+);");
 const captureClassNameAndAnnotations = new RegExp("(@[\\w =,\"()@ .]+)?public class (\\w+)");
 
-const getClassInfo = (contentSanitized: string): { name: string, annotations: Annotation[] } => {
-    const annotationParts = contentSanitized.match(captureClassNameAndAnnotations);
-    const annotationStrings = annotationParts![1];
-    const name = annotationParts![2]?.trim();
+const getClassInfo = (contentSanitized: string): { name: string | undefined, annotations: Annotation[] } => {
+    const {first: annotationStrings, second: name} = matchGroups(contentSanitized, captureClassNameAndAnnotations)
     const annotations = getAnnotations(annotationStrings)
     return { name, annotations }
 }
@@ -36,11 +34,9 @@ const getAnnotationAttributes = (attributesStringOptional: string | undefined): 
 
 const getAnnotation = (annotation: string): Annotation | undefined => {
     try {
-        const annotationParts = annotation.match(captureAnnotationNameAndAttribute);
-        const name = annotationParts![1];
-        const attributesStringOptional = annotationParts![2]?.trim();
-        log.trace('ann name', name);
-        log.trace('ann attributes', attributesStringOptional);
+        const {first: name, second: attributesStringOptional} = matchGroups(annotation, captureAnnotationNameAndAttribute)
+        log.trace('annotation name', name);
+        log.trace('annotation attributes', attributesStringOptional);
         const attributes = getAnnotationAttributes(attributesStringOptional);
 
         return { name, attributes };
@@ -67,11 +63,9 @@ const getProperty = (property: string): ClassProperty | undefined => {
     try {
         const annotationsName = matchGroupMultiple(property, captureFieldAnnotationRegex);
 
-        const propertyParts = property.match(capturePropertyNameAndAnnotations);
-        const annotationsString = propertyParts![1]?.trim();
-        const propertyName = propertyParts![2]?.trim();
-
+        const {first: annotationsString, second: propertyName} = matchGroups(property, capturePropertyNameAndAnnotations)
         log.trace('annotations name', annotationsName);
+
         const annotations = getAnnotations(annotationsString);
         return { property: propertyName, annotations };
     } catch (e) {
@@ -104,9 +98,9 @@ const scrapeJavaClasses = (javaFilePath: string): JavaClass | undefined => {
         const { name, annotations } = getClassInfo(contentSanitized)
         return {
             filePath: javaFilePath,
-            name: name,
-            annotations: annotations,
-            properties: properties
+            name,
+            annotations,
+            properties
         };
     } catch (e) {
         log.error("Unable to parse java class for", javaFilePath, e)
