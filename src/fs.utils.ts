@@ -53,33 +53,9 @@ export const getFiles = (path: string): string[] => {
     return files;
 }
 
-const sanitizeInlineComments = (s: string): string => {
-    return s.replace(/\/\/(.*)$/, "")
-}
 
-const sanitizeMultilineComments = (s: string): string => {
-    return s.replace(/\/[\*]+(.*)\*\//, "")
-}
-
-const sanitizeEscapeCharacters = (s: string): string => {
-    return s.replace(/\r\n|\n|\r|\t/gm, ' ')
-        .replace(/\s\s+/g, ' ');
-}
-
-
-const removeImports = (s: string): string => {
-
-    return s.replace(importRegex, '')
-        .replace(packageRegex, '');
-}
-
-export const getFileContentSanitized = (filePath: string) => {
-    const content = fs.readFileSync(filePath, `utf-8`);
-    const noInlineComments = sanitizeInlineComments(content);
-    const noImports = removeImports(noInlineComments);
-    const noNewLines = sanitizeEscapeCharacters(noImports)
-    const noMultiLines = sanitizeMultilineComments(noNewLines)
-    return noMultiLines.trim()
+export const readFile = (filePath: string): string => {
+    return fs.readFileSync(filePath, `utf-8`);
 }
 
 export const env = getEnvFile()
