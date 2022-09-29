@@ -6,7 +6,8 @@
   "scripts": {
     "compile": "tsc",
     "prestart": "npm run compile",
-    "start": "node dist/main.js"
+    "start": "node dist/main.js",
+    "lint": "eslint --fix . --ext .ts"
   },
   "repository": {
     "type": "git",
