@@ -1,6 +1,6 @@
-import {getFiles, readFile} from "./fs.utils";
-import {log} from "./log.utils";
-import {Annotation, Column, Table} from "./model";
+import {getFiles, readFile} from "../utils/fs.utils";
+import {log} from "../utils/log.utils";
+import {Annotation, Column, Table} from "../model/model";
 import {getFileContentSanitized} from "./sanitizer";
 
 const classFieldRegex = new RegExp("(?:@[\\w =,\"\\(\\)@ .]+)? private \\w+ \\w+;", 'g');
@@ -37,7 +37,7 @@ export const scrape = (folder: string): Table[] => {
         const contentSanitized = getFileContentSanitized(content)
         log.info(`content file sanitized ${javaFilePath}`, contentSanitized)
         const columns = getColumns(contentSanitized)
-        log.info(`columns ${javaFilePath}`, contentSanitized)
+        log.info(`columns ${javaFilePath}`, columns)
         return {
             filePath: javaFilePath,
             name: '',

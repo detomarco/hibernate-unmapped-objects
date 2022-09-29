@@ -1,5 +1,5 @@
 import * as fs from 'fs';
-import {EnvProperties, LogLevel, LogLevelString} from "./model";
+import {EnvProperties, LogLevel, LogLevelString} from "../model/model";
 
 const annotationRegex = new RegExp('((?:@\\w+\\(?[a-zA-Z= ",._]*\\)?)+),?', 'g')
 const annotationRegexWithField = new RegExp('((?:@\\w+\\(?[\\w= ",._]*\\)?)+,? private \\w+ \\w+);', 'g')
