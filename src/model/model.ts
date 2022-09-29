@@ -12,7 +12,7 @@ export enum LogLevel {
     TRACE
 }
 
-export interface Table {
+export interface JavaClass {
     filePath: string,
     name: string,
     annotations: Annotation[],
