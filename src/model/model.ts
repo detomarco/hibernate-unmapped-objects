@@ -16,10 +16,10 @@ export interface Table {
     filePath: string,
     name: string,
     annotations: Annotation[],
-    columns: Column[]
+    properties: ClassProperty[]
 }
 
-export interface Column {
+export interface ClassProperty {
     name: string;
     annotations: Annotation[]
 }
