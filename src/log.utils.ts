@@ -1,40 +1,40 @@
-import {env} from "./fs.utils";
-import {LogLevel} from "./model";
+import { env } from './fs.utils';
+import { LogLevel } from './model';
 
 class Logger {
 
     private static logLevel = env.logLevel;
 
-    trace(message: string, ...optionalParams: any[]) {
+    trace(message: string, ...optionalParams: any[]): void {
         if(Logger.logLevel >= LogLevel.TRACE) {
-            console.log("TRACE", message, optionalParams)
+            console.log('TRACE', message, optionalParams);
         }
     }
 
-    debug(message: string, ...optionalParams: any[]) {
+    debug(message: string, ...optionalParams: any[]): void {
         if(Logger.logLevel >= LogLevel.DEBUG) {
-            console.debug("DEBUG", message, optionalParams)
+            console.debug('DEBUG', message, optionalParams);
         }
     }
 
-    info(message: string, ...optionalParams: any[]) {
+    info(message: string, ...optionalParams: any[]): void {
         if(Logger.logLevel >= LogLevel.INFO) {
-            console.info("INFO", message, optionalParams)
+            console.info('INFO', message, optionalParams);
         }
     }
 
-    warn(message: string, ...optionalParams: any[]) {
+    warn(message: string, ...optionalParams: any[]): void {
         if(Logger.logLevel >= LogLevel.WARN) {
-            console.warn("WARN", message, optionalParams)
+            console.warn('WARN', message, optionalParams);
         }
     }
 
-    error(message: string, ...optionalParams: any[]) {
+    error(message: string, ...optionalParams: any[]): void {
         if(Logger.logLevel >= LogLevel.ERROR) {
-            console.error("ERROR", message, optionalParams)
+            console.error('ERROR', message, optionalParams);
         }
     }
 
 }
 
-export const log = new Logger()
+export const log = new Logger();
