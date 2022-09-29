@@ -2,26 +2,32 @@ import {getFiles, readFile} from "../utils/fs.utils";
 import {log} from "../utils/log.utils";
 import {Annotation, ClassProperty, Table} from "../model/model";
 import {getFileContentSanitized} from "./sanitizer";
+import {getGroups} from "../utils/regex.util";
+
+const regexComponents = {
+    annotationAttributes: "(?:\\([ \\w=.,\"\\)]+)?"
+};
 
 const classFieldRegex = new RegExp("(?:@[\\w =,\"\\(\\)@ .]+)? private \\w+ \\w+;", 'g');
-
-const fieldRegex = new RegExp("(?:@[\\w =,\"\\(\\)@ .]+)? private \\w+ \\w+;", 'g');
-const captureFieldAnnotationRegex = new RegExp("(@\\w+(?:\\( [\\w= .,\"]+\\))?)", 'g');
+const fieldAnnotation = new RegExp("@\\w+" + regexComponents.annotationAttributes, 'g');
+const captureFieldAnnotationRegex = new RegExp("(@\\w+" + regexComponents.annotationAttributes + ")", 'g');
 
 const getProperties = (content: string): ClassProperty[] => {
-    const properties: string[] = []
-    for (const match of content.matchAll(classFieldRegex)) {
-        properties.push(match[0].trim())
-    }
+    const properties = getGroups(content, classFieldRegex)
+
     return properties.map(property => {
-        const annotations: Annotation[] = []
-        for (const matchC of property.matchAll(captureFieldAnnotationRegex)) {
-            annotations.push({
-                name: matchC[0].trim(),
+        const annotationsName = getGroups(property, captureFieldAnnotationRegex)
+        log.debug("annotations name", annotationsName)
+        const annotations = annotationsName.map(annotation => {
+            const attributesName = getGroups(annotation, fieldAnnotation)
+            log.debug("attributes name", attributesName)
+
+            return {
+                name: annotation,
                 attributes: []
-            })
-        }
-        return {name: property, annotations}
+            }
+        })
+        return {property, annotations}
     });
 }
 

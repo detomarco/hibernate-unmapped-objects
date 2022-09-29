@@ -20,14 +20,17 @@ export interface Table {
 }
 
 export interface ClassProperty {
-    name: string;
+    property: string;
     annotations: Annotation[]
 }
 
 export interface Annotation {
     name: string,
-    attributes : {
-        name: string,
-        value: string
-    }[]
+    attributes : AnnotationAttribute[]
 }
+
+export interface AnnotationAttribute {
+    name: string,
+    value: string
+}
+
