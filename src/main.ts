@@ -1,6 +1,4 @@
-import { env } from './fs.utils';
-import { scrape } from './scraper';
-import { log } from './log.utils';
+import {env} from "./fs.utils";
+import {scrape} from "./scraper";
 
-const entities = scrape(env.entitiesFolderPath);
-log.trace('entities found', entities);
+const entities = scrape(env.entitiesFolderPath)
