@@ -2,12 +2,12 @@ import {getFiles, getFileContentSanitized} from "./fs.utils";
 import {log} from "./log.utils";
 import {Table} from "./model";
 
-const fieldRegex = new RegExp("(private \\w+ \\w+);", 'g')
-
+const fieldRegex = new RegExp("(?:@[\\w =,\"\\(\\)@ .]+)? private \\w+ \\w+;", 'g')
+// get field with annotation @[\w =,"\(\)@ .]+ private
 const getColumns = (content: string): string[] => {
     const columns: string[] = []
     for (const match of content.matchAll(fieldRegex)) {
-        columns.push(match[1])
+        columns.push(match[0].trim())
     }
     return columns;
 }
@@ -20,7 +20,7 @@ export const scrape = (folder: string): Table[] => {
 
     const entities: Table[] = javaFiles.map(javaFilePath => {
         const content = getFileContentSanitized(javaFilePath)
-        log.trace(`content file ${javaFilePath}`, content)
+        log.info(`content file ${javaFilePath}`, content)
         const columns = getColumns(content)
         log.info(`columns ${javaFilePath}`, columns)
         return {
