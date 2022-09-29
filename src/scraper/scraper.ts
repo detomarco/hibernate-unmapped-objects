@@ -7,6 +7,7 @@ import {getGroups} from "../utils/regex.util";
 const classFieldRegex = new RegExp("(?:@[\\w =,\"()@ .]+)? private \\w+ \\w+;", 'g');
 const captureFieldAnnotationRegex = new RegExp("(@\\w+(?:\\([ \\w=.,\")]+)?)", 'g');
 const captureAnnotationNameAndAttribute = new RegExp("@(\\w+)(?:\\(([ \\w=.,\"]+)\\))?")
+const captureAnnotationAttributesItems = new RegExp("(([\\w ])+=[\\w.\" ]+)", 'g')
 
 const getProperties = (content: string): ClassProperty[] => {
     const properties = getGroups(content, classFieldRegex)
@@ -17,15 +18,17 @@ const getProperties = (content: string): ClassProperty[] => {
         const annotations = annotationsName.map(annotation => {
             const annotationParts = annotation.match(captureAnnotationNameAndAttribute)
             const name = annotationParts![1]
-            const attributes = annotationParts![2]?.trim()
+            const attributesStringOptional = annotationParts![2]?.trim()
             log.trace("ann name", name)
-            log.trace("ann attributes", attributes)
+            log.trace("ann attributes", attributesStringOptional)
+            const attributes = attributesStringOptional ? getGroups(attributesStringOptional, captureAnnotationAttributesItems) : undefined;
+
             return {
-                name: name,
-                attributes: [{
-                    name: attributes,
-                    value: attributes
-                }]
+                name,
+                attributes: attributes?.map((attribute): AnnotationAttribute => {
+                    const [name, value] = attribute.split("=")
+                    return {name, value}
+                }) || []
             }
         })
         return {property, annotations}
