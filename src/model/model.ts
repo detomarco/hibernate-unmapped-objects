@@ -20,7 +20,7 @@ export interface JavaClass {
 }
 
 export interface ClassProperty {
-    property: string;
+    property: string | undefined;
     annotations: Annotation[]
 }
 

@@ -2,15 +2,16 @@ import { getFiles, readFile } from '../utils/fs.utils';
 import { log } from '../utils/log.utils';
 import { Annotation, AnnotationAttribute, ClassProperty, JavaClass } from '../model/model';
 import { getFileContentSanitized } from './sanitizer';
-import { getGroups } from '../utils/regex.util';
+import { matchGroupMultiple, matchGroups } from '../utils/regex.util';
+import { removeUndefinedItems } from "../utils/array.utils";
 
 const classFieldRegex = new RegExp('(?:@[\\w =,"()@ .]+)? private \\w+ \\w+;', 'g');
 const captureFieldAnnotationRegex = new RegExp('(@\\w+(?:\\([ \\w=.,")]+)?)', 'g');
 const captureAnnotationNameAndAttribute = new RegExp('@(\\w+)(?:\\(([ \\w=.,"]+)\\))?');
 const captureAnnotationAttributesItems = new RegExp('(([\\w ])+=[\\w." ]+)', 'g');
 
-const capturePropertyNameAndAnnotations = new RegExp("(@[\\w =,\"()@ .]+)? private \\w+ (\\w+);");
-const captureClassNameAndAnnotations = new RegExp("(@[\\w =,\"()@ .]+)? public class (\\w+)");
+const capturePropertyNameAndAnnotations = new RegExp("(@[\\w =,\"()@ .]+)?private \\w+ (\\w+);");
+const captureClassNameAndAnnotations = new RegExp("(@[\\w =,\"()@ .]+)?public class (\\w+)");
 
 const getClassInfo = (contentSanitized: string): { name: string, annotations: Annotation[] } => {
     const annotationParts = contentSanitized.match(captureClassNameAndAnnotations);
@@ -22,7 +23,7 @@ const getClassInfo = (contentSanitized: string): { name: string, annotations: An
 
 const getAnnotationAttributes = (attributesStringOptional: string | undefined): AnnotationAttribute[] => {
     try {
-        const attributes = attributesStringOptional ? getGroups(attributesStringOptional, captureAnnotationAttributesItems) : undefined;
+        const attributes = matchGroupMultiple(attributesStringOptional, captureAnnotationAttributesItems);
         return attributes?.map((attribute): AnnotationAttribute => {
             const [name, value] = attribute.split('=');
             return { name, value };
@@ -33,42 +34,56 @@ const getAnnotationAttributes = (attributesStringOptional: string | undefined): 
     }
 };
 
-const getAnnotations = (annotationString: string): Annotation[] => {
+const getAnnotation = (annotation: string): Annotation | undefined => {
     try {
-        const annotationsName = getGroups(annotationString, captureFieldAnnotationRegex);
+        const annotationParts = annotation.match(captureAnnotationNameAndAttribute);
+        const name = annotationParts![1];
+        const attributesStringOptional = annotationParts![2]?.trim();
+        log.trace('ann name', name);
+        log.trace('ann attributes', attributesStringOptional);
+        const attributes = getAnnotationAttributes(attributesStringOptional);
+
+        return { name, attributes };
+    } catch (e) {
+        log.error("Unable to parse annotation for", annotation, e)
+        return undefined;
+    }
+};
+
+const getAnnotations = (annotationString: string | undefined): Annotation[] => {
+    try {
+        const annotationsName = matchGroupMultiple(annotationString, captureFieldAnnotationRegex);
         log.trace('annotations name', annotationsName);
 
-        return annotationsName.map(annotation => {
-            const annotationParts = annotation.match(captureAnnotationNameAndAttribute);
-            const name = annotationParts![1];
-            const attributesStringOptional = annotationParts![2]?.trim();
-            log.trace('ann name', name);
-            log.trace('ann attributes', attributesStringOptional);
-            const attributes = getAnnotationAttributes(attributesStringOptional);
-
-            return { name, attributes };
-        });
+        const annotationsOpt = annotationsName?.map(annotation => getAnnotation(annotation)) || []
+        return removeUndefinedItems(annotationsOpt);
     } catch (e) {
-        log.error("Unable to parse annotation for", annotationString, e)
+        log.error("Unable to parse annotations for", annotationString, e)
         return [];
     }
 };
 
+const getProperty = (property: string): ClassProperty | undefined => {
+    try {
+        const annotationsName = matchGroupMultiple(property, captureFieldAnnotationRegex);
+
+        const propertyParts = property.match(capturePropertyNameAndAnnotations);
+        const annotationsString = propertyParts![1]?.trim();
+        const propertyName = propertyParts![2]?.trim();
+
+        log.trace('annotations name', annotationsName);
+        const annotations = getAnnotations(annotationsString);
+        return { property: propertyName, annotations };
+    } catch (e) {
+        log.error("Unable to property for", property, e)
+        return undefined;
+    }
+}
 const getProperties = (content: string): ClassProperty[] => {
     try {
-        const properties = getGroups(content, classFieldRegex);
-
-        return properties.map(property => {
-            const annotationsName = getGroups(property, captureFieldAnnotationRegex);
-
-            const propertyParts = property.match(capturePropertyNameAndAnnotations);
-            const annotationsString = propertyParts![1]?.trim();
-            const propertyName = propertyParts![2]?.trim();
-
-            log.trace('annotations name', annotationsName);
-            const annotations = getAnnotations(annotationsString);
-            return { property: propertyName, annotations };
-        });
+        const propertiesString = matchGroupMultiple(content, classFieldRegex);
+        const propertiesOpt = propertiesString.map(property => getProperty(property))
+        return removeUndefinedItems(propertiesOpt);
     } catch (e) {
         log.error("Unable to parse properties for", content, e)
         return [];
@@ -105,14 +120,11 @@ export const scrape = (folder: string): JavaClass[] => {
         log.trace('java files', javaFiles);
         log.trace('num java files', javaFiles.length);
 
-        const javaClasses = javaFiles
-            .map(javaFilePath => scrapeJavaClasses(javaFilePath))
-            .filter(it => it != undefined)
-            .map(it => it!);
+        const javaClasses = javaFiles.map(javaFilePath => scrapeJavaClasses(javaFilePath))
 
-        log.debug('javaClasses', JSON.stringify(javaClasses, null, 4));
+        log.debug('javaClasses', JSON.stringify(javaClasses));
         log.trace('num javaClasses', javaClasses.length);
-        return javaClasses
+        return removeUndefinedItems(javaClasses)
     } catch (e) {
         log.error("Unable to parse folder for", folder, e)
         return [];
