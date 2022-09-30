@@ -1,4 +1,3 @@
-import { getFiles, readFile } from '../utils/fs.utils';
 import { log } from '../utils/log.utils';
 import { Annotation, AnnotationAttribute, ClassProperty, JavaClass } from '../model/model';
 import { getFileContentSanitized } from './sanitizer';
