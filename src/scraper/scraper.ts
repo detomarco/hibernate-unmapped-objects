@@ -1,5 +1,5 @@
 import { log } from '../utils/log.utils';
-import { AnnotationScraper, ClassPropertyScraper, JavaClassScraper } from './scraper.model';
+import { JavaAnnotation, ClassProperty, JavaClass } from './scraper.model';
 import { getFileContentSanitized } from './sanitizer';
 import { matchGroupMultiple, matchGroups } from '../utils/regex.util';
 import { removeUndefinedItems } from '../utils/array.utils';
@@ -14,7 +14,7 @@ const capturePropertyNameAndAnnotations = new RegExp('(@[\\w =,"()@ .]+)?private
 const captureClassNameAndAnnotations = new RegExp('(@[\\w =,"()@ .]+)?public class (\\w+)');
 const captureNameAndValueAttribute = new RegExp('(?:([\\w ]+)=)?(?:[ "]+)?([\\w .]+)"?');
 
-const getClassInfo = (contentSanitized: string): { name: string | undefined, annotations: AnnotationScraper[] } => {
+const getClassInfo = (contentSanitized: string): { name: string | undefined, annotations: JavaAnnotation[] } => {
     const match = matchGroups(contentSanitized, captureClassNameAndAnnotations);
     const annotations = getAnnotations(match?.first);
     return { name: match?.second, annotations };
@@ -42,7 +42,7 @@ const getAnnotationAttributes = (attributesStringOptional: string | undefined): 
     }
 };
 
-const getAnnotation = (annotation: string): AnnotationScraper | undefined => {
+const getAnnotation = (annotation: string): JavaAnnotation | undefined => {
     try {
         const match = matchGroups(annotation, captureAnnotationNameAndAttribute)!;
         const attributes = getAnnotationAttributes(match.second);
@@ -54,7 +54,7 @@ const getAnnotation = (annotation: string): AnnotationScraper | undefined => {
     }
 };
 
-const getAnnotations = (annotationString: string | undefined): AnnotationScraper[] => {
+const getAnnotations = (annotationString: string | undefined): JavaAnnotation[] => {
     if (annotationString === undefined) {
         return [];
     }
@@ -71,7 +71,7 @@ const getAnnotations = (annotationString: string | undefined): AnnotationScraper
     }
 };
 
-const getProperty = (property: string): ClassPropertyScraper | undefined => {
+const getProperty = (property: string): ClassProperty | undefined => {
     try {
         const annotationsName = matchGroupMultiple(property, captureFieldAnnotationRegex);
 
@@ -86,7 +86,7 @@ const getProperty = (property: string): ClassPropertyScraper | undefined => {
         return undefined;
     }
 };
-const getProperties = (content: string): ClassPropertyScraper[] => {
+const getProperties = (content: string): ClassProperty[] => {
     try {
         const propertiesString = matchGroupMultiple(content, classFieldRegex);
         const propertiesOpt = propertiesString.map(property => getProperty(property));
@@ -97,7 +97,7 @@ const getProperties = (content: string): ClassPropertyScraper[] => {
     }
 };
 
-export const scrapeJavaClass = (javaFilePath: string, content: string): JavaClassScraper | undefined => {
+export const scrapeJavaClass = (javaFilePath: string, content: string): JavaClass | undefined => {
     try {
         const contentSanitized = getFileContentSanitized(content);
         log.trace(`content file sanitized ${javaFilePath}`, contentSanitized);

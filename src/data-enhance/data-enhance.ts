@@ -1,4 +1,4 @@
-import { AnnotationScraper, ClassPropertyScraper, JavaClassScraper } from "../scraper/scraper.model";
+import { JavaAnnotation, ClassProperty, JavaClass } from "../scraper/scraper.model";
 import {
     AnnotationAttributeEnhance,
     AnnotationEnhance,
@@ -9,7 +9,7 @@ import {
     NameAttributeEnhance
 } from "./data-enhace.model";
 
-const enhanceAnnotation = (annotation: AnnotationScraper): AnnotationEnhance => {
+const enhanceAnnotation = (annotation: JavaAnnotation): AnnotationEnhance => {
     let attributes: AnnotationAttributeEnhance | undefined = undefined;
     switch (annotation.name) {
         case 'JoinColumn':
@@ -44,7 +44,7 @@ const extractNameFromAnnotations = (annotations: AnnotationEnhance[]): string | 
     return undefined
 }
 
-const enhanceProperties = (property: ClassPropertyScraper): JavaColumn => {
+const enhanceProperties = (property: ClassProperty): JavaColumn => {
     const annotations = property.annotations.map(it => enhanceAnnotation(it))
 
     return {
@@ -52,7 +52,7 @@ const enhanceProperties = (property: ClassPropertyScraper): JavaColumn => {
     };
 }
 
-export const enhanceJavaClass = (javaClass: JavaClassScraper): JavaTable => {
+export const enhanceJavaClass = (javaClass: JavaClass): JavaTable => {
     const annotations = javaClass.annotations.map(it => enhanceAnnotation(it))
     return {
         filePath: javaClass.filePath,

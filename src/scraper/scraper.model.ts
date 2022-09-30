@@ -1,18 +1,18 @@
 import { MapString } from "../model/model";
 
-export interface JavaClassScraper {
+export interface JavaClass {
     filePath: string,
     name: string | undefined,
-    annotations: AnnotationScraper[],
-    properties: ClassPropertyScraper[]
+    annotations: JavaAnnotation[],
+    properties: ClassProperty[]
 }
 
-export interface ClassPropertyScraper {
+export interface ClassProperty {
     name: string;
-    annotations: AnnotationScraper[]
+    annotations: JavaAnnotation[]
 }
 
-export interface AnnotationScraper {
+export interface JavaAnnotation {
     name: string,
     attributes: MapString
 }
