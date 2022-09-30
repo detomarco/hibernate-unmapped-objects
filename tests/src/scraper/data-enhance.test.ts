@@ -1,8 +1,8 @@
 import { scrapeJavaClass } from '../../../src/scraper/scraper';
 import { getTestResource } from '../../utils/resource.utils';
 import { simpleEntityClass, tableEntityClass } from '../fixture/scraper.fixture';
-import { enhanceJavaClass } from "../../../src/data-enhance/data-enhance";
-import { simpleEntityTable, tableEntityTable } from "../fixture/data-enhance.fixture";
+import { enhanceJavaClass } from '../../../src/data-enhance/data-enhance';
+import { simpleEntityTable, tableEntityTable } from '../fixture/data-enhance.fixture';
 
 describe('should enhance date', () => {
 

@@ -1,4 +1,4 @@
-import { MapString } from "../model/model";
+import { MapString } from '../model/model';
 
 export interface JavaClass {
     filePath: string,

@@ -14,7 +14,7 @@ describe('should scrape entity', () => {
     it('when entity with table annotation', () => {
         const javaClassContent = getTestResource(tableEntityClass.filePath);
         const javaClass = scrapeJavaClass(tableEntityClass.filePath, javaClassContent);
-        console.log(tableEntityClass)
+        console.log(tableEntityClass);
         expect(javaClass).toEqual(tableEntityClass);
     });
 

@@ -1,16 +1,16 @@
-import { JavaTable } from "../../../src/data-enhance/data-enhace.model";
+import { JavaTable } from '../../../src/data-enhance/data-enhace.model';
 
 export const simpleEntityTable: JavaTable = {
     filePath: 'SimpleEntity.java',
     name: 'SimpleEntity',
     columns: [{
-        name: 'id',
+        name: 'id'
     }, {
-        name: 'date',
+        name: 'date'
     }, {
-        name: 'clazz',
+        name: 'clazz'
     }, {
-        name: 'USER_FK',
+        name: 'USER_FK'
     }]
 };
 

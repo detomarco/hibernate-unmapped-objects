@@ -3,7 +3,7 @@ import { log } from './utils/log.utils';
 import { JavaClass } from './scraper/scraper.model';
 import { removeUndefinedItems } from './utils/array.utils';
 import { scrapeJavaClass } from './scraper/scraper';
-import { enhanceJavaClass } from "./data-enhance/data-enhance";
+import { enhanceJavaClass } from './data-enhance/data-enhance';
 
 const javaFileRegex = new RegExp('.*.java$');
 
@@ -37,6 +37,5 @@ export const scrape = (folder: string): JavaClass[] => {
 const entities = scrape(env.entitiesFolderPath);
 log.debug('scrape result', entities);
 
-const entitiesEnhanced = entities.map(entity => enhanceJavaClass(entity))
+const entitiesEnhanced = entities.map(entity => enhanceJavaClass(entity));
 log.debug('data enhance result', entitiesEnhanced);
-

@@ -1,12 +1,12 @@
-import { MapString } from "../model/model";
+import { MapString } from '../model/model';
 
-export type AnnotationTypeString = "JoinColumn" | "Column" | "Entity" | "Table";
+export type AnnotationTypeString = 'JoinColumn' | 'Column' | 'Entity' | 'Table';
 
 export enum AnnotationType {
-    JoinColumn = "JoinColumn",
-    Column = "Column",
-    Entity = "Entity",
-    Table = "Table"
+    JoinColumn = 'JoinColumn',
+    Column = 'Column',
+    Entity = 'Entity',
+    Table = 'Table'
 }
 
 export type JavaTable = {
@@ -31,7 +31,6 @@ export interface AnnotationAttributeEnhance {
 export class NameAttributeEnhance implements AnnotationAttributeEnhance {
     default: string | undefined;
     name: string | undefined;
-
 
     constructor(obj: MapString) {
         this.default = obj.default;

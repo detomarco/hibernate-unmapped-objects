@@ -57,7 +57,7 @@ export const tableEntityClass: JavaClass = {
     }, {
         name: 'Table',
         attributes: {
-            default: "Tables"
+            default: 'Tables'
         }
     }],
     properties: [{

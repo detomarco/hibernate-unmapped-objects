@@ -3,7 +3,7 @@ import { JavaAnnotation, ClassProperty, JavaClass } from './scraper.model';
 import { getFileContentSanitized } from './sanitizer';
 import { matchGroupMultiple, matchGroups } from '../utils/regex.util';
 import { removeUndefinedItems } from '../utils/array.utils';
-import { MapString } from "../model/model";
+import { MapString } from '../model/model';
 
 const classFieldRegex = new RegExp('(?:@[\\w =,"()@ .]+)? private \\w+ \\w+;', 'g');
 const captureFieldAnnotationRegex = new RegExp('(@\\w+(?:\\([ \\w=.,")]+)?)', 'g');
@@ -21,13 +21,15 @@ const getClassInfo = (contentSanitized: string): { name: string | undefined, ann
 };
 
 const getAnnotationAttributes = (attributesStringOptional: string | undefined): MapString => {
-    if (attributesStringOptional == undefined) return {};
+    if (attributesStringOptional === undefined) {
+        return {};
+    }
     try {
         const attributes = matchGroupMultiple(attributesStringOptional, captureAnnotationAttributesItems);
 
         return removeUndefinedItems(
             attributes.map(it => {
-                const match =  matchGroups(it, captureNameAndValueAttribute);
+                const match = matchGroups(it, captureNameAndValueAttribute);
 
                 return match;
             })
