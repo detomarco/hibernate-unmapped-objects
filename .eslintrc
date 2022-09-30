@@ -1,0 +1,35 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "@typescript-eslint"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "rules": {
+    "@typescript-eslint/no-var-requires": 0,
+    "@typescript-eslint/explicit-function-return-type": "error",
+    "@typescript-eslint/no-extra-non-null-assertion": "off",
+    "prefer-template": "warn",
+    "eqeqeq": "error",
+    "semi": ["error", "always"],
+    "@typescript-eslint/no-unused-vars": "warn",
+    "quotes": ["warn", "single", "avoid-escape"],
+    "object-curly-spacing": ["warn", "always"],
+    "no-multi-spaces": "warn",
+    "arrow-parens": ["warn", "as-needed"],
+    "arrow-body-style": ["warn", "as-needed"],
+    "comma-spacing": "warn",
+    "space-infix-ops": "warn",
+    "comma-dangle": "warn",
+    "arrow-spacing": "warn",
+    "space-in-parens": "warn",
+    "space-before-function-paren": ["warn", "never"],
+    "curly": "warn",
+    "brace-style": ["warn", "1tbs"],
+    "no-multiple-empty-lines": ["warn", { "max": 1, "maxEOF": 0 }]
+  }
+}
