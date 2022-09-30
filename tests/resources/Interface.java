@@ -11,6 +11,4 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import java.util.Date;
 
-public interface Interface {
-    private Long id;
-}
+public interface Interface {}

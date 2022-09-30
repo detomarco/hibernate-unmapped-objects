@@ -19,7 +19,7 @@ const captureAnnotationNameAndAttribute = new RegExp('@(\\w+)(?:\\(([ \\w=.,"]+)
 const captureAnnotationAttributesItems = new RegExp('((?:([\\w ])+=)?[\\w." ]+)', 'g');
 
 const capturePropertyNameAndAnnotations = new RegExp('(@[\\w =,"()@ .]+)?private \\w+ (\\w+);');
-const captureClassNameAndAnnotations = new RegExp('(@[\\w =,"()@ .]+)?public [@\\w]+ (\\w+)');
+const captureClassNameAndAnnotations = new RegExp('(@[\\w =,"()@ .]+)?public (?:abstract )?[@\\w]+ (\\w+)');
 const captureNameAndValueAttribute = new RegExp('(?:([\\w ]+)=)?(?:[ "]+)?([\\w .]+)"?');
 
 const getClassInfo = (javaFilePath: string, contentSanitized: string): { name: string | undefined, annotations: JavaAnnotation[] } | undefined => {

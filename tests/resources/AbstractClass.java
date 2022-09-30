@@ -11,6 +11,4 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import java.util.Date;
 
-public abstract class AbstractClass {
-    private Long id;
-}
+public abstract class AbstractClass {}

@@ -2,7 +2,7 @@
   "name": "hibernate-unmapped-objects",
   "version": "0.0.1",
   "description": "",
-  "main": "src/main.ts",
+  "main": "index.ts",
   "scripts": {
     "start": "ts-node src/main.ts",
     "lint:dry": "eslint . --ext .ts",
