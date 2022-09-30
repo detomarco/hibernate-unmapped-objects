@@ -1,39 +1,9 @@
-import { env, getFiles, readFile } from './utils/fs.utils';
+import { env } from './utils/fs.utils';
 import { log } from './utils/log.utils';
-import { removeUndefinedItems } from './utils/array.utils';
-import { scrapeJavaClass } from './scraper/scraper';
 import { enhanceJavaClass } from './data-enhance/data-enhance';
-import { AnnotationType, JavaClass } from './scraper/scraper.model';
+import { AnnotationType } from './scraper/scraper.model';
 import { JavaTable } from './data-enhance/data-enhace.model';
-
-const javaFileRegex = new RegExp('.*.java$');
-
-const scrape = (folder: string): JavaClass[] => {
-    try {
-        const javaFiles = getFiles(folder, javaFileRegex);
-        log.debug('java files', javaFiles);
-        log.info(`${javaFiles.length} java files found`);
-
-        const javaClasses = javaFiles.map(javaFilePath => {
-            try {
-                const content = readFile(javaFilePath);
-                log.trace(`content file ${javaFilePath}`, content);
-                const javaClass = scrapeJavaClass(javaFilePath, content);
-                log.trace('java class', javaFilePath, javaClass);
-                return javaClass;
-            } catch (e) {
-                log.warn('Unable to parse java class', javaFilePath, e);
-                return undefined;
-            }
-        });
-
-        log.trace('num javaClasses', javaClasses.length);
-        return removeUndefinedItems(javaClasses);
-    } catch (e) {
-        log.warn('Unable to parse folder for', folder, e);
-        return [];
-    }
-};
+import { scrape } from "./scraper/scraper";
 
 export const main = (): JavaTable[] => {
     const entities = scrape(env.entitiesFolderPath);

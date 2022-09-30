@@ -21,7 +21,7 @@ const getEnvFile = (): EnvProperties => {
 export const getFiles = (path: string, javaFileRegex: RegExp): string[] => {
 
     if (!fs.existsSync(path)) {
-        throw Error(`Path ${path} does not exist`);
+        throw new Error(`Path '${path}' does not exist`);
     }
 
     if (!fs.lstatSync(path).isDirectory()) {
