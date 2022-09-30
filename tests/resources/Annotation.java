@@ -11,6 +11,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import java.util.Date;
 
-@Target(ElementType.FIELD)
+@Column(ElementType.FIELD)
 public @interface Annotation {
 }

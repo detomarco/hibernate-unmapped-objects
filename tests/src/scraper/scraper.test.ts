@@ -30,7 +30,7 @@ describe('should scrape class', () => {
         expect(javaClass).toEqual([interfaceClass]);
     });
 
-    fit('when it is an annotation', () => {
+    it('when it is an annotation', () => {
         const javaClass = scrape(annotationClass.filePath);
         expect(javaClass).toEqual([annotationClass]);
     });
