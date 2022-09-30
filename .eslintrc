@@ -17,6 +17,7 @@
     "eqeqeq": "error",
     "semi": ["error", "always"],
     "@typescript-eslint/no-unused-vars": "error",
+    "@typescript-eslint/no-non-null-assertion": "off",
     "quotes": ["warn", "single", "avoid-escape"],
     "object-curly-spacing": ["warn", "always"],
     "no-multi-spaces": "warn",

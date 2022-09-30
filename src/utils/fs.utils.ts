@@ -1,5 +1,5 @@
 import * as fs from 'fs';
-import { EnvProperties, LogLevel, LogLevelString } from '../model/scraper.model';
+import { EnvProperties, LogLevel, LogLevelString } from '../model/model';
 
 const getEnvFile = (): EnvProperties => {
     const props: { [key: string]: string } = {};

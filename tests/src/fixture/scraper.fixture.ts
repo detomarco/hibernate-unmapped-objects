@@ -1,4 +1,4 @@
-import { JavaClass } from '../../../src/model/scraper.model';
+import { JavaClass } from '../../../src/scraper/scraper.model';
 
 export const simpleEntityClass: JavaClass = {
     filePath: 'SimpleEntity.java',
@@ -8,7 +8,7 @@ export const simpleEntityClass: JavaClass = {
         attributes: {}
     }],
     properties: [{
-        property: 'id',
+        name: 'id',
         annotations: [{
             name: 'Id',
             attributes: {}
@@ -20,19 +20,19 @@ export const simpleEntityClass: JavaClass = {
             }
         }, {
             name: 'GenericGenerator',
-            attributes:{
+            attributes: {
                 name: 'native',
                 strategy: 'native'
             }
         }]
     }, {
-        property: 'date',
+        name: 'date',
         annotations: []
     }, {
-        property: 'clazz',
+        name: 'clazz',
         annotations: []
     }, {
-        property: 'who',
+        name: 'who',
         annotations: [{
             name: 'ManyToOne',
             attributes: {
@@ -45,5 +45,23 @@ export const simpleEntityClass: JavaClass = {
                 name: 'USER_FK'
             }
         }]
+    }]
+};
+
+export const tableEntityClass: JavaClass = {
+    filePath: 'TableEntity.java',
+    name: 'TableEntity',
+    annotations: [{
+        name: 'Entity',
+        attributes: {}
+    }, {
+        name: 'Table',
+        attributes: {
+            default: 'Tables'
+        }
+    }],
+    properties: [{
+        name: 'id',
+        annotations: []
     }]
 };
