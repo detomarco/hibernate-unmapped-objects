@@ -1,8 +1,10 @@
 
-name: PR pipeline
+name: Pipeline
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - main
   pull_request:
 
 concurrency:
@@ -25,9 +27,6 @@ jobs:
         with:
           node-version: 14
           cache: 'npm'
-
-      - name: Print author
-        run: echo ${{ github.actor }}
 
       - name: Install dependencies
         run: npm ci
