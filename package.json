@@ -6,7 +6,7 @@
   "scripts": {
     "compile": "tsc",
     "prestart": "npm run compile",
-    "start": "node dist/main.js",
+    "start": "node dist/src/main.js",
     "lint:dry": "eslint . --ext .ts",
     "lint": "eslint --fix . --ext .ts",
     "test:init": "cp .env.template .env",
