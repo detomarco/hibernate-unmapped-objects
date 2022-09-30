@@ -9,9 +9,9 @@ export const matchGroupMultiple = (s: string | undefined, regex: RegExp): string
     return groups;
 };
 
-export const matchGroups = (s: string, regex: RegExp): { first: string | undefined, second: string | undefined } => {
+export const matchGroups = (s: string, regex: RegExp): { first: string, second: string } | undefined => {
     if (s === undefined) {
-        return { first: undefined, second: undefined };
+        return undefined;
     }
     const propertyParts = s.match(regex);
     if (propertyParts) {
@@ -19,5 +19,5 @@ export const matchGroups = (s: string, regex: RegExp): { first: string | undefin
         const second = propertyParts[2]?.trim();
         return { first, second };
     }
-    return { first: undefined, second: undefined };
+    return undefined;
 };
