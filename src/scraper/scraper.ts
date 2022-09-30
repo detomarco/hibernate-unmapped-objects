@@ -1,4 +1,3 @@
-import { getFiles, readFile } from '../utils/fs.utils';
 import { log } from '../utils/log.utils';
 import { Annotation, AnnotationAttribute, ClassProperty, JavaClass } from '../model/model';
 import { getFileContentSanitized } from './sanitizer';
@@ -84,7 +83,7 @@ const getProperties = (content: string): ClassProperty[] => {
     }
 };
 
-export const scrapeJavaClasses = (javaFilePath: string, content: string): JavaClass | undefined => {
+export const scrapeJavaClass = (javaFilePath: string, content: string): JavaClass | undefined => {
     try {
         const contentSanitized = getFileContentSanitized(content);
         log.trace(`content file sanitized ${javaFilePath}`, contentSanitized);
