@@ -12,10 +12,7 @@ const extractNameFromAnnotations = (annotations: JavaAnnotation[]): string | und
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 const attributes = annotation.attributes as any as NameAttributeEnhance;
                 const name = attributes.default ?? attributes.name;
-                if (name) {
-                    return name;
-                }
-                break;
+                if (name) return name;
             }
         }
     }
