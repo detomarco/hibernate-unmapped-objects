@@ -66,7 +66,6 @@ export const tableEntityClass: JavaClass = {
     }]
 };
 
-
 export const abstractClass: JavaClass = {
     filePath: './tests/resources/AbstractClass.java',
     name: 'AbstractClass',
