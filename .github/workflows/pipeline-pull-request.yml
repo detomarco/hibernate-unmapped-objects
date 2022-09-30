@@ -39,7 +39,7 @@ jobs:
         run: npm run lint:dry
 
       - name: Run tests
-        run: npm test
+        run: npm run test:init && npm test
 
       - name: Code coverage
         run: npm run coverage
