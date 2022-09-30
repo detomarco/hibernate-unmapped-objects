@@ -8,13 +8,13 @@ import { errorRegister } from "./utils/error-register";
 import { EnvProperties } from "./model/model";
 
 export const main = (env: EnvProperties): JavaTable[] => {
-    const entities = scrape(env.entitiesFolderPath);
-    log.trace('scrape result', entities);
-    log.info(`${entities.length} entities parsed`);
+    const classes = scrape(env.entitiesFolderPath);
+    log.trace('scrape result', classes);
+    log.info(`${classes.length} classes parsed`);
 
-    const entitiesEnhanced = entities
-        .filter(entity => entity.annotations.some(it => it.name === AnnotationType.Entity))
-        .map(entity => enhanceJavaClass(entity));
+    const entitiesEnhanced = classes
+        .filter(clazz => clazz.annotations.some(it => it.name === AnnotationType.Entity))
+        .map(clazz => enhanceJavaClass(clazz));
 
     log.debug('data enhance result', entitiesEnhanced);
     log.info(`${entitiesEnhanced.length} tables parsed`);
