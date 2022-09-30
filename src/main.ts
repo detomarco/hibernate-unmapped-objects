@@ -11,7 +11,7 @@ const javaFileRegex = new RegExp('.*.java$');
 const scrape = (folder: string): JavaClass[] => {
     try {
         const javaFiles = getFiles(folder, javaFileRegex);
-        log.trace('java files', javaFiles);
+        log.debug('java files', javaFiles);
         log.info(`${javaFiles.length} java files found`);
 
         const javaClasses = javaFiles.map(javaFilePath => {
@@ -22,7 +22,7 @@ const scrape = (folder: string): JavaClass[] => {
                 log.trace('java class', javaFilePath, javaClass);
                 return javaClass;
             } catch (e) {
-                log.error('Unable to parse java class', javaFilePath, e);
+                log.warn('Unable to parse java class', javaFilePath, e);
                 return undefined;
             }
         });
@@ -30,14 +30,14 @@ const scrape = (folder: string): JavaClass[] => {
         log.trace('num javaClasses', javaClasses.length);
         return removeUndefinedItems(javaClasses);
     } catch (e) {
-        log.error('Unable to parse folder for', folder, e);
+        log.warn('Unable to parse folder for', folder, e);
         return [];
     }
 };
 
 export const main = (): JavaTable[] => {
     const entities = scrape(env.entitiesFolderPath);
-    log.debug('scrape result', entities);
+    log.trace('scrape result', entities);
     log.info(`${entities.length} entities parsed`);
 
     const entitiesEnhanced = entities

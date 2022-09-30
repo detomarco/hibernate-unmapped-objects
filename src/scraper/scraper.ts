@@ -36,7 +36,7 @@ const getAnnotationAttributes = (attributesStringOptional: string | undefined): 
             return agg;
         }, {} as MapString) || {};
     } catch (e) {
-        log.error('Unable to parse annotation attributes for', attributesStringOptional, e);
+        log.warn('Unable to parse annotation attributes for', attributesStringOptional, e);
         return {};
     }
 };
@@ -49,7 +49,7 @@ const getAnnotation = (annotation: string): JavaAnnotation | undefined => {
 
         return { name, attributes };
     } catch (e) {
-        log.error('Unable to parse annotation for', annotation, e);
+        log.warn('Unable to parse annotation for', annotation, e);
         return undefined;
     }
 };
@@ -66,7 +66,7 @@ const getAnnotations = (annotationString: string | undefined): JavaAnnotation[] 
         const annotationsOpt = annotationsName.map(annotation => getAnnotation(annotation)) || [];
         return removeUndefinedItems(annotationsOpt);
     } catch (e) {
-        log.error('Unable to parse annotations for', annotationString, e);
+        log.warn('Unable to parse annotations for', annotationString, e);
         return [];
     }
 };
@@ -92,7 +92,7 @@ const getProperties = (content: string): ClassProperty[] => {
         const propertiesOpt = propertiesString.map(property => getProperty(property));
         return removeUndefinedItems(propertiesOpt);
     } catch (e) {
-        log.error('Unable to parse properties for', content, e);
+        log.warn('Unable to parse properties for', content, e);
         return [];
     }
 };
@@ -113,7 +113,7 @@ export const scrapeJavaClass = (javaFilePath: string, content: string): JavaClas
             properties
         };
     } catch (e) {
-        log.error('Unable to parse java class for', javaFilePath, e);
+        log.warn('Unable to parse java class for', javaFilePath, e);
         return undefined;
     }
 };
