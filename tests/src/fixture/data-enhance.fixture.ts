@@ -1,7 +1,7 @@
 import { JavaTable } from '../../../src/data-enhance/data-enhace.model';
 
 export const simpleEntityTable: JavaTable = {
-    filePath: 'SimpleEntity.java',
+    filePath: './tests/resources/SimpleEntity.java',
     name: 'SimpleEntity',
     columns: [{
         name: 'id'
@@ -15,7 +15,7 @@ export const simpleEntityTable: JavaTable = {
 };
 
 export const tableEntityTable: JavaTable = {
-    filePath: 'TableEntity.java',
+    filePath: './tests/resources/TableEntity.java',
     name: 'Tables',
     columns: [{
         name: 'id'

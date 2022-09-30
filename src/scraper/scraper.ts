@@ -5,8 +5,14 @@ import { removeUndefinedItems } from '../utils/array.utils';
 import { AnnotationType, ClassProperty, JavaAnnotation, JavaClass } from './scraper.model';
 import { MapString } from '../model/model';
 import { AnnotationTypeString } from '../data-enhance/data-enhace.model';
+import { getFiles, readFile } from '../utils/fs.utils';
 
+// regex file
+const javaFileRegex = new RegExp('.*.java$');
+
+// regex class
 const classFieldRegex = new RegExp('(?:@[\\w =,"()@ .]+)? private \\w+ \\w+;', 'g');
+
 const captureFieldAnnotationRegex = new RegExp('(@\\w+(?:\\([ \\w=.,")]+)?)', 'g');
 const captureAnnotationNameAndAttribute = new RegExp('@(\\w+)(?:\\(([ \\w=.,"]+)\\))?');
 const captureAnnotationAttributesItems = new RegExp('((?:([\\w ])+=)?[\\w." ]+)', 'g');
@@ -36,7 +42,7 @@ const getAnnotationAttributes = (attributesStringOptional: string | undefined): 
             return agg;
         }, {} as MapString) || {};
     } catch (e) {
-        log.error('Unable to parse annotation attributes for', attributesStringOptional, e);
+        log.warn('Unable to parse annotation attributes for', attributesStringOptional, e);
         return {};
     }
 };
@@ -49,7 +55,7 @@ const getAnnotation = (annotation: string): JavaAnnotation | undefined => {
 
         return { name, attributes };
     } catch (e) {
-        log.error('Unable to parse annotation for', annotation, e);
+        log.warn('Unable to parse annotation for', annotation, e);
         return undefined;
     }
 };
@@ -66,7 +72,7 @@ const getAnnotations = (annotationString: string | undefined): JavaAnnotation[] 
         const annotationsOpt = annotationsName.map(annotation => getAnnotation(annotation)) || [];
         return removeUndefinedItems(annotationsOpt);
     } catch (e) {
-        log.error('Unable to parse annotations for', annotationString, e);
+        log.warn('Unable to parse annotations for', annotationString, e);
         return [];
     }
 };
@@ -92,12 +98,12 @@ const getProperties = (content: string): ClassProperty[] => {
         const propertiesOpt = propertiesString.map(property => getProperty(property));
         return removeUndefinedItems(propertiesOpt);
     } catch (e) {
-        log.error('Unable to parse properties for', content, e);
+        log.warn('Unable to parse properties for', content, e);
         return [];
     }
 };
 
-export const scrapeJavaClass = (javaFilePath: string, content: string): JavaClass | undefined => {
+const scrapeJavaClass = (javaFilePath: string, content: string): JavaClass | undefined => {
     try {
         const contentSanitized = getFileContentSanitized(content);
         log.trace(`content file sanitized ${javaFilePath}`, contentSanitized);
@@ -113,7 +119,35 @@ export const scrapeJavaClass = (javaFilePath: string, content: string): JavaClas
             properties
         };
     } catch (e) {
-        log.error('Unable to parse java class for', javaFilePath, e);
+        log.warn('Unable to parse java class for', javaFilePath, e);
         return undefined;
+    }
+};
+
+export const scrape = (folder: string): JavaClass[] => {
+    const javaFiles = getFiles(folder, javaFileRegex);
+    log.debug('java files', javaFiles);
+    log.info(`${javaFiles.length} java files found`);
+
+    try {
+
+        const javaClasses = javaFiles.map(javaFilePath => {
+            try {
+                const content = readFile(javaFilePath);
+                log.trace(`content file ${javaFilePath}`, content);
+                const javaClass = scrapeJavaClass(javaFilePath, content);
+                log.trace('java class', javaFilePath, javaClass);
+                return javaClass;
+            } catch (e) {
+                log.warn('Unable to parse java class', javaFilePath, e);
+                return undefined;
+            }
+        });
+
+        log.trace('num javaClasses', javaClasses.length);
+        return removeUndefinedItems(javaClasses);
+    } catch (e) {
+        log.warn('Unable to parse folder for', folder, e);
+        return [];
     }
 };

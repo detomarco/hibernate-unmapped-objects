@@ -1,22 +1,19 @@
 
-name: Pipeline
+name: Pipeline prod
 
 on:
   push:
     branches:
       - main
-  pull_request:
 
 concurrency:
-  group: pipeline-pr-${{ github.event.number }}
+  group: pipeline-prod
   cancel-in-progress: true
 
 jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
-    outputs:
-      report: ${{ steps.issues_report.outputs.report }}
     steps:
       - uses: actions/checkout@v3
         with:

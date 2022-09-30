@@ -1,7 +1,7 @@
 import { AnnotationType, JavaClass } from '../../../src/scraper/scraper.model';
 
 export const simpleEntityClass: JavaClass = {
-    filePath: 'SimpleEntity.java',
+    filePath: './tests/resources/SimpleEntity.java',
     name: 'SimpleEntity',
     annotations: [{
         name: AnnotationType.Entity,
@@ -49,7 +49,7 @@ export const simpleEntityClass: JavaClass = {
 };
 
 export const tableEntityClass: JavaClass = {
-    filePath: 'TableEntity.java',
+    filePath: './tests/resources/TableEntity.java',
     name: 'TableEntity',
     annotations: [{
         name: AnnotationType.Entity,
