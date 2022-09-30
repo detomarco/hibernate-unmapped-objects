@@ -1,4 +1,4 @@
-import { scrapeJavaClasses } from '../../../src/scraper/scraper';
+import { scrapeJavaClass } from '../../../src/scraper/scraper';
 import { getTestResource } from '../../utils/resource.utils';
 
 describe('should scrape simple entity', function() {
@@ -6,7 +6,7 @@ describe('should scrape simple entity', function() {
 
         const javaPath = 'SimpleEntity.java';
         const javaClassContent = getTestResource(javaPath);
-        const javaClass = scrapeJavaClasses(javaPath, javaClassContent);
+        const javaClass = scrapeJavaClass(javaPath, javaClassContent);
 
         expect(javaClass).toBeDefined();
     });
