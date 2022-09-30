@@ -43,3 +43,9 @@ jobs:
 
       - name: Code coverage
         run: npm run coverage
+
+      - name: Codecov
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: unittests
