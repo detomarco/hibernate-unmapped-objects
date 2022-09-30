@@ -17,7 +17,6 @@ const enhanceAnnotation = (annotation: AnnotationScraper): AnnotationEnhance => 
         case 'Entity':
         case 'Table':
             attributes = new NameAttributeEnhance(annotation.attributes)
-
     }
 
     return {
@@ -34,8 +33,11 @@ const extractNameFromAnnotations = (annotations: AnnotationEnhance[]): string | 
             case AnnotationType.JoinColumn:
             case AnnotationType.Entity:
             case AnnotationType.Table:
-                return (annotation.attributes as NameAttributeEnhance).default ??
+                const name = (annotation.attributes as NameAttributeEnhance).default ??
                     (annotation.attributes as NameAttributeEnhance).name
+                if (name) {
+                    return name;
+                }
         }
     }
 
@@ -46,14 +48,14 @@ const enhanceProperties = (property: ClassPropertyScraper): JavaColumn => {
     const annotations = property.annotations.map(it => enhanceAnnotation(it))
 
     return {
-        column: extractNameFromAnnotations(annotations) ?? property.property,
+        name: extractNameFromAnnotations(annotations) ?? property.name,
     };
 }
 
 export const enhanceJavaClass = (javaClass: JavaClassScraper): JavaTable => {
     const annotations = javaClass.annotations.map(it => enhanceAnnotation(it))
     return {
-        ...javaClass,
+        filePath: javaClass.filePath,
         name: extractNameFromAnnotations(annotations) ?? javaClass.name,
         columns: javaClass.properties.map(it => enhanceProperties(it))
     };

@@ -16,7 +16,7 @@ export type JavaTable = {
 }
 
 export type JavaColumn = {
-    column: string;
+    name: string;
 }
 
 export type AnnotationEnhance = {

@@ -12,7 +12,7 @@ import javax.persistence.ManyToOne;
 import java.util.Date;
 
 @Entity
-@Table("TableEntity")
+@Table("Tables")
 public class TableEntity {
     private Long id;
 }

@@ -8,7 +8,7 @@ export const simpleEntityClass: JavaClassScraper = {
         attributes: {}
     }],
     properties: [{
-        property: 'id',
+        name: 'id',
         annotations: [{
             name: 'Id',
             attributes: {}
@@ -26,13 +26,13 @@ export const simpleEntityClass: JavaClassScraper = {
             }
         }]
     }, {
-        property: 'date',
+        name: 'date',
         annotations: []
     }, {
-        property: 'clazz',
+        name: 'clazz',
         annotations: []
     }, {
-        property: 'who',
+        name: 'who',
         annotations: [{
             name: 'ManyToOne',
             attributes: {
@@ -57,11 +57,11 @@ export const tableEntityClass: JavaClassScraper = {
     }, {
         name: 'Table',
         attributes: {
-            default: "TableEntity"
+            default: "Tables"
         }
     }],
     properties: [{
-        property: 'id',
+        name: 'id',
         annotations: []
     }]
 };

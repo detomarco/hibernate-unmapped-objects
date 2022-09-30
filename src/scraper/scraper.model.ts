@@ -8,7 +8,7 @@ export interface JavaClassScraper {
 }
 
 export interface ClassPropertyScraper {
-    property: string;
+    name: string;
     annotations: AnnotationScraper[]
 }
 

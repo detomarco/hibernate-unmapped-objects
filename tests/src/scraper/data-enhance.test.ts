@@ -1,21 +1,23 @@
 import { scrapeJavaClass } from '../../../src/scraper/scraper';
 import { getTestResource } from '../../utils/resource.utils';
 import { simpleEntityClass, tableEntityClass } from '../fixture/scraper.fixture';
+import { enhanceJavaClass } from "../../../src/data-enhance/data-enhance";
+import { simpleEntityTable, tableEntityTable } from "../fixture/data-enhance.fixture";
 
-describe('should scrape entity', () => {
+describe('should enhance date', () => {
 
-    it('when simple entity', () => {
+    it('when simple class', () => {
         const javaClassContent = getTestResource(simpleEntityClass.filePath);
         const javaClass = scrapeJavaClass(simpleEntityClass.filePath, javaClassContent);
-
-        expect(javaClass).toEqual(simpleEntityClass);
+        const table = enhanceJavaClass(javaClass!);
+        expect(table).toEqual(simpleEntityTable);
     });
 
-    it('when entity with table annotation', () => {
+    it('when class with different table name', () => {
         const javaClassContent = getTestResource(tableEntityClass.filePath);
         const javaClass = scrapeJavaClass(tableEntityClass.filePath, javaClassContent);
-        console.log(tableEntityClass)
-        expect(javaClass).toEqual(tableEntityClass);
+        const table = enhanceJavaClass(javaClass!);
+        expect(table).toEqual(tableEntityTable);
     });
 
 });

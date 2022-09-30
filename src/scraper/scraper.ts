@@ -80,7 +80,7 @@ const getProperty = (property: string): ClassPropertyScraper | undefined => {
 
         const annotations = getAnnotations(match.first);
 
-        return { property: match.second, annotations };
+        return { name: match.second, annotations };
     } catch (e) {
         log.error('Unable to property for', property, e);
         return undefined;
