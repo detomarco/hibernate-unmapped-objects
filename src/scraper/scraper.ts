@@ -84,11 +84,8 @@ const getProperties = (content: string): ClassProperty[] => {
     }
 };
 
-const scrapeJavaClasses = (javaFilePath: string): JavaClass | undefined => {
+export const scrapeJavaClasses = (javaFilePath: string, content: string): JavaClass | undefined => {
     try {
-        const content = readFile(javaFilePath);
-        log.trace(`content file ${javaFilePath}`, content);
-
         const contentSanitized = getFileContentSanitized(content);
         log.trace(`content file sanitized ${javaFilePath}`, contentSanitized);
 
@@ -105,22 +102,5 @@ const scrapeJavaClasses = (javaFilePath: string): JavaClass | undefined => {
     } catch (e) {
         log.error('Unable to parse java class for', javaFilePath, e);
         return undefined;
-    }
-};
-export const scrape = (folder: string): JavaClass[] => {
-
-    try {
-        const javaFiles = getFiles(folder);
-        log.trace('java files', javaFiles);
-        log.trace('num java files', javaFiles.length);
-
-        const javaClasses = javaFiles.map(javaFilePath => scrapeJavaClasses(javaFilePath));
-
-        log.debug('javaClasses', JSON.stringify(javaClasses));
-        log.trace('num javaClasses', javaClasses.length);
-        return removeUndefinedItems(javaClasses);
-    } catch (e) {
-        log.error('Unable to parse folder for', folder, e);
-        return [];
     }
 };

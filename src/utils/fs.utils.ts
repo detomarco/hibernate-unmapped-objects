@@ -1,8 +1,6 @@
 import * as fs from 'fs';
 import { EnvProperties, LogLevel, LogLevelString } from '../model/model';
 
-const javaFileRegex = new RegExp('.*.java$');
-
 const getEnvFile = (): EnvProperties => {
     const props: { [key: string]: string } = {};
     const envFile: string = fs.readFileSync('.env', 'utf-8');
@@ -20,7 +18,7 @@ const getEnvFile = (): EnvProperties => {
     };
 };
 
-export const getFiles = (path: string): string[] => {
+export const getFiles = (path: string, javaFileRegex: RegExp): string[] => {
 
     if (!fs.existsSync(path)) {
         throw Error(`Path ${path} does not exist`);
@@ -39,7 +37,7 @@ export const getFiles = (path: string): string[] => {
         .forEach(file => {
             const filePath = `${path}/${file}`;
             if (fs.lstatSync(filePath).isDirectory()) {
-                return [...files, getFiles(filePath)];
+                return [...files, getFiles(filePath, javaFileRegex)];
             }
             if (javaFileRegex.test(file)) {
                 files.push(filePath);
