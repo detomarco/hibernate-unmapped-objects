@@ -1,8 +1,9 @@
 import { log } from '../utils/log.utils';
-import { Annotation, ClassProperty, JavaClass, MapString } from '../model/scraper.model';
+import { AnnotationScraper, ClassPropertyScraper, JavaClassScraper } from './scraper.model';
 import { getFileContentSanitized } from './sanitizer';
 import { matchGroupMultiple, matchGroups } from '../utils/regex.util';
 import { removeUndefinedItems } from '../utils/array.utils';
+import { MapString } from "../model/model";
 
 const classFieldRegex = new RegExp('(?:@[\\w =,"()@ .]+)? private \\w+ \\w+;', 'g');
 const captureFieldAnnotationRegex = new RegExp('(@\\w+(?:\\([ \\w=.,")]+)?)', 'g');
@@ -13,7 +14,7 @@ const capturePropertyNameAndAnnotations = new RegExp('(@[\\w =,"()@ .]+)?private
 const captureClassNameAndAnnotations = new RegExp('(@[\\w =,"()@ .]+)?public class (\\w+)');
 const captureNameAndValueAttribute = new RegExp('([\\w ]+)=(?:[ "]+)?([\\w .]+)"?');
 
-const getClassInfo = (contentSanitized: string): { name: string | undefined, annotations: Annotation[] } => {
+const getClassInfo = (contentSanitized: string): { name: string | undefined, annotations: AnnotationScraper[] } => {
     const match = matchGroups(contentSanitized, captureClassNameAndAnnotations);
     const annotations = getAnnotations(match?.first);
     return { name: match?.second, annotations };
@@ -36,19 +37,19 @@ const getAnnotationAttributes = (attributesStringOptional: string | undefined): 
     }
 };
 
-const getAnnotation = (annotation: string): Annotation | undefined => {
+const getAnnotation = (annotation: string): AnnotationScraper | undefined => {
     try {
-        const match = matchGroups(annotation, captureAnnotationNameAndAttribute);
-        const attributes = getAnnotationAttributes(match?.second);
+        const match = matchGroups(annotation, captureAnnotationNameAndAttribute)!;
+        const attributes = getAnnotationAttributes(match.second);
 
-        return { name: match?.first, attributes };
+        return { name: match.first, attributes };
     } catch (e) {
         log.error('Unable to parse annotation for', annotation, e);
         return undefined;
     }
 };
 
-const getAnnotations = (annotationString: string | undefined): Annotation[] => {
+const getAnnotations = (annotationString: string | undefined): AnnotationScraper[] => {
     if (annotationString === undefined) {
         return [];
     }
@@ -64,22 +65,22 @@ const getAnnotations = (annotationString: string | undefined): Annotation[] => {
     }
 };
 
-const getProperty = (property: string): ClassProperty | undefined => {
+const getProperty = (property: string): ClassPropertyScraper | undefined => {
     try {
         const annotationsName = matchGroupMultiple(property, captureFieldAnnotationRegex);
 
-        const match = matchGroups(property, capturePropertyNameAndAnnotations);
+        const match = matchGroups(property, capturePropertyNameAndAnnotations)!;
         log.trace('annotations name', annotationsName);
 
-        const annotations = getAnnotations(match?.first);
+        const annotations = getAnnotations(match.first);
 
-        return { property: match?.second, annotations };
+        return { property: match.second, annotations };
     } catch (e) {
         log.error('Unable to property for', property, e);
         return undefined;
     }
 };
-const getProperties = (content: string): ClassProperty[] => {
+const getProperties = (content: string): ClassPropertyScraper[] => {
     try {
         const propertiesString = matchGroupMultiple(content, classFieldRegex);
         const propertiesOpt = propertiesString.map(property => getProperty(property));
@@ -90,7 +91,7 @@ const getProperties = (content: string): ClassProperty[] => {
     }
 };
 
-export const scrapeJavaClass = (javaFilePath: string, content: string): JavaClass | undefined => {
+export const scrapeJavaClass = (javaFilePath: string, content: string): JavaClassScraper | undefined => {
     try {
         const contentSanitized = getFileContentSanitized(content);
         log.trace(`content file sanitized ${javaFilePath}`, contentSanitized);

@@ -1,6 +1,6 @@
-import { JavaClass } from '../../../src/model/scraper.model';
+import { JavaClassScraper } from '../../../src/scraper/scraper.model';
 
-export const simpleEntityClass: JavaClass = {
+export const simpleEntityClass: JavaClassScraper = {
     filePath: 'SimpleEntity.java',
     name: 'SimpleEntity',
     annotations: [{

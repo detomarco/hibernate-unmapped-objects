@@ -1,12 +1,12 @@
 import { env, getFiles, readFile } from './utils/fs.utils';
 import { log } from './utils/log.utils';
-import { JavaClass } from './model/scraper.model';
+import { JavaClassScraper } from './scraper/scraper.model';
 import { removeUndefinedItems } from './utils/array.utils';
 import { scrapeJavaClass } from './scraper/scraper';
 
 const javaFileRegex = new RegExp('.*.java$');
 
-export const scrape = (folder: string): JavaClass[] => {
+export const scrape = (folder: string): JavaClassScraper[] => {
     try {
         const javaFiles = getFiles(folder, javaFileRegex);
         log.trace('java files', javaFiles);

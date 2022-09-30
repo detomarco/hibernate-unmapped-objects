@@ -1,4 +1,4 @@
-export type MapString = { [key: string]: string }
+import { MapString } from "../model/model";
 
 export interface EnvProperties {
     logLevel: LogLevel,
@@ -15,19 +15,19 @@ export enum LogLevel {
     TRACE
 }
 
-export interface JavaClass {
+export interface JavaClassScraper {
     filePath: string,
     name: string | undefined,
-    annotations: Annotation[],
-    properties: ClassProperty[]
+    annotations: AnnotationScraper[],
+    properties: ClassPropertyScraper[]
 }
 
-export interface ClassProperty {
-    property: string | undefined;
-    annotations: Annotation[]
+export interface ClassPropertyScraper {
+    property: string;
+    annotations: AnnotationScraper[]
 }
 
-export interface Annotation {
-    name: string | undefined,
+export interface AnnotationScraper {
+    name: string,
     attributes: MapString
 }
