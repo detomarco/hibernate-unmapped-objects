@@ -9,13 +9,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-public class Trace extends BaseObject implements Serializable {
+public class SimpleEntity {
 
-    private static final long serialVersionUID = 8189869237387537076L;
     @Id
     @GeneratedValue(
             strategy= GenerationType.AUTO,
@@ -44,7 +42,7 @@ public class Trace extends BaseObject implements Serializable {
 
     @Override
     public String toString() {
-        return "Trace [id=" + id + "]";
+        return "SimpleEntity [id=" + id + "]";
     }
 
     public Date getDate() {

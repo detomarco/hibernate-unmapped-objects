@@ -1,12 +1,14 @@
 import { getResourceContent } from '../../utils/resource.utils';
+import { scrapeJavaClasses } from "../../../src/scraper/scraper";
 
 
-describe('calculate', function() {
+describe('should scrape simple entity', function() {
     it('add', function() {
 
-        const javaClass = getResourceContent('SimpleEntity.java')
-        console.debug(javaClass)
-        expect(7).toBe(7);
+        const javaClassContent = getResourceContent('SimpleEntity.java')
+        const javaClass = scrapeJavaClasses('SimpleEntity.java', javaClassContent)
+
+        expect(javaClass).toBeDefined()
     });
 
 
