@@ -1,9 +1,11 @@
-describe('calculate', function() {
-    it('add', function() {
-        expect(7).toBe(7);
+import { simpleEntityTable, tableEntityTable } from './fixture/data-enhance.fixture';
+import { main } from '../../src/main';
+
+describe('should list unmapped objects', function() {
+
+    it('when run script', () => {
+        const result = main();
+        expect(result).toEqual(jasmine.arrayWithExactContents([simpleEntityTable({ filePath: './tests/resources/SimpleEntity.java' }), tableEntityTable({ filePath: './tests/resources/TableEntity.java' })]));
     });
 
-    it('substract', function() {
-        expect(3).toBe(3);
-    });
 });

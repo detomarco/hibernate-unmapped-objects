@@ -10,14 +10,14 @@ describe('should enhance date', () => {
         const javaClassContent = getTestResource(simpleEntityClass.filePath);
         const javaClass = scrapeJavaClass(simpleEntityClass.filePath, javaClassContent);
         const table = enhanceJavaClass(javaClass!);
-        expect(table).toEqual(simpleEntityTable);
+        expect(table).toEqual(simpleEntityTable());
     });
 
     it('when class with different table name', () => {
         const javaClassContent = getTestResource(tableEntityClass.filePath);
         const javaClass = scrapeJavaClass(tableEntityClass.filePath, javaClassContent);
         const table = enhanceJavaClass(javaClass!);
-        expect(table).toEqual(tableEntityTable);
+        expect(table).toEqual(tableEntityTable());
     });
 
 });

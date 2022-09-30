@@ -4,10 +4,11 @@ import { removeUndefinedItems } from './utils/array.utils';
 import { scrapeJavaClass } from './scraper/scraper';
 import { enhanceJavaClass } from './data-enhance/data-enhance';
 import { AnnotationType, JavaClass } from './scraper/scraper.model';
+import { JavaTable } from './data-enhance/data-enhace.model';
 
 const javaFileRegex = new RegExp('.*.java$');
 
-export const scrape = (folder: string): JavaClass[] => {
+const scrape = (folder: string): JavaClass[] => {
     try {
         const javaFiles = getFiles(folder, javaFileRegex);
         log.trace('java files', javaFiles);
@@ -34,13 +35,19 @@ export const scrape = (folder: string): JavaClass[] => {
     }
 };
 
-const entities = scrape(env.entitiesFolderPath);
-log.debug('scrape result', entities);
-log.info(`${entities.length} entities parsed`);
+export const main = (): JavaTable[] => {
+    const entities = scrape(env.entitiesFolderPath);
+    log.debug('scrape result', entities);
+    log.info(`${entities.length} entities parsed`);
 
-const entitiesEnhanced = entities
-    .filter(entity => entity.annotations.some(it => it.name === AnnotationType.Entity))
-    .map(entity => enhanceJavaClass(entity));
+    const entitiesEnhanced = entities
+        .filter(entity => entity.annotations.some(it => it.name === AnnotationType.Entity))
+        .map(entity => enhanceJavaClass(entity));
 
-log.debug('data enhance result', entitiesEnhanced);
-log.info(`${entitiesEnhanced.length} tables parsed`);
+    log.debug('data enhance result', entitiesEnhanced);
+    log.info(`${entitiesEnhanced.length} tables parsed`);
+
+    return entitiesEnhanced;
+};
+
+main();
