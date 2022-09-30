@@ -13,7 +13,7 @@ export enum AnnotationType {
 
 export interface JavaClass {
     filePath: string,
-    name: string | undefined,
+    name: string,
     annotations: JavaAnnotation[],
     properties: ClassProperty[]
 }

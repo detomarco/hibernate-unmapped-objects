@@ -1,7 +1,13 @@
 import { scrape } from '../../../src/scraper/scraper';
-import { simpleEntityClass, tableEntityClass } from '../fixture/scraper.fixture';
+import {
+    abstractClass,
+    annotationClass,
+    interfaceClass,
+    simpleEntityClass,
+    tableEntityClass
+} from '../fixture/scraper.fixture';
 
-describe('should scrape entity', () => {
+describe('should scrape class', () => {
 
     it('when simple entity', () => {
         const javaClass = scrape(simpleEntityClass.filePath);
@@ -12,6 +18,21 @@ describe('should scrape entity', () => {
     it('when entity with table annotation', () => {
         const javaClass = scrape(tableEntityClass.filePath);
         expect(javaClass).toEqual([tableEntityClass]);
+    });
+
+    it('when it is abstract', () => {
+        const javaClass = scrape(abstractClass.filePath);
+        expect(javaClass).toEqual([abstractClass]);
+    });
+
+    it('when it is an interface', () => {
+        const javaClass = scrape(interfaceClass.filePath);
+        expect(javaClass).toEqual([interfaceClass]);
+    });
+
+    it('when it is an annotation', () => {
+        const javaClass = scrape(annotationClass.filePath);
+        expect(javaClass).toEqual([annotationClass]);
     });
 
 });

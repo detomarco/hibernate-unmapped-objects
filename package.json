@@ -2,11 +2,9 @@
   "name": "hibernate-unmapped-objects",
   "version": "0.0.1",
   "description": "",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
-    "compile": "tsc",
-    "prestart": "npm run compile",
-    "start": "node dist/src/main.js",
+    "start": "ts-node src/main.ts",
     "lint:dry": "eslint . --ext .ts",
     "lint": "eslint --fix . --ext .ts",
     "test:init": "cp ./tests/.env.test .env",
