@@ -32,14 +32,13 @@ export const getFiles = (path: string, javaFileRegex: RegExp): string[] => {
         }
     }
 
-    const files: string[] = [];
+    let files: string[] = [];
     fs.readdirSync(path)
         .forEach(file => {
             const filePath = `${path}/${file}`;
             if (fs.lstatSync(filePath).isDirectory()) {
-                return [...files, getFiles(filePath, javaFileRegex)];
-            }
-            if (javaFileRegex.test(file)) {
+                files = [...files, ...getFiles(filePath, javaFileRegex)]
+            } else if (javaFileRegex.test(file)) {
                 files.push(filePath);
             }
         });

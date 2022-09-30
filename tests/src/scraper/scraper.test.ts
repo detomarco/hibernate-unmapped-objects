@@ -16,11 +16,10 @@ describe('should scrape entity', () => {
 
 });
 
-
 describe('should raise error', () => {
 
     it('when path does not exists', () => {
-        expect(() => scrape('this_path_does_not_exist')).toThrow(new Error(`Path 'this_path_does_not_exist' does not exist`));
+        expect(() => scrape('this_path_does_not_exist')).toThrow(new Error('Path \'this_path_does_not_exist\' does not exist'));
     });
 
 });

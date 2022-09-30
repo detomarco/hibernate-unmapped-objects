@@ -5,7 +5,7 @@ import { removeUndefinedItems } from '../utils/array.utils';
 import { AnnotationType, ClassProperty, JavaAnnotation, JavaClass } from './scraper.model';
 import { MapString } from '../model/model';
 import { AnnotationTypeString } from '../data-enhance/data-enhace.model';
-import { getFiles, readFile } from "../utils/fs.utils";
+import { getFiles, readFile } from '../utils/fs.utils';
 
 // regex file
 const javaFileRegex = new RegExp('.*.java$');
@@ -130,8 +130,6 @@ export const scrape = (folder: string): JavaClass[] => {
     log.info(`${javaFiles.length} java files found`);
 
     try {
-
-
 
         const javaClasses = javaFiles.map(javaFilePath => {
             try {

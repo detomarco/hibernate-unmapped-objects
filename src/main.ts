@@ -3,7 +3,7 @@ import { log } from './utils/log.utils';
 import { enhanceJavaClass } from './data-enhance/data-enhance';
 import { AnnotationType } from './scraper/scraper.model';
 import { JavaTable } from './data-enhance/data-enhace.model';
-import { scrape } from "./scraper/scraper";
+import { scrape } from './scraper/scraper';
 
 export const main = (): JavaTable[] => {
     const entities = scrape(env.entitiesFolderPath);
