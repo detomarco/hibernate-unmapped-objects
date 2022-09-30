@@ -7,6 +7,7 @@
     "compile": "tsc",
     "prestart": "npm run compile",
     "start": "node dist/main.js",
+    "lint:dry": "eslint . --ext .ts",
     "lint": "eslint --fix . --ext .ts",
     "test": "ts-node node_modules/jasmine/bin/jasmine --config=jasmine.json",
     "coverage": "nyc -r text -e .ts -x \"tests/*.test.ts\" npm run test"
