@@ -1,25 +1,25 @@
-import { JavaClass } from '../../../src/scraper/scraper.model';
+import { AnnotationType, JavaClass } from '../../../src/scraper/scraper.model';
 
 export const simpleEntityClass: JavaClass = {
     filePath: 'SimpleEntity.java',
     name: 'SimpleEntity',
     annotations: [{
-        name: 'Entity',
+        name: AnnotationType.Entity,
         attributes: {}
     }],
     properties: [{
         name: 'id',
         annotations: [{
-            name: 'Id',
+            name: AnnotationType.Id,
             attributes: {}
         }, {
-            name: 'GeneratedValue',
+            name: AnnotationType.GeneratedValue,
             attributes: {
                 strategy: 'GenerationType.AUTO',
                 generator: 'native'
             }
         }, {
-            name: 'GenericGenerator',
+            name: AnnotationType.GenericGenerator,
             attributes: {
                 name: 'native',
                 strategy: 'native'
@@ -34,13 +34,13 @@ export const simpleEntityClass: JavaClass = {
     }, {
         name: 'who',
         annotations: [{
-            name: 'ManyToOne',
+            name: AnnotationType.ManyToOne,
             attributes: {
                 fetch: 'FetchType.LAZY',
                 optional: 'false'
             }
         }, {
-            name: 'JoinColumn',
+            name: AnnotationType.JoinColumn,
             attributes: {
                 name: 'USER_FK'
             }
@@ -52,10 +52,10 @@ export const tableEntityClass: JavaClass = {
     filePath: 'TableEntity.java',
     name: 'TableEntity',
     annotations: [{
-        name: 'Entity',
+        name: AnnotationType.Entity,
         attributes: {}
     }, {
-        name: 'Table',
+        name: AnnotationType.Table,
         attributes: {
             default: 'Tables'
         }

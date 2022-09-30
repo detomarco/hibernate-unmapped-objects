@@ -1,5 +1,16 @@
 import { MapString } from '../model/model';
 
+export enum AnnotationType {
+    JoinColumn = 'JoinColumn',
+    Column = 'Column',
+    Entity = 'Entity',
+    Table = 'Table',
+    Id = 'Id',
+    GeneratedValue = 'GeneratedValue',
+    GenericGenerator = 'GenericGenerator',
+    ManyToOne = 'ManyToOne'
+}
+
 export interface JavaClass {
     filePath: string,
     name: string | undefined,
@@ -13,6 +24,6 @@ export interface ClassProperty {
 }
 
 export interface JavaAnnotation {
-    name: string,
+    name: AnnotationType,
     attributes: MapString
 }

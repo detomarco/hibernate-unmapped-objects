@@ -1,10 +1,9 @@
-import { ClassProperty, JavaAnnotation, JavaClass } from '../scraper/scraper.model';
-import { AnnotationType, AnnotationTypeString, JavaColumn, JavaTable, NameAttributeEnhance } from './data-enhace.model';
+import { AnnotationType, ClassProperty, JavaAnnotation, JavaClass } from '../scraper/scraper.model';
+import { JavaColumn, JavaTable, NameAttributeEnhance } from './data-enhace.model';
 
 const extractNameFromAnnotations = (annotations: JavaAnnotation[]): string | undefined => {
     for (const annotation of annotations) {
-        const annotationName = AnnotationType[annotation.name as AnnotationTypeString];
-        switch (annotationName) {
+        switch (annotation.name) {
             case AnnotationType.Entity:
             case AnnotationType.Column:
             case AnnotationType.JoinColumn:

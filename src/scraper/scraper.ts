@@ -2,8 +2,9 @@ import { log } from '../utils/log.utils';
 import { getFileContentSanitized } from './sanitizer';
 import { matchGroupMultiple, matchGroups } from '../utils/regex.util';
 import { removeUndefinedItems } from '../utils/array.utils';
-import { ClassProperty, JavaAnnotation, JavaClass } from './scraper.model';
+import { AnnotationType, ClassProperty, JavaAnnotation, JavaClass } from './scraper.model';
 import { MapString } from '../model/model';
+import { AnnotationTypeString } from '../data-enhance/data-enhace.model';
 
 const classFieldRegex = new RegExp('(?:@[\\w =,"()@ .]+)? private \\w+ \\w+;', 'g');
 const captureFieldAnnotationRegex = new RegExp('(@\\w+(?:\\([ \\w=.,")]+)?)', 'g');
@@ -28,11 +29,7 @@ const getAnnotationAttributes = (attributesStringOptional: string | undefined): 
         const attributes = matchGroupMultiple(attributesStringOptional, captureAnnotationAttributesItems);
 
         return removeUndefinedItems(
-            attributes.map(it => {
-                const match = matchGroups(it, captureNameAndValueAttribute);
-
-                return match;
-            })
+            attributes.map(it => matchGroups(it, captureNameAndValueAttribute))
         ).reduce((agg, match): MapString => {
             const cc = match.first ?? 'default';
             agg[cc] = match.second;
@@ -48,8 +45,9 @@ const getAnnotation = (annotation: string): JavaAnnotation | undefined => {
     try {
         const match = matchGroups(annotation, captureAnnotationNameAndAttribute);
         const attributes = getAnnotationAttributes(match.second);
+        const name = AnnotationType[match.first! as AnnotationTypeString];
 
-        return { name: match.first!, attributes };
+        return { name, attributes };
     } catch (e) {
         log.error('Unable to parse annotation for', annotation, e);
         return undefined;
