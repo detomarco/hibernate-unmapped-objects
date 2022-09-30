@@ -1,5 +1,5 @@
 import { env } from './fs.utils';
-import { LogLevel } from '../scraper/scraper.model';
+import { LogLevel } from '../model/model';
 
 class Logger {
 

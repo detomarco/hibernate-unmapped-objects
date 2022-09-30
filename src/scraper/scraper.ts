@@ -32,7 +32,7 @@ const getAnnotationAttributes = (attributesStringOptional: string | undefined): 
                 return match;
             })
         ).reduce((agg, match): MapString => {
-            const cc = match.first ?? 'anonymus';
+            const cc = match.first ?? 'default';
             agg[cc] = match.second;
             return agg;
         }, {} as MapString) || {};

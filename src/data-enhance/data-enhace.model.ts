@@ -1,21 +1,40 @@
+import { MapString } from "../model/model";
 
-export interface JavaClassScraper {
+export type AnnotationTypeString = "JoinColumn" | "Column" | "Entity" | "Table";
+
+export enum AnnotationType {
+    JoinColumn = "JoinColumn",
+    Column = "Column",
+    Entity = "Entity",
+    Table = "Table"
+}
+
+export type JavaTable = {
     filePath: string,
     name: string | undefined,
-    annotations: AnnotationScraper[],
-    properties: ClassPropertyScraper[]
+    columns: JavaColumn[]
 }
 
-export interface ClassPropertyScraper {
-    property: string | undefined;
-    annotations: AnnotationScraper[]
+export type JavaColumn = {
+    column: string;
 }
 
-export interface AnnotationScraper {
-    name: string,
-    attributes: AnnotationAttribute
+export type AnnotationEnhance = {
+    name: AnnotationType,
+    attributes: AnnotationAttributeEnhance | undefined
 }
 
-export interface AnnotationAttribute{
+export interface AnnotationAttributeEnhance {
+    default: string | undefined
+}
 
+export class NameAttributeEnhance implements AnnotationAttributeEnhance {
+    default: string | undefined;
+    name: string | undefined;
+
+
+    constructor(obj: MapString) {
+        this.default = obj.default;
+        this.name = obj.name;
+    }
 }

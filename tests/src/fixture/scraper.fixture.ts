@@ -57,7 +57,7 @@ export const tableEntityClass: JavaClassScraper = {
     }, {
         name: 'Table',
         attributes: {
-            anonymus: "TableEntity"
+            default: "TableEntity"
         }
     }],
     properties: [{

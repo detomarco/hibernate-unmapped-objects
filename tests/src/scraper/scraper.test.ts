@@ -1,6 +1,6 @@
 import { scrapeJavaClass } from '../../../src/scraper/scraper';
 import { getTestResource } from '../../utils/resource.utils';
-import { simpleEntityClass, tableEntityClass } from '../fixture/scraper.result';
+import { simpleEntityClass, tableEntityClass } from '../fixture/scraper.fixture';
 
 describe('should scrape entity', function() {
     it('when simple entity', function() {
