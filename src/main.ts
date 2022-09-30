@@ -1,6 +1,6 @@
 import { env, getFiles, readFile } from './utils/fs.utils';
 import { log } from './utils/log.utils';
-import { JavaClass } from './model/model';
+import { JavaClass } from './model/scraper.model';
 import { removeUndefinedItems } from './utils/array.utils';
 import { scrapeJavaClass } from './scraper/scraper';
 
