@@ -4,6 +4,7 @@ import { enhanceJavaClass } from './data-enhance/data-enhance';
 import { AnnotationType } from './scraper/scraper.model';
 import { JavaTable } from './data-enhance/data-enhace.model';
 import { scrape } from './scraper/scraper';
+import { errorRegister } from "./utils/error-register";
 
 export const main = (): JavaTable[] => {
     const entities = scrape(env.entitiesFolderPath);
@@ -17,6 +18,7 @@ export const main = (): JavaTable[] => {
     log.debug('data enhance result', entitiesEnhanced);
     log.info(`${entitiesEnhanced.length} tables parsed`);
 
+    errorRegister.printReport()
     return entitiesEnhanced;
 };
 
