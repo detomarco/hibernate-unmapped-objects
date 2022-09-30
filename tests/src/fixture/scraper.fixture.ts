@@ -65,3 +65,30 @@ export const tableEntityClass: JavaClass = {
         annotations: []
     }]
 };
+
+
+export const abstractClass: JavaClass = {
+    filePath: './tests/resources/AbstractClass.java',
+    name: 'AbstractClass',
+    annotations: [],
+    properties: []
+};
+
+export const interfaceClass: JavaClass = {
+    filePath: './tests/resources/Interface.java',
+    name: 'Interface',
+    annotations: [],
+    properties: []
+};
+
+export const annotationClass: JavaClass = {
+    filePath: './tests/resources/Annotation.java',
+    name: 'Annotation',
+    annotations: [{
+        name: AnnotationType.Column,
+        attributes: {
+            default: 'ElementType.FIELD'
+        }
+    }],
+    properties: []
+};
