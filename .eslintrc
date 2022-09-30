@@ -16,7 +16,7 @@
     "prefer-template": "warn",
     "eqeqeq": "error",
     "semi": ["error", "always"],
-    "@typescript-eslint/no-unused-vars": "warn",
+    "@typescript-eslint/no-unused-vars": "error",
     "quotes": ["warn", "single", "avoid-escape"],
     "object-curly-spacing": ["warn", "always"],
     "no-multi-spaces": "warn",

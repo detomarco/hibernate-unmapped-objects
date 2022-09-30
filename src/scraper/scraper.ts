@@ -26,8 +26,8 @@ const getAnnotationAttributes = (attributesStringOptional: string | undefined): 
         return removeUndefinedItems(
             attributes.map(it => matchGroups(it, captureNameAndValueAttribute))
         ).reduce((agg, match): MapString => {
-            const cc = match.first
-            agg[cc] = match.second
+            const cc = match.first;
+            agg[cc] = match.second;
             return agg;
         }, {} as MapString) || {};
     } catch (e) {
@@ -50,7 +50,7 @@ const getAnnotation = (annotation: string): Annotation | undefined => {
 
 const getAnnotations = (annotationString: string | undefined): Annotation[] => {
     if (annotationString === undefined) {
-        return []
+        return [];
     }
     try {
         const annotationsName = matchGroupMultiple(annotationString, captureFieldAnnotationRegex);

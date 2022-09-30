@@ -31,5 +31,3 @@ export interface Annotation {
     name: string | undefined,
     attributes: MapString
 }
-
-
