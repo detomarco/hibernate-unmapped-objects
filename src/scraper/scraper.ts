@@ -1,8 +1,8 @@
 import { log } from '../utils/log.utils';
-import { JavaAnnotation, ClassProperty, JavaClass } from './scraper.model';
 import { getFileContentSanitized } from './sanitizer';
 import { matchGroupMultiple, matchGroups } from '../utils/regex.util';
 import { removeUndefinedItems } from '../utils/array.utils';
+import { ClassProperty, JavaAnnotation, JavaClass } from './scraper.model';
 import { MapString } from '../model/model';
 
 const classFieldRegex = new RegExp('(?:@[\\w =,"()@ .]+)? private \\w+ \\w+;', 'g');
@@ -16,8 +16,8 @@ const captureNameAndValueAttribute = new RegExp('(?:([\\w ]+)=)?(?:[ "]+)?([\\w 
 
 const getClassInfo = (contentSanitized: string): { name: string | undefined, annotations: JavaAnnotation[] } => {
     const match = matchGroups(contentSanitized, captureClassNameAndAnnotations);
-    const annotations = getAnnotations(match?.first);
-    return { name: match?.second, annotations };
+    const annotations = getAnnotations(match.first);
+    return { name: match.second, annotations };
 };
 
 const getAnnotationAttributes = (attributesStringOptional: string | undefined): MapString => {
@@ -46,7 +46,7 @@ const getAnnotationAttributes = (attributesStringOptional: string | undefined): 
 
 const getAnnotation = (annotation: string): JavaAnnotation | undefined => {
     try {
-        const match = matchGroups(annotation, captureAnnotationNameAndAttribute)!;
+        const match = matchGroups(annotation, captureAnnotationNameAndAttribute);
         const attributes = getAnnotationAttributes(match.second);
 
         return { name: match.first!, attributes };
@@ -77,7 +77,7 @@ const getProperty = (property: string): ClassProperty | undefined => {
     try {
         const annotationsName = matchGroupMultiple(property, captureFieldAnnotationRegex);
 
-        const match = matchGroups(property, capturePropertyNameAndAnnotations)!;
+        const match = matchGroups(property, capturePropertyNameAndAnnotations);
         log.trace('annotations name', annotationsName);
 
         const annotations = getAnnotations(match.first);
