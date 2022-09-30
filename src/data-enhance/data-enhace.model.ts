@@ -19,5 +19,3 @@ export interface AnnotationScraper {
 export interface AnnotationAttribute{
 
 }
-
-// export

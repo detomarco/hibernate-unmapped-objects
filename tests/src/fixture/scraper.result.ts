@@ -20,7 +20,7 @@ export const simpleEntityClass: JavaClassScraper = {
             }
         }, {
             name: 'GenericGenerator',
-            attributes:{
+            attributes: {
                 name: 'native',
                 strategy: 'native'
             }
@@ -45,5 +45,23 @@ export const simpleEntityClass: JavaClassScraper = {
                 name: 'USER_FK'
             }
         }]
+    }]
+};
+
+export const tableEntityClass: JavaClassScraper = {
+    filePath: 'TableEntity.java',
+    name: 'TableEntity',
+    annotations: [{
+        name: 'Entity',
+        attributes: {}
+    }, {
+        name: 'Table',
+        attributes: {
+            anonymus: "TableEntity"
+        }
+    }],
+    properties: [{
+        property: 'id',
+        annotations: []
     }]
 };

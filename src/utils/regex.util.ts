@@ -9,7 +9,7 @@ export const matchGroupMultiple = (s: string | undefined, regex: RegExp): string
     return groups;
 };
 
-export const matchGroups = (s: string, regex: RegExp): { first: string, second: string } | undefined => {
+export const matchGroups = (s: string, regex: RegExp): { first: string | undefined, second: string } | undefined => {
     if (s === undefined) {
         return undefined;
     }

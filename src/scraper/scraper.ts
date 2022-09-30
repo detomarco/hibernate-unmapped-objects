@@ -8,11 +8,11 @@ import { MapString } from "../model/model";
 const classFieldRegex = new RegExp('(?:@[\\w =,"()@ .]+)? private \\w+ \\w+;', 'g');
 const captureFieldAnnotationRegex = new RegExp('(@\\w+(?:\\([ \\w=.,")]+)?)', 'g');
 const captureAnnotationNameAndAttribute = new RegExp('@(\\w+)(?:\\(([ \\w=.,"]+)\\))?');
-const captureAnnotationAttributesItems = new RegExp('(([\\w ])+=[\\w." ]+)', 'g');
+const captureAnnotationAttributesItems = new RegExp('((?:([\\w ])+=)?[\\w." ]+)', 'g');
 
 const capturePropertyNameAndAnnotations = new RegExp('(@[\\w =,"()@ .]+)?private \\w+ (\\w+);');
 const captureClassNameAndAnnotations = new RegExp('(@[\\w =,"()@ .]+)?public class (\\w+)');
-const captureNameAndValueAttribute = new RegExp('([\\w ]+)=(?:[ "]+)?([\\w .]+)"?');
+const captureNameAndValueAttribute = new RegExp('(?:([\\w ]+)=)?(?:[ "]+)?([\\w .]+)"?');
 
 const getClassInfo = (contentSanitized: string): { name: string | undefined, annotations: AnnotationScraper[] } => {
     const match = matchGroups(contentSanitized, captureClassNameAndAnnotations);
@@ -21,13 +21,18 @@ const getClassInfo = (contentSanitized: string): { name: string | undefined, ann
 };
 
 const getAnnotationAttributes = (attributesStringOptional: string | undefined): MapString => {
+    if (attributesStringOptional == undefined) return {};
     try {
         const attributes = matchGroupMultiple(attributesStringOptional, captureAnnotationAttributesItems);
 
         return removeUndefinedItems(
-            attributes.map(it => matchGroups(it, captureNameAndValueAttribute))
+            attributes.map(it => {
+                const match =  matchGroups(it, captureNameAndValueAttribute);
+
+                return match;
+            })
         ).reduce((agg, match): MapString => {
-            const cc = match.first;
+            const cc = match.first ?? 'anonymus';
             agg[cc] = match.second;
             return agg;
         }, {} as MapString) || {};
@@ -42,7 +47,7 @@ const getAnnotation = (annotation: string): AnnotationScraper | undefined => {
         const match = matchGroups(annotation, captureAnnotationNameAndAttribute)!;
         const attributes = getAnnotationAttributes(match.second);
 
-        return { name: match.first, attributes };
+        return { name: match.first!, attributes };
     } catch (e) {
         log.error('Unable to parse annotation for', annotation, e);
         return undefined;
@@ -53,11 +58,12 @@ const getAnnotations = (annotationString: string | undefined): AnnotationScraper
     if (annotationString === undefined) {
         return [];
     }
+
     try {
         const annotationsName = matchGroupMultiple(annotationString, captureFieldAnnotationRegex);
         log.trace('annotations name', annotationsName);
 
-        const annotationsOpt = annotationsName?.map(annotation => getAnnotation(annotation)) || [];
+        const annotationsOpt = annotationsName.map(annotation => getAnnotation(annotation)) || [];
         return removeUndefinedItems(annotationsOpt);
     } catch (e) {
         log.error('Unable to parse annotations for', annotationString, e);
