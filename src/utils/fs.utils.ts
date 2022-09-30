@@ -37,7 +37,7 @@ export const getFiles = (path: string, javaFileRegex: RegExp): string[] => {
         .forEach(file => {
             const filePath = `${path}/${file}`;
             if (fs.lstatSync(filePath).isDirectory()) {
-                files = [...files, ...getFiles(filePath, javaFileRegex)]
+                files = [...files, ...getFiles(filePath, javaFileRegex)];
             } else if (javaFileRegex.test(file)) {
                 files.push(filePath);
             }
