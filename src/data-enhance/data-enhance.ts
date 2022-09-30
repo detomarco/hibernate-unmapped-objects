@@ -1,39 +1,15 @@
-import { JavaAnnotation, ClassProperty, JavaClass } from '../scraper/scraper.model';
-import {
-    AnnotationAttributeEnhance,
-    AnnotationEnhance,
-    AnnotationType,
-    AnnotationTypeString,
-    JavaColumn,
-    JavaTable,
-    NameAttributeEnhance
-} from './data-enhace.model';
+import { ClassProperty, JavaAnnotation, JavaClass } from '../scraper/scraper.model';
+import { AnnotationType, AnnotationTypeString, JavaColumn, JavaTable, NameAttributeEnhance } from './data-enhace.model';
 
-const enhanceAnnotation = (annotation: JavaAnnotation): AnnotationEnhance => {
-    let attributes: AnnotationAttributeEnhance | undefined = undefined;
-    switch (annotation.name) {
-        case 'JoinColumn':
-        case 'Column':
-        case 'Entity':
-        case 'Table':
-            attributes = new NameAttributeEnhance(annotation.attributes);
-    }
-
-    return {
-        ...annotation,
-        name: AnnotationType[annotation.name as AnnotationTypeString],
-        attributes
-    };
-};
-
-const extractNameFromAnnotations = (annotations: AnnotationEnhance[]): string | undefined => {
+const extractNameFromAnnotations = (annotations: JavaAnnotation[]): string | undefined => {
     for (const annotation of annotations) {
-        switch (annotation.name) {
+        const annotationName = AnnotationType[annotation.name as AnnotationTypeString]
+        switch (annotationName) {
             case AnnotationType.Entity:
             case AnnotationType.Column:
             case AnnotationType.JoinColumn:
             case AnnotationType.Table: {
-                const attributes = annotation.attributes as NameAttributeEnhance;
+                const attributes = annotation.attributes as any as NameAttributeEnhance;
                 const name = attributes.default ?? attributes.name;
                 if (name) {
                     return name;
@@ -47,18 +23,16 @@ const extractNameFromAnnotations = (annotations: AnnotationEnhance[]): string | 
 };
 
 const enhanceProperties = (property: ClassProperty): JavaColumn => {
-    const annotations = property.annotations.map(it => enhanceAnnotation(it));
-
     return {
-        name: extractNameFromAnnotations(annotations) ?? property.name
+        name: extractNameFromAnnotations(property.annotations) ?? property.name
     };
 };
 
 export const enhanceJavaClass = (javaClass: JavaClass): JavaTable => {
-    const annotations = javaClass.annotations.map(it => enhanceAnnotation(it));
+
     return {
         filePath: javaClass.filePath,
-        name: extractNameFromAnnotations(annotations) ?? javaClass.name,
+        name: extractNameFromAnnotations(javaClass.annotations) ?? javaClass.name,
         columns: javaClass.properties.map(it => enhanceProperties(it))
     };
 };
