@@ -10,7 +10,7 @@ export enum ErrorLevel {
 
 class ErrorRegister {
 
-    registry: { [key: string]: number } = {}
+    registry: { [key: string]: number } | undefined = undefined;
 
     private static instance: ErrorRegister | undefined = undefined;
 
@@ -25,15 +25,23 @@ class ErrorRegister {
     }
 
     register(level: ErrorLevel) {
-        this.registry[level] = this.registry[level] ?? 0;
+        if (this.registry === undefined) {
+            this.registry = this.registry = {};
+        }
+        this.registry[level] = this.registry[level] ? this.registry[level] + 1 : 1;
     }
 
+
     printReport() {
-        log.info("ERROR REPORT")
-        Object.keys(this.registry).map(key => {
-            log.info(`${key} => ${this.registry[key]}`)
-        })
+        if (this.registry !== undefined) {
+            console.log("\n====================")
+            console.log("    ERROR REPORT")
+            console.table(this.registry)
+        } else {
+            console.log("\nNo errors detected 🎉")
+        }
     }
+
 }
 
 export const errorRegister = ErrorRegister.getInstance()
