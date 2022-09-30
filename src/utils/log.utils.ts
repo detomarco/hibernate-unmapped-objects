@@ -1,9 +1,9 @@
-import { env } from './fs.utils';
+import { getEnvFile } from './fs.utils';
 import { LogLevel } from '../model/model';
 
 class Logger {
 
-    private static logLevel = env.logLevel;
+    private static logLevel = getEnvFile().logLevel;
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     trace(message: any, ...optionalParams: any[]): void {

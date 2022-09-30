@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import { EnvProperties, LogLevel, LogLevelString } from '../model/model';
 
-const getEnvFile = (): EnvProperties => {
+export const getEnvFile = (): EnvProperties => {
     const props: { [key: string]: string } = {};
     const envFile: string = fs.readFileSync('.env', 'utf-8');
     envFile.split('\n')
@@ -46,5 +46,3 @@ export const getFiles = (path: string, javaFileRegex: RegExp): string[] => {
 };
 
 export const readFile = (filePath: string): string => fs.readFileSync(filePath, 'utf-8');
-
-export const env = getEnvFile();

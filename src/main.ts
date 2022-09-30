@@ -1,12 +1,13 @@
-import { env } from './utils/fs.utils';
+import { getEnvFile } from './utils/fs.utils';
 import { log } from './utils/log.utils';
 import { enhanceJavaClass } from './data-enhance/data-enhance';
 import { AnnotationType } from './scraper/scraper.model';
 import { JavaTable } from './data-enhance/data-enhace.model';
 import { scrape } from './scraper/scraper';
 import { errorRegister } from "./utils/error-register";
+import { EnvProperties } from "./model/model";
 
-export const main = (): JavaTable[] => {
+export const main = (env: EnvProperties): JavaTable[] => {
     const entities = scrape(env.entitiesFolderPath);
     log.trace('scrape result', entities);
     log.info(`${entities.length} entities parsed`);
@@ -22,4 +23,5 @@ export const main = (): JavaTable[] => {
     return entitiesEnhanced;
 };
 
-main();
+const env = getEnvFile();
+main(env);
