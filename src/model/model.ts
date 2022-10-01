@@ -12,7 +12,6 @@ export interface DbProperties {
     host: string,
     user: string,
     password: string,
-    information_schema: string,
     schema: string,
     port: number
 }

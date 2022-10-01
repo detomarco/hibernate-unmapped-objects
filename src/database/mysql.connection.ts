@@ -25,9 +25,10 @@ export const handleResults = (resultSet: MysqlResultType[]): DbTable[] => {
 export const getMysqlColumns = (db: DbProperties): Promise<DbTable[]> => {
     const connection = mysql.createConnection({
         host: db.host,
+        port: db.port,
         user: db.user,
         password: db.password,
-        database: db.information_schema
+        database: 'information_schema'
     });
     return new Promise((resolve, reject) => {
         connection.query(

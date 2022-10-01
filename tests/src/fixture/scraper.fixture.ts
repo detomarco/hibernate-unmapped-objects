@@ -29,7 +29,7 @@ export const simpleEntityClass: JavaClass = {
         name: 'date',
         annotations: []
     }, {
-        name: 'clazz',
+        name: 'field',
         annotations: []
     }, {
         name: 'who',

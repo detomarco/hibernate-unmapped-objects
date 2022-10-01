@@ -21,7 +21,6 @@ export const getEnvFile = (): EnvProperties => {
             host: props['db.host'],
             user: props['db.user'],
             password: props['db.password'],
-            information_schema: props['db.information_schema'],
             schema: props['db.schema'],
             port: parseInt(props['db.port'])
         }
