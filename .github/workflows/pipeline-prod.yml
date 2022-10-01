@@ -33,9 +33,6 @@ jobs:
       - name: Lint
         run: npm run lint:dry
 
-      - name: Start test database
-        run: docker run -d --rm --name huo-mysql -p 3399:3306 -e MYSQL_DATABASE=huo -e MYSQL_USER=huo_app -e MYSQL_PASSWORD=test -e MYSQL_RANDOM_ROOT_PASSWORD=true -v $(pwd)/scripts/mysql:/docker-entrypoint-initdb.d mysql:8
-
       - name: Wait for db initialization
         run: sleep 20
 
