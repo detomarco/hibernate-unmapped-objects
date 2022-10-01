@@ -1,7 +1,7 @@
 import { scrapePath } from '../../../src/scraper/scraper';
 import {
     abstractClass,
-    annotationClass, childClass,
+    annotationClass, child2Class, childClass,
     interfaceClass,
     simpleEntityClass,
     tableEntityClass
@@ -40,10 +40,16 @@ describe('should scrape class', () => {
 
 describe('should detect and scraper parent class', () => {
 
-    it('when entity extends a base objet', () => {
+    it('when parent is in the same folder', () => {
         const javaClass = scrapePath(childClass.filePath);
         expect(javaClass).toEqual([childClass]);
     });
+
+    it('when parent is in a different folder', () => {
+        const javaClass = scrapePath(child2Class.filePath);
+        expect(javaClass).toEqual([child2Class]);
+    });
+
 
 });
 

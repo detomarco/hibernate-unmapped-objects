@@ -1,5 +1,5 @@
 
 @Entity
-public class ChildEntity extends ParentEntity {
+public class ChildEntity extends Parent {
     private String field;
 }

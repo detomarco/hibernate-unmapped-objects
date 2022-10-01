@@ -18,7 +18,7 @@ describe('should list unmapped objects', function() {
                 schema: 'huo'
             }
         });
-        expect(result).toEqual(jasmine.arrayWithExactContents([simpleEntityTable, tableEntityTable, childEntityTable]));
+        expect(result).toEqual(jasmine.arrayWithExactContents([simpleEntityTable, tableEntityTable, childEntityTable, childEntityTable]));
     });
 
 });

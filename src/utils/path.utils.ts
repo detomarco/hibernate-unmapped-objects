@@ -1,48 +1,24 @@
-import * as fs from 'fs';
-import { ConfigProperties, LogLevel } from '../model/model';
-
-const CONFIG_FILE = '.huo.json';
-
+const fileSeparator = "/";
 
 export const cdUp = (path: string): string => {
-    const lastPath = path.lastIndexOf("/");
+    const lastPath = path.lastIndexOf(fileSeparator);
     return path.substring(0, lastPath)
 };
 
-// export const findImportPath = (filePath: string, importPath: string): string => {
-//     // outside/com/marco/detoma/gmail/ChildPath
-//     //
-//     // com.marco.ParencClass
-//
-//     const importPathToFile = importPath.replace(/\./g, "/")
-//
-// };
+export const findFilePathFromImportPath = (filePath: string, importPath: string): string => {
 
-export const getFiles = (path: string, javaFileRegex: RegExp): string[] => {
+    const filePathParts = filePath.split(fileSeparator)
+    const importPathParts = importPath.split('\.')
 
-    if (!fs.existsSync(path)) {
-        throw new Error(`Path '${path}' does not exist`);
-    }
-
-    if (!fs.lstatSync(path).isDirectory()) {
-        if (javaFileRegex.test(path)) {
-            return [path];
+    const resultParts = [];
+    for (let i = 0; i < filePathParts.length; i++) {
+        if (filePathParts[i] !== importPathParts[0]) {
+            resultParts.push(filePathParts[i])
         } else {
-            return [];
+            resultParts.push(...importPathParts)
+            break;
         }
     }
 
-    let files: string[] = [];
-    fs.readdirSync(path)
-        .forEach(file => {
-            const filePath = `${path}/${file}`;
-            if (fs.lstatSync(filePath).isDirectory()) {
-                files = [...files, ...getFiles(filePath, javaFileRegex)];
-            } else if (javaFileRegex.test(file)) {
-                files.push(filePath);
-            }
-        });
-    return files;
+    return resultParts.join(fileSeparator)
 };
-
-export const readFile = (filePath: string): string => fs.readFileSync(filePath, 'utf-8');
