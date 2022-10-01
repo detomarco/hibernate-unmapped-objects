@@ -1,11 +1,11 @@
 
 export type MapString = { [key: string]: string }
 
-export interface EnvProperties {
+export interface ConfigProperties {
     logLevel: LogLevel,
     showStacktrace: boolean
     entitiesFolderPath: string,
-    db: DbProperties | undefined
+    db: DbProperties
 }
 export type SupportedDb = 'mysql';
 export interface DbProperties {

@@ -1,30 +1,16 @@
 import * as fs from 'fs';
-import { EnvProperties, LogLevel, LogLevelString, SupportedDb } from '../model/model';
+import { ConfigProperties, LogLevel } from '../model/model';
 
-export const getEnvFile = (): EnvProperties => {
-    const props: { [key: string]: string } = {};
-    const envFile: string = fs.readFileSync('.env', 'utf-8');
-    envFile.split('\n')
-        .filter(line => !line.trim().startsWith('#'))
-        .forEach(line => {
-            const p = line.split('=');
-            if (p.length === 2) {
-                props[p[0]] = p[1];
-            }
-        });
+const CONFIG_FILE = '.huo.json';
+
+export const getConfigFile = (): ConfigProperties => {
+    const configContent: string = fs.readFileSync(CONFIG_FILE, 'utf-8');
+    const config =  JSON.parse(configContent);
 
     return {
-        logLevel: LogLevel[props['logLevel'] as LogLevelString],
-        showStacktrace: Boolean(props['show_stacktrace'] || false),
-        entitiesFolderPath: props['entities_folder_path'],
-        db: {
-            type: props['db.type'] as SupportedDb,
-            host: props['db.host'],
-            user: props['db.user'],
-            password: props['db.password'],
-            schema: props['db.schema'],
-            port: parseInt(props['db.port'])
-        }
+        ...config,
+        logLevel: LogLevel[config.logLevel]
+
     };
 };
 

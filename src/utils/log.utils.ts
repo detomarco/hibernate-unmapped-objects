@@ -1,10 +1,10 @@
-import { getEnvFile } from './fs.utils';
+import { getConfigFile } from './fs.utils';
 import { LogLevel } from '../model/model';
 
 class Logger {
 
-    private static env = getEnvFile();
-    private static logLevel = Logger.env.logLevel;
+    private static config = getConfigFile();
+    private static logLevel = Logger.config.logLevel;
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     trace(message: any, ...optionalParams: any[]): void {
@@ -37,7 +37,7 @@ class Logger {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     error(message: any, ...optionalParams: any[]): void {
         if (Logger.logLevel >= LogLevel.ERROR) {
-            const params = Logger.env.showStacktrace
+            const params = Logger.config.showStacktrace
                 ? optionalParams
                 : optionalParams.map(it => it instanceof Error ? it.message : it);
             console.error(new Date(), 'ERROR', '-', message, ...params);

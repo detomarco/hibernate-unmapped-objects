@@ -140,7 +140,7 @@ const scrapeJavaClass = (javaFilePath: string, content: string): JavaClass | und
 export const scrape = (folder: string): JavaClass[] => {
     const javaFiles = getFiles(folder, javaFileRegex);
     log.debug('java files', javaFiles);
-    log.info(`${javaFiles.length} java files found`);
+    log.info(`${javaFiles.length} java files detected`);
 
     try {
 
