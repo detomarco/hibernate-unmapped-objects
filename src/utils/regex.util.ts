@@ -12,3 +12,11 @@ export const matchGroups = (s: string, regex: RegExp): { first: string | undefin
     const second = propertyParts[2]?.trim();
     return { first, second };
 };
+
+export const matchGroup = (s: string, regex: RegExp): string | undefined => {
+    const propertyParts = s.match(regex)!;
+    if (!propertyParts) {
+        return undefined;
+    }
+    return propertyParts[1]?.trim();
+};

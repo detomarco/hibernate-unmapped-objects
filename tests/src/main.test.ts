@@ -1,4 +1,4 @@
-import { simpleEntityTable, tableEntityTable } from './fixture/data-enhance.fixture';
+import { childEntityTable, simpleEntityTable, tableEntityTable } from './fixture/data-enhance.fixture';
 import { main } from '../../src/main';
 import { LogLevel } from '../../src/model/model';
 
@@ -18,7 +18,7 @@ describe('should list unmapped objects', function() {
                 schema: 'huo'
             }
         });
-        expect(result).toEqual(jasmine.arrayWithExactContents([simpleEntityTable, tableEntityTable]));
+        expect(result).toEqual(jasmine.arrayWithExactContents([simpleEntityTable, tableEntityTable, childEntityTable]));
     });
 
 });
