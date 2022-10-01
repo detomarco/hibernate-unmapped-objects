@@ -15,6 +15,7 @@ export const getEnvFile = (): EnvProperties => {
 
     return {
         logLevel: LogLevel[props['logLevel'] as LogLevelString],
+        showStacktrace: Boolean(props['show_stacktrace'] || false),
         entitiesFolderPath: props['entities_folder_path'],
         db: {
             type: props['db.type'] as SupportedDb,

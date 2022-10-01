@@ -3,6 +3,7 @@ export type MapString = { [key: string]: string }
 
 export interface EnvProperties {
     logLevel: LogLevel,
+    showStacktrace: boolean
     entitiesFolderPath: string,
     db: DbProperties | undefined
 }

@@ -6,6 +6,7 @@ describe('should list unmapped objects', function () {
 
     it('when run script', async () => {
         const result = await main({
+            showStacktrace: true,
             logLevel: LogLevel.TRACE,
             entitiesFolderPath: './tests',
             db: {
