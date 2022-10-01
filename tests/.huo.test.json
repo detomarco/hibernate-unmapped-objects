@@ -1,5 +1,5 @@
 {
-  "entitiesFolderPath": "../tests",
+  "entitiesFolderPath": "./tests",
   "showStacktrace": true,
   "logLevel": "INFO",
   "db": {
