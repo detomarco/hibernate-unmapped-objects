@@ -23,7 +23,7 @@ export const handleResults = (resultSet: MysqlResultType[]): DbTable[] => {
 };
 
 export const getMysqlColumns = (db: DbProperties): Promise<DbTable[]> => {
-    log.trace(`connection parameters: host:${db.host}, port:${db.port}, database: information_schema, user:${db.user}, password:****`)
+    log.trace(`connection parameters: host:${db.host}, port:${db.port}, database: information_schema, user:${db.user}, password:****`);
     const connection = mysql.createConnection({
         host: db.host,
         port: db.port,
