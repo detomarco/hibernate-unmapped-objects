@@ -1,5 +1,5 @@
 
-name: Test pipeline
+name: Publish
 
 on:
   pull_request:
@@ -39,7 +39,7 @@ jobs:
         # v1.38.0 does not work (see issue https://github.com/anothrNick/github-tag-action/issues/135)
         uses: anothrNick/github-tag-action@1.36.0
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GHCR_TOKEN }}
           WITH_V: true
           DEFAULT_BUMP: PATCH
           PRERELEASE_SUFFIX: PR${{ env.PR_NUMBER }}
