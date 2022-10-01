@@ -3,6 +3,7 @@ import { AnnotationType, JavaClass } from '../../../src/scraper/scraper.model';
 export const simpleEntityClass: JavaClass = {
     filePath: './tests/resources/SimpleEntity.java',
     name: 'SimpleEntity',
+    parentPath: undefined,
     annotations: [{
         name: AnnotationType.Entity,
         attributes: {}
@@ -51,6 +52,7 @@ export const simpleEntityClass: JavaClass = {
 export const tableEntityClass: JavaClass = {
     filePath: './tests/resources/TableEntity.java',
     name: 'TableEntity',
+    parentPath: undefined,
     annotations: [{
         name: AnnotationType.Entity,
         attributes: {}
@@ -69,6 +71,7 @@ export const tableEntityClass: JavaClass = {
 export const abstractClass: JavaClass = {
     filePath: './tests/resources/AbstractClass.java',
     name: 'AbstractClass',
+    parentPath: undefined,
     annotations: [],
     properties: []
 };
@@ -76,6 +79,7 @@ export const abstractClass: JavaClass = {
 export const interfaceClass: JavaClass = {
     filePath: './tests/resources/Interface.java',
     name: 'Interface',
+    parentPath: undefined,
     annotations: [],
     properties: []
 };
@@ -83,6 +87,7 @@ export const interfaceClass: JavaClass = {
 export const annotationClass: JavaClass = {
     filePath: './tests/resources/Annotation.java',
     name: 'Annotation',
+    parentPath: undefined,
     annotations: [{
         name: AnnotationType.Column,
         attributes: {
@@ -90,4 +95,39 @@ export const annotationClass: JavaClass = {
         }
     }],
     properties: []
+};
+
+
+export const childClass: JavaClass = {
+    filePath: './tests/resources/ChildEntity.java',
+    name: 'ChildEntity',
+    parentPath: './tests/resources/Parent.java',
+    annotations: [{
+        name: AnnotationType.Entity,
+        attributes: {}
+    }],
+    properties: [{
+        name: 'id',
+        annotations: []
+    }, {
+        name: 'field',
+        annotations: []
+    }]
+};
+
+export const child2Class: JavaClass = {
+    filePath: './tests/resources/ChildEntity2.java',
+    name: 'ChildEntity2',
+    parentPath: './tests/resources/subpackage/ParentOtherLocation.java',
+    annotations: [{
+        name: AnnotationType.Entity,
+        attributes: {}
+    }],
+    properties: [{
+        name: 'id',
+        annotations: []
+    }, {
+        name: 'field',
+        annotations: []
+    }]
 };
