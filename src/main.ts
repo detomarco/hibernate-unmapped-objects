@@ -4,7 +4,6 @@ import { enhanceJavaClass } from './data-enhance/data-enhance';
 import { AnnotationType } from './scraper/scraper.model';
 import { JavaTable } from './data-enhance/data-enhace.model';
 import { scrape } from './scraper/scraper';
-import { errorRegister } from './utils/error-register';
 import { EnvProperties } from './model/model';
 import { getDatabaseTables } from './database/connection';
 import { compare } from './comparator/table-comparator';
