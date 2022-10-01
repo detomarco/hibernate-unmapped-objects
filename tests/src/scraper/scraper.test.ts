@@ -1,7 +1,7 @@
-import { scrape } from '../../../src/scraper/scraper';
+import { scrapePath } from '../../../src/scraper/scraper';
 import {
     abstractClass,
-    annotationClass,
+    annotationClass, childClass,
     interfaceClass,
     simpleEntityClass,
     tableEntityClass
@@ -10,37 +10,48 @@ import {
 describe('should scrape class', () => {
 
     it('when simple entity', () => {
-        const javaClass = scrape(simpleEntityClass.filePath);
+        const javaClass = scrapePath(simpleEntityClass.filePath);
 
         expect(javaClass).toEqual([simpleEntityClass]);
     });
 
     it('when entity with table annotation', () => {
-        const javaClass = scrape(tableEntityClass.filePath);
+        const javaClass = scrapePath(tableEntityClass.filePath);
         expect(javaClass).toEqual([tableEntityClass]);
     });
 
     it('when it is abstract', () => {
-        const javaClass = scrape(abstractClass.filePath);
+        const javaClass = scrapePath(abstractClass.filePath);
         expect(javaClass).toEqual([abstractClass]);
     });
 
     it('when it is an interface', () => {
-        const javaClass = scrape(interfaceClass.filePath);
+        const javaClass = scrapePath(interfaceClass.filePath);
         expect(javaClass).toEqual([interfaceClass]);
     });
 
     it('when it is an annotation', () => {
-        const javaClass = scrape(annotationClass.filePath);
+        const javaClass = scrapePath(annotationClass.filePath);
         expect(javaClass).toEqual([annotationClass]);
     });
 
 });
 
+
+describe('should detect and scraper parent class', () => {
+
+    it('when entity extends a base objet', () => {
+        const javaClass = scrapePath(childClass.filePath);
+        expect(javaClass).toEqual([childClass]);
+    });
+
+});
+
+
 describe('should raise error', () => {
 
     it('when path does not exists', () => {
-        expect(() => scrape('this_path_does_not_exist')).toThrow(new Error('Path \'this_path_does_not_exist\' does not exist'));
+        expect(() => scrapePath('this_path_does_not_exist')).toThrow(new Error('Path \'this_path_does_not_exist\' does not exist'));
     });
 
 });
