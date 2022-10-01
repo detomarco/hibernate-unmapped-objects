@@ -3,7 +3,7 @@ import { log } from './utils/log.utils';
 import { enhanceJavaClass } from './data-enhance/data-enhance';
 import { AnnotationType } from './scraper/scraper.model';
 import { JavaTable } from './data-enhance/data-enhace.model';
-import { scrape } from './scraper/scraper';
+import { scrapePath } from './scraper/scraper';
 import { ConfigProperties } from './model/model';
 import { getDatabaseTables } from './database/connection';
 import { compare } from './comparator/table-comparator';
@@ -15,7 +15,7 @@ export const main = async(config: ConfigProperties): Promise<JavaTable[]> => {
     log.debug('database table', databaseTables);
     log.info(databaseTables.length, 'tables found in the database');
 
-    const classes = scrape(config.entitiesFolderPath);
+    const classes = scrapePath(config.entitiesFolderPath);
     log.trace('scrape result', classes);
     log.info(`${classes.length} classes parsed`);
 
