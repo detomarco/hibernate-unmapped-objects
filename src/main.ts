@@ -12,7 +12,6 @@ import { printResults } from './result-printer/result-printer';
 
 export const main = async(env: EnvProperties): Promise<JavaTable[]> => {
 
-    log.error('error message with stck?', new Error());
     const databaseTables = await getDatabaseTables(env.db!);
     log.debug('database table', databaseTables);
     log.info(databaseTables.length, 'tables found in the database');
@@ -34,7 +33,6 @@ export const main = async(env: EnvProperties): Promise<JavaTable[]> => {
     const unmappedObjects = compare(databaseTables, javaClasses);
 
     printResults(unmappedObjects);
-    errorRegister.printReport();
 
     return javaClasses;
 };

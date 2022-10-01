@@ -23,7 +23,7 @@ class Logger {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     info(message: any, ...optionalParams: any[]): void {
         if (Logger.logLevel >= LogLevel.INFO) {
-            console.info(new Date(), 'INFO', '-', message, ...optionalParams);
+            console.info(message, ...optionalParams);
         }
     }
 
