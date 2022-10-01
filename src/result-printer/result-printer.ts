@@ -2,7 +2,6 @@ import { UnmappedObjects } from '../comparator/table-comparator.model';
 import { errorRegister } from '../utils/error-register';
 
 export const printResults = (unmappedObjects: UnmappedObjects): void => {
-    console.log('\n\n');
     console.log('Unmapped tables', unmappedObjects.unmappedTables);
     console.log('\nUnmapped columns');
 

@@ -1,0 +1,13 @@
+{
+  "entitiesFolderPath": "../tests",
+  "showStacktrace": true,
+  "logLevel": "INFO",
+  "db": {
+    "type": "mysql",
+    "host": "localhost",
+    "port": "3399",
+    "user": "huo_app",
+    "password": "test",
+    "schema": "huo"
+  }
+}

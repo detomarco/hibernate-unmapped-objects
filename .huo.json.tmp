@@ -1,0 +1,12 @@
+{
+  "entitiesFolderPath": "",
+  "logLevel": "INFO",
+  "db": {
+    "type": "",
+    "host": "",
+    "port": "",
+    "user": "",
+    "password": "",
+    "schema": ""
+  }
+}

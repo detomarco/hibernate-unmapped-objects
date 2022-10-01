@@ -1,21 +1,21 @@
-import { getEnvFile } from './utils/fs.utils';
+import { getConfigFile } from './utils/fs.utils';
 import { log } from './utils/log.utils';
 import { enhanceJavaClass } from './data-enhance/data-enhance';
 import { AnnotationType } from './scraper/scraper.model';
 import { JavaTable } from './data-enhance/data-enhace.model';
 import { scrape } from './scraper/scraper';
-import { EnvProperties } from './model/model';
+import { ConfigProperties } from './model/model';
 import { getDatabaseTables } from './database/connection';
 import { compare } from './comparator/table-comparator';
 import { printResults } from './result-printer/result-printer';
 
-export const main = async(env: EnvProperties): Promise<JavaTable[]> => {
+export const main = async(config: ConfigProperties): Promise<JavaTable[]> => {
 
-    const databaseTables = await getDatabaseTables(env.db!);
+    const databaseTables = await getDatabaseTables(config.db);
     log.debug('database table', databaseTables);
     log.info(databaseTables.length, 'tables found in the database');
 
-    const classes = scrape(env.entitiesFolderPath);
+    const classes = scrape(config.entitiesFolderPath);
     log.trace('scrape result', classes);
     log.info(`${classes.length} classes parsed`);
 
@@ -36,5 +36,5 @@ export const main = async(env: EnvProperties): Promise<JavaTable[]> => {
     return javaClasses;
 };
 
-const env = getEnvFile();
-main(env);
+const config = getConfigFile();
+main(config);
