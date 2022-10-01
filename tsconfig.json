@@ -7,6 +7,8 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "strictPropertyInitialization": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
     "sourceMap": true,
     "lib": [
       "es2020",

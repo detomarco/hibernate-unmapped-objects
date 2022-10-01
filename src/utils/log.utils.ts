@@ -3,7 +3,8 @@ import { LogLevel } from '../model/model';
 
 class Logger {
 
-    private static logLevel = getEnvFile().logLevel;
+    private static env = getEnvFile();
+    private static logLevel = Logger.env.logLevel;
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     trace(message: any, ...optionalParams: any[]): void {
@@ -36,7 +37,10 @@ class Logger {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     error(message: any, ...optionalParams: any[]): void {
         if (Logger.logLevel >= LogLevel.ERROR) {
-            console.error(new Date(), 'ERROR', '-', message, ...optionalParams);
+            const params = Logger.env.showStacktrace
+                ? optionalParams
+                : optionalParams.map(it => it instanceof Error ? it.message : it);
+            console.error(new Date(), 'ERROR', '-', message, ...params);
         }
     }
 

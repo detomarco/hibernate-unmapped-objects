@@ -25,7 +25,7 @@ public class SimpleEntity {
     )
     private Long id;
     private Date date;
-    private String clazz;
+    private String field;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "USER_FK")

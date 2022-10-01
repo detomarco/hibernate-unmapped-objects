@@ -2,14 +2,15 @@
   "name": "hibernate-unmapped-objects",
   "version": "0.0.1",
   "description": "",
-  "main": "index.ts",
+  "main": "src/main.ts",
   "scripts": {
     "start": "ts-node src/main.ts",
     "lint:dry": "eslint . --ext .ts",
     "lint": "eslint --fix . --ext .ts",
     "test:init": "cp ./tests/.env.test .env",
     "test": "ts-node node_modules/jasmine/bin/jasmine --config=jasmine.json",
-    "coverage": "nyc --reporter=lcov -r text -e .ts -x \"tests/*.test.ts\" npm run test"
+    "coverage": "nyc --reporter=lcov -r text -e .ts -x \"tests/*.test.ts\" npm run test",
+    "package": "ncc build --source-map"
   },
   "repository": {
     "type": "git",
@@ -33,5 +34,9 @@
     "nyc": "^15.1.0",
     "ts-node": "^10.9.1",
     "typescript": "^4.8.4"
+  },
+  "dependencies": {
+    "@vercel/ncc": "^0.34.0",
+    "mysql2": "^2.3.3"
   }
 }
