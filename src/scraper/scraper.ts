@@ -5,7 +5,7 @@ import { removeUndefinedItems } from '../utils/array.utils';
 import { AnnotationType, ClassProperty, JavaAnnotation, JavaClass } from './scraper.model';
 import { MapString } from '../model/model';
 import { AnnotationTypeString } from '../data-enhance/data-enhace.model';
-import { getFiles, readFile } from '../utils/fs.utils';
+import { fileExists, getFiles, readFile } from '../utils/fs.utils';
 import { ErrorLevel, errorRegister } from '../utils/error-register';
 import { cdUp, findFilePathFromImportPath } from "../utils/path.utils";
 
@@ -122,6 +122,11 @@ const getParentLocation = (superClassName: string, javaFilePath: string, content
     const importCaptureLocationRegex = new RegExp(`import ([\\w.]+${superClassName});`)
     const superClassImport = matchGroup(content, importCaptureLocationRegex);
     if (superClassImport === undefined) {
+        const superClassLocation = `${cdUp(javaFilePath)}/${superClassName}.java`;
+        if (!fileExists(superClassLocation)) {
+            log.debug(`Super class detect in ${javaFilePath} but non found in the same folder. Maybe an internal class of Java?`)
+            return undefined;
+        }
         return `${cdUp(javaFilePath)}/${superClassName}.java`
     }
     return findFilePathFromImportPath(javaFilePath, superClassImport) + '.java';
@@ -137,7 +142,7 @@ const scrapeSuperClass = (javaFilePath: string, content: string): JavaClass | un
         log.warn(`Super class detect in ${javaFilePath} but location not found, skip it.`)
         return undefined
     }
-    return readAndScrape(superClassLocation)
+    return readAndScrape(superClassLocation, javaFilePath)
 };
 
 const scrapeJavaClass = (javaFilePath: string, content: string): JavaClass | undefined => {
@@ -164,7 +169,7 @@ const scrapeJavaClass = (javaFilePath: string, content: string): JavaClass | und
     }
 };
 
-export const readAndScrape = (javaFilePath: string): JavaClass | undefined => {
+export const readAndScrape = (javaFilePath: string, origin: string): JavaClass | undefined => {
     try {
         const content = readFile(javaFilePath);
         log.trace(`content file ${javaFilePath}`, content);
@@ -173,7 +178,7 @@ export const readAndScrape = (javaFilePath: string): JavaClass | undefined => {
         return javaClass;
     } catch (e) {
         errorRegister.register(ErrorLevel.Class);
-        log.warn('Unable to parse java class', javaFilePath, e);
+        log.warn('Unable to parse java class', javaFilePath, '. \nOrigin class', origin, e);
         return undefined;
     }
 
@@ -186,7 +191,7 @@ export const scrapePath = (folder: string): JavaClass[] => {
     log.info(`${javaFiles.length} java files detected`);
 
     try {
-        const javaClasses = javaFiles.map(javaFilePath => readAndScrape(javaFilePath));
+        const javaClasses = javaFiles.map(javaFilePath => readAndScrape(javaFilePath, javaFilePath));
 
         log.trace('num javaClasses', javaClasses.length);
         return removeUndefinedItems(javaClasses);
