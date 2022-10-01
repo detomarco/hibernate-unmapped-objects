@@ -150,7 +150,7 @@ const scrapeJavaClass = (javaFilePath: string, content: string): JavaClass | und
             filePath: javaFilePath,
             name: classInfo?.name || javaFilePath,
             annotations: classInfo?.annotations || [],
-            properties: [...properties, ...superClassProperties]
+            properties: [...superClassProperties, ...properties]
         };
     } catch (e) {
         errorRegister.register(ErrorLevel.Class);
