@@ -1,5 +1,5 @@
 import * as fs from 'fs';
-import { EnvProperties, LogLevel, LogLevelString } from '../model/model';
+import { EnvProperties, LogLevel, LogLevelString, SupportedDb } from '../model/model';
 
 export const getEnvFile = (): EnvProperties => {
     const props: { [key: string]: string } = {};
@@ -12,9 +12,19 @@ export const getEnvFile = (): EnvProperties => {
                 props[p[0]] = p[1];
             }
         });
+
     return {
         logLevel: LogLevel[props['logLevel'] as LogLevelString],
-        entitiesFolderPath: props['entities_folder_path']
+        entitiesFolderPath: props['entities_folder_path'],
+        db: {
+            type: props['db.type'] as SupportedDb,
+            host: props['db.host'],
+            user: props['db.user'],
+            password: props['db.password'],
+            information_schema: props['db.information_schema'],
+            schema: props['db.schema'],
+            port: parseInt(props['db.port'])
+        }
     };
 };
 

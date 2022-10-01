@@ -1,5 +1,5 @@
 import { AnnotationType, ClassProperty, JavaAnnotation, JavaClass } from '../scraper/scraper.model';
-import { JavaColumn, JavaTable, NameAttributeEnhance } from './data-enhace.model';
+import { JavaTable, NameAttributeEnhance } from './data-enhace.model';
 
 const extractNameFromAnnotations = (annotations: JavaAnnotation[]): string | undefined => {
     for (const annotation of annotations) {
@@ -21,9 +21,7 @@ const extractNameFromAnnotations = (annotations: JavaAnnotation[]): string | und
     return undefined;
 };
 
-const enhanceProperties = (property: ClassProperty): JavaColumn => ({
-    name: extractNameFromAnnotations(property.annotations) ?? property.name
-});
+const enhanceProperties = (property: ClassProperty): string => extractNameFromAnnotations(property.annotations) ?? property.name;
 
 export const enhanceJavaClass = (javaClass: JavaClass): JavaTable => ({
     filePath: javaClass.filePath,

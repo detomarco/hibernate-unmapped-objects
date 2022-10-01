@@ -1,13 +1,9 @@
+import { DbTable } from "../database/db.model";
+
 export type AnnotationTypeString = 'JoinColumn' | 'Column' | 'Entity' | 'Table';
 
-export type JavaTable = {
-    filePath: string,
-    name: string | undefined,
-    columns: JavaColumn[]
-}
-
-export type JavaColumn = {
-    name: string;
+export type JavaTable = DbTable & {
+    filePath: string
 }
 
 export interface AnnotationAttributeEnhance {
