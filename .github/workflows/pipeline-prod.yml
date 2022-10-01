@@ -34,7 +34,7 @@ jobs:
         run: npm run lint:dry
 
       - name: Wait for db initialization
-        run: sleep 30
+        run: sleep 10
 
       - name: Run tests
         run: npm run test:init && npm test
