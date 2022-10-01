@@ -39,7 +39,7 @@ class Logger {
         if (Logger.logLevel >= LogLevel.ERROR) {
             const params = Logger.env.showStacktrace
                 ? optionalParams
-                : optionalParams.filter(it => !(it instanceof Error));
+                : optionalParams.map(it => it instanceof Error ? it.message : it);
             console.error(new Date(), 'ERROR', '-', message, ...params);
         }
     }
