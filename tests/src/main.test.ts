@@ -2,9 +2,9 @@ import { simpleEntityTable, tableEntityTable } from './fixture/data-enhance.fixt
 import { main } from '../../src/main';
 import { LogLevel } from '../../src/model/model';
 
-describe('should list unmapped objects', function () {
+describe('should list unmapped objects', function() {
 
-    it('when run script', async () => {
+    it('when run script', async() => {
         const result = await main({
             showStacktrace: true,
             logLevel: LogLevel.TRACE,

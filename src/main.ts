@@ -10,7 +10,7 @@ import { getDatabaseTables } from './database/connection';
 
 export const main = async(env: EnvProperties): Promise<JavaTable[]> => {
 
-    log.error("error message with stck?", new Error())
+    log.error('error message with stck?', new Error());
     const databaseTables = await getDatabaseTables(env.db!);
     log.debug('database table', databaseTables);
     log.info(databaseTables.length, 'tables found in the database');
