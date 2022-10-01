@@ -1,4 +1,4 @@
-import { DbTable } from "../database/db.model";
+import { DbTable } from '../database/db.model';
 
 export type AnnotationTypeString = 'JoinColumn' | 'Column' | 'Entity' | 'Table';
 

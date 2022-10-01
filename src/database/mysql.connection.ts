@@ -1,7 +1,7 @@
-import { DbProperties } from "../model/model";
-import { DbTable } from "./db.model";
-import { log } from "../utils/log.utils";
-import * as mysql from "mysql2";
+import { DbProperties } from '../model/model';
+import { DbTable } from './db.model';
+import { log } from '../utils/log.utils';
+import * as mysql from 'mysql2';
 
 interface MysqlResultType {
     TABLE_NAME: string,
@@ -10,19 +10,17 @@ interface MysqlResultType {
 
 export const handleResults = (resultSet: MysqlResultType[]): DbTable[] => {
     const resultsByTableName = resultSet.reduce((acc, result) => {
-        acc[result.TABLE_NAME] = acc[result.TABLE_NAME] || []
-        acc[result.TABLE_NAME].push(result.COLUMN_NAME)
-        return acc
-    }, {} as { [key: string]: string[] })
+        acc[result.TABLE_NAME] = acc[result.TABLE_NAME] || [];
+        acc[result.TABLE_NAME].push(result.COLUMN_NAME);
+        return acc;
+    }, {} as { [key: string]: string[] });
 
     return Object.keys(resultsByTableName)
-        .map((key): DbTable => {
-            return {
+        .map((key): DbTable => ({
                 name: key,
                 columns: resultsByTableName[key]
-            }
-        })
-}
+            }));
+};
 
 export const getMysqlColumns = (db: DbProperties): Promise<DbTable[]> => {
     const connection = mysql.createConnection({
@@ -39,15 +37,15 @@ export const getMysqlColumns = (db: DbProperties): Promise<DbTable[]> => {
             (err, results: MysqlResultType[]) => {
 
                 if (err === null) {
-                    log.trace("mysql results", results)
-                    const tables = handleResults(results)
-                    log.debug("mysql tables", tables)
-                    resolve(tables)
+                    log.trace('mysql results', results);
+                    const tables = handleResults(results);
+                    log.debug('mysql tables', tables);
+                    resolve(tables);
                 } else {
-                    log.error("mysql error", err)
-                    reject(err)
+                    log.error('mysql error', err);
+                    reject(err);
                 }
             }
         );
-    })
-}
+    });
+};
