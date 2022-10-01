@@ -1,0 +1,69 @@
+
+name: Images and tags cleanup
+
+on:
+  pull_request:
+    types: [closed]
+
+env:
+  ORG: ${{ github.repository_owner }}
+  REPOSITORY: ${{ github.event.repository.name }}
+  PR_NUMBER: ${{ github.event.number }}
+
+jobs:
+  get_tags:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.matrix.outputs.value }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Fetch tags
+        run: git fetch --tags
+
+      - name: Tags PR just merged
+        id: tags_list
+        run: |
+          printf -v tags_string '"%s",' $(git tag -l "*PR${{ env.PR_NUMBER }}*")
+          tags_list=$(echo "[${tags_string%,}]")
+          echo "$tags_list"
+          echo "::set-output name=value::$tags_list"
+
+      - name: set tags list output
+        id: matrix
+        run: |
+          echo ${{ steps.tags_list.outputs.value }}
+          echo '::set-output name=value::${{ steps.tags_list.outputs.value }}'
+
+  delete_image:
+    needs: get_tags
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+    strategy:
+      matrix:
+        value: ${{ fromJson(needs.get_tags.outputs.matrix) }}
+    steps:
+      - name: Delete image
+        continue-on-error: true
+        uses: bots-house/ghcr-delete-image-action@v1.0.1
+        with:
+          owner: ${{ env.ORG }}
+          name: ${{ env.REPOSITORY }}
+          token: ${{ secrets.GHCR_ACCESS_TOKEN }}
+          tag: ${{ matrix.value }}
+
+  delete_tags:
+    needs: get_tags
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Fetch tags
+        run: git fetch --tags
+
+      - name: Cleanup tags
+        continue-on-error: true
+        run: git tag -l "*PR${{ env.PR_NUMBER }}*" | xargs git push -d origin || true
