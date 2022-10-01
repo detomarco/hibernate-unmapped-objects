@@ -1,4 +1,4 @@
-use `huo`;
+use `huo_mysql`;
 
 CREATE TABLE IF NOT EXISTS `SimpleEntity`
 (

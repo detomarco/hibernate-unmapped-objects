@@ -15,7 +15,7 @@ describe('should list unmapped objects', function() {
                 port: 3399,
                 user: 'huo_app',
                 password: 'test',
-                schema: 'huo'
+                schema: 'huo_mysql'
             }
         });
         expect(result).toEqual(jasmine.arrayWithExactContents([simpleEntityTable, tableEntityTable]));
