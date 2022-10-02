@@ -8,8 +8,16 @@ import { getDatabaseTables } from './database/connection';
 import { compare } from './comparator/table-comparator';
 import { printResults } from './result-printer/result-printer';
 import { AnnotationType } from './scraper/scraper.model';
+import { DbTable } from "./database/db.model";
+import { UnmappedObjects } from "./comparator/table-comparator.model";
 
-export const main = async(config: ConfigProperties): Promise<JavaTable[]> => {
+interface ScriptResults {
+    javaEntities: JavaTable[],
+    databaseTables: DbTable[],
+    results: UnmappedObjects
+}
+
+export const main = async (config: ConfigProperties): Promise<ScriptResults> => {
 
     const databaseTables = await getDatabaseTables(config.db);
     log.debug('database table', databaseTables);
@@ -19,21 +27,22 @@ export const main = async(config: ConfigProperties): Promise<JavaTable[]> => {
     log.trace('scrape result', classes);
     log.info(`${classes.length} classes parsed`);
 
-    const javaClasses = classes
+    const javaEntities = classes
         .filter(clazz => clazz.annotations.some(it => it.name === AnnotationType.Table || it.name === AnnotationType.Entity))
         .map(clazz => enhanceJavaClass(clazz));
 
-    log.debug('data enhance result', javaClasses);
-    log.info(`${javaClasses.length} tables parsed`);
+    log.debug('data enhance result', javaEntities);
+    log.info(`${javaEntities.length} tables parsed`);
 
-    log.debug('data enhance result', javaClasses);
-    log.info(`${databaseTables.length} tables found in the codebase`);
-
-    const unmappedObjects = compare(databaseTables, javaClasses);
+    const unmappedObjects = compare(databaseTables, javaEntities);
 
     printResults(unmappedObjects);
 
-    return javaClasses;
+    return {
+        javaEntities: javaEntities,
+        databaseTables: databaseTables,
+        results: unmappedObjects
+    };
 };
 
 const config = getConfigFile();
