@@ -14,6 +14,7 @@ export enum AnnotationType {
 export interface JavaClass {
     filePath: string,
     name: string,
+    parentPath: string | undefined,
     annotations: JavaAnnotation[],
     properties: ClassProperty[]
 }

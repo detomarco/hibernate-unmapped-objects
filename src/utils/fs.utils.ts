@@ -16,7 +16,7 @@ export const getConfigFile = (): ConfigProperties => {
 
 export const getFiles = (path: string, javaFileRegex: RegExp): string[] => {
 
-    if (!fs.existsSync(path)) {
+    if (!fileExists(path)) {
         throw new Error(`Path '${path}' does not exist`);
     }
 
@@ -42,3 +42,7 @@ export const getFiles = (path: string, javaFileRegex: RegExp): string[] => {
 };
 
 export const readFile = (filePath: string): string => fs.readFileSync(filePath, 'utf-8');
+
+export const fileExists = (path: string): boolean => {
+    return fs.existsSync(path);
+};
