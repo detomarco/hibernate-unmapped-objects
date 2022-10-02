@@ -1,5 +1,7 @@
 
+import com.external.library.ExternalParent;
+
 @Embedded
-public class ParentEntity {
+public class ParentEntity extends ExternalParent {
     private Long id;
 }

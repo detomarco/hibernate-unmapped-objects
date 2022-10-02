@@ -11,4 +11,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import java.util.Date;
 
-public abstract class AbstractClass {}
+public abstract class AbstractClass extends RuntimeException {
+
+}
