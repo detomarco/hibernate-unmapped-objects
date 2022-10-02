@@ -109,6 +109,12 @@ export const childClass: JavaClass = {
         name: 'id',
         annotations: []
     }, {
+        name: 'protectedField',
+        annotations: []
+    }, {
+        name: 'publicField',
+        annotations: []
+    }, {
         name: 'field',
         annotations: []
     }]

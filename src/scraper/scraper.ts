@@ -13,14 +13,14 @@ import { cdUp, findFilePathFromImportPath } from '../utils/path.utils';
 const javaFileRegex = new RegExp('.*.java$');
 
 // regex class
-const classFieldRegex = new RegExp('(?:@[\\w =,"()@ .]+)? private \\w+ \\w+;', 'g');
+const classFieldRegex = new RegExp('(?:@[\\w =,"()@ .]+)? (?:private|protected|public) \\w+ \\w+;', 'g');
 const classCaptureParentName = new RegExp('class \\w+ extends (\\w+) {');
 
 const captureFieldAnnotationRegex = new RegExp('(@\\w+(?:\\([ \\w=.,")]+)?)', 'g');
 const captureAnnotationNameAndAttribute = new RegExp('@(\\w+)(?:\\(([ \\w=.,"]+)\\))?');
 const captureAnnotationAttributesItems = new RegExp('((?:([\\w ])+=)?[\\w." ]+)', 'g');
 
-const capturePropertyNameAndAnnotations = new RegExp('(@[\\w =,"()@ .]+)?private \\w+ (\\w+);');
+const capturePropertyNameAndAnnotations = new RegExp('(@[\\w =,"()@ .]+)?(?:private|protected|public) \\w+ (\\w+);');
 const captureClassNameAndAnnotations = new RegExp('(@[\\w =,"()@ .]+)?public (?:abstract )?[@\\w]+ (\\w+)');
 const captureNameAndValueAttribute = new RegExp('(?:([\\w ]+)=)?(?:[ "]+)?([\\w .]+)"?');
 

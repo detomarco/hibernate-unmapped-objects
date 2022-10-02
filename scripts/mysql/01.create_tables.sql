@@ -6,7 +6,8 @@ CREATE TABLE IF NOT EXISTS `SimpleEntity`
     `date`           TIMESTAMP   DEFAULT CURRENT_TIMESTAMP,
     `field`          VARCHAR(36) DEFAULT NULL,
     `who`            VARCHAR(36) NOT NULL,
-    `unmappedColumn` VARCHAR(36) NOT NULL
+    `unmappedColumn` VARCHAR(36) NOT NULL,
+    `modifiedAt`     TIMESTAMP   DEFAULT CURRENT_TIMESTAMP
 );
 
 
@@ -16,6 +17,11 @@ CREATE TABLE IF NOT EXISTS `Tables`
 );
 
 CREATE TABLE IF NOT EXISTS `UnmappedTable`
+(
+    `id` VARCHAR(36) PRIMARY KEY
+);
+
+CREATE TABLE IF NOT EXISTS `schema_version`
 (
     `id` VARCHAR(36) PRIMARY KEY
 );

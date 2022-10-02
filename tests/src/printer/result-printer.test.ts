@@ -1,49 +1,46 @@
-import { scrapePath } from '../../../src/scraper/scraper';
-import { tableEntityClass } from '../fixture/scraper.fixture';
-import { enhanceJavaClass } from '../../../src/data-enhance/data-enhance';
-import { tableEntityTable } from '../fixture/data-enhance.fixture';
-import { printResults } from "../../../src/printer/result-printer";
+import { printResults } from '../../../src/printer/result-printer';
 
 describe('should print results', () => {
 
     it('when unmapped table are detected ', () => {
-        spyOn(console, 'log');
-        printResults({ unmappedTables: ['unmapped Table'], unmappedColumns: {} });
-        expect(console.log).toHaveBeenCalledWith('\nUnmapped tables', ['unmapped Table']);
+
+        const printerResults = printResults(
+            { unmappedTables: ['unmapped Table', 'schema_version'], unmappedColumns: {} },
+            {
+                ignoreTables: ['schema_version'],
+                ignoreColumns: []
+            }
+        );
+        expect(printerResults.unmappedTablesFound).toBe(true);
     });
 
     it('when unmapped columns are detected ', () => {
-        spyOn(console, 'log');
-        spyOn(console, 'table');
-        printResults({
+
+        const printerResults = printResults({
             unmappedTables: [],
             unmappedColumns: {
-                'entity': ['unmapped column', 'second unmapped column']
+                'entity': ['unmapped column', 'second unmapped column', 'ignored_column']
             }
+        }, {
+            ignoreTables: [],
+            ignoreColumns: ['ignored_column']
         });
 
-        expect(console.log).toHaveBeenCalledWith('\nUnmapped columns');
-        expect(console.table).toHaveBeenCalledWith([{
-            table: 'entity',
-            columns: 'unmapped column, second unmapped column'
-        }]);
-    });
-
-    it('when class with different table name', () => {
-        const javaClass = scrapePath(tableEntityClass.filePath);
-        const table = enhanceJavaClass(javaClass[0]);
-        expect(table).toEqual(tableEntityTable);
+        expect(printerResults.unmappedColumnFound).toBe(true);
     });
 
 });
 
-
 describe('should print no results message', () => {
 
     it('when no unmapped columns are detected', () => {
-        spyOn(console, 'log');
-        printResults({ unmappedTables: [], unmappedColumns: {} });
-        expect(console.log).toHaveBeenCalledWith('No unmapped objects have been detected. Good job! 👍');
+
+        const printerResults = printResults({ unmappedTables: [], unmappedColumns: {} }, {
+            ignoreTables: [],
+            ignoreColumns: []
+        });
+        expect(printerResults.unmappedColumnFound).toBe(false);
+        expect(printerResults.unmappedTablesFound).toBe(false);
     });
 
 });
