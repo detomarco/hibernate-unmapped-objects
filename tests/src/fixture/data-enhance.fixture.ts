@@ -11,3 +11,15 @@ export const tableEntityTable: JavaTable = {
     name: 'Tables',
     columns: ['id']
 };
+
+export const childEntityTable: JavaTable = {
+    filePath: './tests/resources/ChildEntity.java',
+    name: 'ChildEntity',
+    columns: [ 'id', 'field']
+};
+
+export const childEntity2Table: JavaTable = {
+    filePath: './tests/resources/ChildEntity2.java',
+    name: 'ChildEntity2',
+    columns: [ 'id', 'field']
+};
