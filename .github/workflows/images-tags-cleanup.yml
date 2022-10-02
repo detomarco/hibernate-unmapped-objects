@@ -3,7 +3,6 @@ name: Images and tags cleanup
 
 on:
   pull_request:
-    types: [closed]
 
 env:
   ORG: ${{ github.repository_owner }}
@@ -11,7 +10,35 @@ env:
   PR_NUMBER: ${{ github.event.number }}
 
 jobs:
+
+  tag:
+    name: Tag
+    runs-on: ubuntu-latest
+    concurrency:
+      group: tag
+      cancel-in-progress: false
+    outputs:
+      new_tag: ${{ steps.pushtag.outputs.new_tag }}
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Push new tag
+        id: pushtag
+        # v1.38.0 does not work (see issue https://github.com/anothrNick/github-tag-action/issues/135)
+        uses: anothrNick/github-tag-action@1.36.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GHCR_TOKEN }}
+          WITH_V: true
+          DEFAULT_BUMP: PATCH
+          PRERELEASE_SUFFIX: PR${{ env.PR_NUMBER }}
+
+      - name: Add tag to summary
+        run: echo 'Tag `${{ steps.pushtag.outputs.new_tag }}`' >> $GITHUB_STEP_SUMMARY
+
   get_tags:
+    needs: tag
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.matrix.outputs.value }}
@@ -44,6 +71,8 @@ jobs:
       matrix:
         value: ${{ fromJson(needs.get_tags.outputs.matrix) }}
     steps:
+      - name: Print
+        run: echo ${{ env.ORG }} - ${{ env.REPOSITORY }} - ${{ matrix.value }}
       - name: Delete image
         uses: bots-house/ghcr-delete-image-action@v1.0.1
         with:
