@@ -6,7 +6,7 @@ import { scrapePath } from './scraper/scraper';
 import { ConfigProperties } from './model/model';
 import { getDatabaseTables } from './database/connection';
 import { compare } from './comparator/table-comparator';
-import { printResults } from './result-printer/result-printer';
+import { printResults } from './printer/result-printer';
 import { AnnotationType } from './scraper/scraper.model';
 import { DbTable } from "./database/db.model";
 import { UnmappedObjects } from "./comparator/table-comparator.model";
