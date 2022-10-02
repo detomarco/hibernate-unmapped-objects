@@ -129,7 +129,13 @@ const getParentLocation = (superClassName: string, javaFilePath: string, content
         }
         return `${cdUp(javaFilePath)}/${superClassName}.java`
     }
-    return findFilePathFromImportPath(javaFilePath, superClassImport) + '.java';
+
+    const superClassLocation = findFilePathFromImportPath(javaFilePath, superClassImport);
+    if (superClassLocation === undefined) {
+        log.debug(`Super class detect in ${javaFilePath} but non found in the same folder. Does it belong to an external library?`)
+        return undefined
+    }
+    return superClassLocation + '.java';
 }
 
 const scrapeSuperClass = (javaFilePath: string, content: string): JavaClass | undefined => {
