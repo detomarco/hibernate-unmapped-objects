@@ -2,9 +2,9 @@ import { childEntityTable, simpleEntityTable, tableEntityTable } from './fixture
 import { main } from '../../src/main';
 import { LogLevel } from '../../src/model/model';
 
-describe('should list unmapped objects', function () {
+describe('should list unmapped objects', () => {
 
-    it('when run script', async () => {
+    it('when run script', async() => {
 
         const { javaEntities, databaseTables, results } = await main({
             showStacktrace: true,
@@ -32,8 +32,7 @@ describe('should list unmapped objects', function () {
             .toEqual(jasmine.arrayWithExactContents(['UnmappedTable', 'schema_version']));
 
         expect(results.unmappedColumns['SimpleEntity'])
-            .toEqual(jasmine.arrayWithExactContents(['who', 'unmappedColumn', 'modifiedAt']))
-
+            .toEqual(jasmine.arrayWithExactContents(['who', 'unmappedColumn', 'modifiedAt']));
 
     });
 
