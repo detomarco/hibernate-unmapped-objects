@@ -3,9 +3,6 @@ name: Pipeline test
 
 on:
   pull_request:
-  push:
-    branches:
-      - main
 
 concurrency:
   group: pipeline-test-${{ github.event.number }}
