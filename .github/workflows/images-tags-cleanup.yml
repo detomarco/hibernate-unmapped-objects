@@ -71,7 +71,8 @@ jobs:
       matrix:
         value: ${{ fromJson(needs.get_tags.outputs.matrix) }}
     steps:
-      -
+      - name: Print
+        run: echo ${{ env.ORG }} - ${{ env.REPOSITORY }} - ${{ matrix.value }}
       - name: Delete image
         uses: bots-house/ghcr-delete-image-action@v1.0.1
         with:
