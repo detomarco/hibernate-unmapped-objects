@@ -5,6 +5,8 @@ export interface ConfigProperties {
     logLevel: LogLevel,
     showStacktrace: boolean
     entitiesFolderPath: string,
+    ignoreTables: string[],
+    ignoreColumns: string[]
     db: DbProperties
 }
 export type SupportedDb = 'mysql';

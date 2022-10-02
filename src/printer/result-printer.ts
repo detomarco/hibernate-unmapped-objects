@@ -1,10 +1,14 @@
 import { UnmappedObjects } from '../comparator/table-comparator.model';
 import { errorRegister } from '../utils/error-register';
+import { ConfigProperties } from "../model/model";
 
-export const printResults = (unmappedObjects: UnmappedObjects): void => {
-    if (unmappedObjects.unmappedTables.length > 0) {
-        console.log(`\n ${unmappedObjects.unmappedTables.length} unmapped tables detected`);
-        console.log(unmappedObjects.unmappedTables);
+export const printResults = (unmappedObjects: UnmappedObjects, config: ConfigProperties): void => {
+    const unmappedTables = unmappedObjects.unmappedTables
+        .filter(it => !config.ignoreTables.some(c => c == it))
+
+    if (unmappedTables.length > 0) {
+        console.log(`\n ${unmappedTables} unmapped tables detected`);
+        console.log(unmappedTables);
     }
 
     if (Object.keys(unmappedObjects.unmappedColumns).length > 0) {
