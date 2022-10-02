@@ -15,9 +15,7 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
   PR_NUMBER: ${{ github.event.number }}
-  BRANCH: ${{ github.ref }}
   ACTOR: ${{ github.actor }}
-  COMMENT_TAG_HEADER: 'Last tag'
 
 jobs:
   tag:

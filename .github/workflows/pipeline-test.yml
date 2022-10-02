@@ -11,6 +11,13 @@ concurrency:
   group: unit-tests
   cancel-in-progress: true
 
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+  PR_NUMBER: ${{ github.event.number }}
+  ACTOR: ${{ github.actor }}
+  COMMENT_TAG_HEADER: 'Last tag'
+
 jobs:
   unit-tests:
     name: Unit tests
