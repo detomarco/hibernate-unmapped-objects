@@ -8,7 +8,7 @@ on:
       - main
 
 concurrency:
-  group: unit-tests
+  group: pipeline-test-${{ github.event.number }}
   cancel-in-progress: true
 
 env:
