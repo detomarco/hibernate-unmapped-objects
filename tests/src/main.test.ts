@@ -4,7 +4,7 @@ import { LogLevel } from '../../src/model/model';
 
 describe('should list unmapped objects', function () {
 
-    it('when run script', async() => {
+    it('when run script', async () => {
 
         const { javaEntities, databaseTables, results } = await main({
             showStacktrace: true,
@@ -23,17 +23,17 @@ describe('should list unmapped objects', function () {
                 schema: 'huo'
             }
         });
-
-        expect(javaEntities).toEqual(jasmine.arrayWithExactContents(
-            [simpleEntityTable, tableEntityTable, childEntityTable, childEntityTable]
-        ));
         expect(databaseTables).toHaveSize(4);
-        expect(results).toEqual({
-            unmappedTables: ['UnmappedTable', 'schema_version'],
-            unmappedColumns: {
-                'SimpleEntity': ['modifiedAt', 'unmappedColumn', 'who']
-            }
-        });
+
+        expect(javaEntities)
+            .toEqual(jasmine.arrayWithExactContents([simpleEntityTable, tableEntityTable, childEntityTable, childEntityTable]));
+
+        expect(results.unmappedTables)
+            .toEqual(jasmine.arrayWithExactContents(['UnmappedTable', 'schema_version']));
+
+        expect(results.unmappedColumns['SimpleEntity'])
+            .toEqual(jasmine.arrayWithExactContents(['who', 'unmappedColumn', 'modifiedAt']))
+
 
     });
 
