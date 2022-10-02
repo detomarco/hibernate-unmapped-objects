@@ -2,13 +2,15 @@
   "entitiesFolderPath": "./tests",
   "showStacktrace": true,
   "logLevel": "INFO",
-  "ignoreColumns": [
-    "modified",
-    "createdAt"
-  ],
-  "ignoreTables": [
-    "schema_version"
-  ],
+  "printer": {
+    "ignoreColumns": [
+      "modified",
+      "createdAt"
+    ],
+    "ignoreTables": [
+      "schema_version"
+    ]
+  },
   "db": {
     "type": "mysql",
     "host": "localhost",
