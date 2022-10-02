@@ -2,9 +2,9 @@ import { childEntityTable, simpleEntityTable, tableEntityTable } from './fixture
 import { main } from '../../src/main';
 import { LogLevel } from '../../src/model/model';
 
-describe('should list unmapped objects', function () {
+describe('should list unmapped objects', function() {
 
-    it('when run script', async () => {
+    it('when run script', async() => {
 
         const { javaEntities, databaseTables, results } = await main({
             showStacktrace: true,
@@ -12,7 +12,7 @@ describe('should list unmapped objects', function () {
             entitiesFolderPath: './tests',
             printer: {
                 ignoreTables: ['schema_version'],
-                ignoreColumns: ['modifiedAt'],
+                ignoreColumns: ['modifiedAt']
             },
             db: {
                 type: 'mysql',
@@ -34,7 +34,6 @@ describe('should list unmapped objects', function () {
                 'SimpleEntity': ['unmappedColumn', 'who']
             }
         });
-
 
     });
 

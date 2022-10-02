@@ -8,8 +8,8 @@ import { getDatabaseTables } from './database/connection';
 import { compare } from './comparator/table-comparator';
 import { printResults } from './printer/result-printer';
 import { AnnotationType } from './scraper/scraper.model';
-import { DbTable } from "./database/db.model";
-import { UnmappedObjects } from "./comparator/table-comparator.model";
+import { DbTable } from './database/db.model';
+import { UnmappedObjects } from './comparator/table-comparator.model';
 
 interface ScriptResults {
     javaEntities: JavaTable[],
@@ -17,7 +17,7 @@ interface ScriptResults {
     results: UnmappedObjects
 }
 
-export const main = async (config: ConfigProperties): Promise<ScriptResults> => {
+export const main = async(config: ConfigProperties): Promise<ScriptResults> => {
 
     const databaseTables = await getDatabaseTables(config.db);
     log.debug('database table', databaseTables);

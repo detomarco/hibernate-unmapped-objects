@@ -1,10 +1,10 @@
 import { UnmappedObjects } from '../comparator/table-comparator.model';
 import { errorRegister } from '../utils/error-register';
-import { PrinterProperties } from "../model/model";
+import { PrinterProperties } from '../model/model';
 
 export const printResults = (unmappedObjects: UnmappedObjects, config: PrinterProperties): void => {
     const unmappedTables = unmappedObjects.unmappedTables
-        .filter(it => !config.ignoreTables.some(t => t == it))
+        .filter(it => !config.ignoreTables.some(t => t === it));
 
     if (unmappedTables.length > 0) {
         console.log(`\n ${unmappedTables} unmapped tables detected`);
@@ -16,11 +16,11 @@ export const printResults = (unmappedObjects: UnmappedObjects, config: PrinterPr
 
         const unmappedColumns = Object.keys(unmappedObjects.unmappedColumns)
             .map(key => {
-                const unmappedColumnsView = unmappedObjects.unmappedColumns[key]
+                const unmappedColumnsView = unmappedObjects.unmappedColumns[key];
                 return {
                     table: key,
-                    columns: unmappedColumnsView.filter(it => !config.ignoreColumns.some(t => t == it))
-                }
+                    columns: unmappedColumnsView.filter(it => !config.ignoreColumns.some(t => t === it))
+                };
             })
             .filter(it => it.columns.length > 0)
             .map(it => ({
