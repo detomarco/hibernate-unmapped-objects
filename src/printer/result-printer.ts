@@ -44,5 +44,5 @@ export const printResults = (unmappedObjects: UnmappedObjects, config: PrinterPr
         unmappedTablesFound,
         unmappedColumnFound,
         errorsDetected
-    }
+    };
 };
