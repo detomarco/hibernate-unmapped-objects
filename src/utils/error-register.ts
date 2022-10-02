@@ -29,13 +29,15 @@ class ErrorRegister {
         this.registry[level] = this.registry[level] ? this.registry[level] + 1 : 1;
     }
 
-    printReport(): void {
+    printReport(): boolean {
         if (this.registry !== undefined) {
             console.log('\n====================');
             console.log('    ERROR REPORT');
             console.table(this.registry);
+            return true;
         } else {
             console.log('\nNo errors detected 🎉');
+            return false;
         }
     }
 

@@ -2,16 +2,16 @@ import { UnmappedObjects } from '../comparator/table-comparator.model';
 import { errorRegister } from '../utils/error-register';
 import { PrinterProperties } from '../model/model';
 
-export const printResults = (unmappedObjects: UnmappedObjects, config: PrinterProperties): void => {
+export const printResults = (unmappedObjects: UnmappedObjects, config: PrinterProperties): { unmappedTablesFound: boolean; unmappedColumnFound: boolean; errorsDetected: boolean } => {
     const unmappedTables = unmappedObjects.unmappedTables
         .filter(it => !config.ignoreTables.some(t => t === it));
-
-    if (unmappedTables.length > 0) {
+    const unmappedTablesFound = unmappedTables.length > 0;
+    if (unmappedTablesFound) {
         console.log(`\n ${unmappedTables} unmapped tables detected`);
         console.log(unmappedTables);
     }
 
-    let missingColumnFound = false;
+    let unmappedColumnFound = false;
     if (Object.keys(unmappedObjects.unmappedColumns).length > 0) {
 
         const unmappedColumns = Object.keys(unmappedObjects.unmappedColumns)
@@ -28,16 +28,21 @@ export const printResults = (unmappedObjects: UnmappedObjects, config: PrinterPr
                 columns: it.columns.join(', ')
             }));
         if (Object.keys(unmappedColumns).length > 0) {
-            missingColumnFound = true;
+            unmappedColumnFound = true;
             console.log(`\n ${Object.keys(unmappedColumns).length} unmapped columns detected`);
             console.table(unmappedColumns);
         }
 
     }
 
-    if (unmappedTables.length === 0 && !missingColumnFound) {
+    if (!unmappedTablesFound && !unmappedColumnFound) {
         console.log('No unmapped objects have been detected. Good job! 👍');
     }
 
-    errorRegister.printReport();
+    const errorsDetected = errorRegister.printReport();
+    return {
+        unmappedTablesFound,
+        unmappedColumnFound,
+        errorsDetected
+    }
 };

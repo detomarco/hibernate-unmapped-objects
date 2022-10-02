@@ -2,23 +2,21 @@ import { printResults } from '../../../src/printer/result-printer';
 
 describe('should print results', () => {
 
-    fit('when unmapped table are detected ', () => {
-        spyOn(console, 'log');
-        printResults(
+    it('when unmapped table are detected ', () => {
+
+        const printerResults = printResults(
             { unmappedTables: ['unmapped Table', 'schema_version'], unmappedColumns: {} },
             {
                 ignoreTables: ['schema_version'],
                 ignoreColumns: []
             }
         );
-        expect(console.log).toHaveBeenCalledWith('\n 1 unmapped tables detected');
-        expect(console.log).toHaveBeenCalledWith(['unmapped Table']);
+        expect(printerResults.unmappedTablesFound).toBe(true);
     });
 
     it('when unmapped columns are detected ', () => {
-        spyOn(console, 'log');
-        spyOn(console, 'table');
-        printResults({
+
+        const printerResults = printResults({
             unmappedTables: [],
             unmappedColumns: {
                 'entity': ['unmapped column', 'second unmapped column', 'ignored_column']
@@ -28,11 +26,7 @@ describe('should print results', () => {
             ignoreColumns: ['ignored_column']
         });
 
-        expect(console.log).toHaveBeenCalledWith('\nUnmapped columns');
-        expect(console.table).toHaveBeenCalledWith([{
-            table: 'entity',
-            columns: 'unmapped column, second unmapped column'
-        }]);
+        expect(printerResults.unmappedColumnFound).toBe(true);
     });
 
 });
@@ -40,12 +34,13 @@ describe('should print results', () => {
 describe('should print no results message', () => {
 
     it('when no unmapped columns are detected', () => {
-        spyOn(console, 'log');
-        printResults({ unmappedTables: [], unmappedColumns: {} }, {
+
+        const printerResults = printResults({ unmappedTables: [], unmappedColumns: {} }, {
             ignoreTables: [],
             ignoreColumns: []
         });
-        expect(console.log).toHaveBeenCalledWith('No unmapped objects have been detected. Good job! 👍');
+        expect(printerResults.unmappedColumnFound).toBe(false);
+        expect(printerResults.unmappedTablesFound).toBe(false);
     });
 
 });
