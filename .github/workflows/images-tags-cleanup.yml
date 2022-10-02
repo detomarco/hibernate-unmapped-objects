@@ -3,15 +3,92 @@ name: Images and tags cleanup
 
 on:
   pull_request:
-    types: [closed]
 
 env:
   ORG: ${{ github.repository_owner }}
   REPOSITORY: ${{ github.event.repository.name }}
   PR_NUMBER: ${{ github.event.number }}
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+  ACTOR: ${{ github.actor }}
 
 jobs:
+
+  tag:
+    name: Tag
+    runs-on: ubuntu-latest
+    concurrency:
+      group: tag
+      cancel-in-progress: false
+    outputs:
+      new_tag: ${{ steps.pushtag.outputs.new_tag }}
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Push new tag
+        id: pushtag
+        # v1.38.0 does not work (see issue https://github.com/anothrNick/github-tag-action/issues/135)
+        uses: anothrNick/github-tag-action@1.36.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GHCR_TOKEN }}
+          WITH_V: true
+          DEFAULT_BUMP: PATCH
+          PRERELEASE_SUFFIX: PR${{ env.PR_NUMBER }}
+
+      - name: Add tag to summary
+        run: echo 'Tag `${{ steps.pushtag.outputs.new_tag }}`' >> $GITHUB_STEP_SUMMARY
+
+  publish:
+    name: Publish
+    runs-on: ubuntu-latest
+    needs: tag
+    permissions:
+      contents: read
+      packages: write
+    outputs:
+      new_tag: ${{ steps.new_tag.outputs.new_tag }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v2.0.0
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ env.ACTOR }}
+          password: ${{ secrets.GHCR_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v4.0.1
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=raw,value=${{ needs.tag.outputs.new_tag }}
+
+      - name: Set image name
+        id: image_name
+        uses: ASzc/change-string-case-action@v2
+        with:
+          string: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v3.1.1
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          build-args: |
+            REVISION=${{ needs.tag.outputs.new_tag }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Set output
+        id: new_tag
+        run: echo ::set-output name=new_tag::${{ needs.tag.outputs.new_tag }}
+
   get_tags:
+    needs: tag
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.matrix.outputs.value }}
@@ -44,6 +121,8 @@ jobs:
       matrix:
         value: ${{ fromJson(needs.get_tags.outputs.matrix) }}
     steps:
+      - name: Print
+        run: echo ${{ env.ORG }} - ${{ env.REPOSITORY }} - ${{ matrix.value }}
       - name: Delete image
         uses: bots-house/ghcr-delete-image-action@v1.0.1
         with:
