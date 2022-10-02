@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS `SimpleEntity`
     `field`          VARCHAR(36) DEFAULT NULL,
     `who`            VARCHAR(36) NOT NULL,
     `unmappedColumn` VARCHAR(36) NOT NULL,
-    'modifiedAt'     TIMESTAMP   DEFAULT CURRENT_TIMESTAMP
+    `modifiedAt`     TIMESTAMP   DEFAULT CURRENT_TIMESTAMP
 );
 
 
