@@ -1,4 +1,4 @@
-export const matchGroupMultiple = (s: string, regex: RegExp): string[] => {
+export const matchGroupList = (s: string, regex: RegExp): string[] => {
     const groups: string[] = [];
     for (const match of s.matchAll(regex)) {
         groups.push(match[0].trim());
@@ -11,4 +11,12 @@ export const matchGroups = (s: string, regex: RegExp): { first: string | undefin
     const first = propertyParts[1]?.trim();
     const second = propertyParts[2]?.trim();
     return { first, second };
+};
+
+export const matchGroup = (s: string, regex: RegExp): string | undefined => {
+    const propertyParts = s.match(regex)!;
+    if (!propertyParts) {
+        return undefined;
+    }
+    return propertyParts[1]?.trim();
 };

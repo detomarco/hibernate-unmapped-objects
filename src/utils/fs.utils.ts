@@ -5,7 +5,7 @@ const CONFIG_FILE = '.huo.json';
 
 export const getConfigFile = (): ConfigProperties => {
     const configContent: string = fs.readFileSync(CONFIG_FILE, 'utf-8');
-    const config =  JSON.parse(configContent);
+    const config = JSON.parse(configContent);
 
     return {
         ...config,
@@ -16,7 +16,7 @@ export const getConfigFile = (): ConfigProperties => {
 
 export const getFiles = (path: string, javaFileRegex: RegExp): string[] => {
 
-    if (!fs.existsSync(path)) {
+    if (!fileExists(path)) {
         throw new Error(`Path '${path}' does not exist`);
     }
 
@@ -42,3 +42,5 @@ export const getFiles = (path: string, javaFileRegex: RegExp): string[] => {
 };
 
 export const readFile = (filePath: string): string => fs.readFileSync(filePath, 'utf-8');
+
+export const fileExists = (path: string): boolean => fs.existsSync(path);
