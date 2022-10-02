@@ -9,7 +9,8 @@ describe('should print results', () => {
     it('when unmapped table are detected ', () => {
         spyOn(console, 'log');
         printResults({ unmappedTables: ['unmapped Table'], unmappedColumns: {} });
-        expect(console.log).toHaveBeenCalledWith('\nUnmapped tables', ['unmapped Table']);
+        expect(console.log).toHaveBeenCalledWith('\n 1 unmapped tables detected');
+        expect(console.log).toHaveBeenCalledWith(['unmapped Table']);
     });
 
     it('when unmapped columns are detected ', () => {
