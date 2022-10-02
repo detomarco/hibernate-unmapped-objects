@@ -7,6 +7,12 @@ on:
     branches:
       - main
 
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+  PR_NUMBER: ${{ github.event.number }}
+  ACTOR: ${{ github.actor }}
+
 concurrency:
   group: unit-tests
   cancel-in-progress: true
