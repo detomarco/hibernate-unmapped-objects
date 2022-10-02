@@ -45,25 +45,12 @@ jobs:
         value: ${{ fromJson(needs.get_tags.outputs.matrix) }}
     steps:
       - name: Delete image
-        continue-on-error: true
         uses: bots-house/ghcr-delete-image-action@v1.0.1
         with:
           owner: ${{ env.ORG }}
           name: ${{ env.REPOSITORY }}
-          token: ${{ secrets.GHCR_ACCESS_TOKEN }}
+          token: ${{ secrets.GHCR_TOKEN }}
           tag: ${{ matrix.value }}
 
-  delete_tags:
-    needs: get_tags
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Fetch tags
-        run: git fetch --tags
-
-      - name: Cleanup tags
-        continue-on-error: true
-        run: git tag -l "*PR${{ env.PR_NUMBER }}*" | xargs git push -d origin || true
+      - name: Delete tag
+        run: git push -d origin ${{ matrix.value }}
