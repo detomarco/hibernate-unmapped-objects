@@ -97,7 +97,6 @@ export const annotationClass: JavaClass = {
     properties: []
 };
 
-
 export const childClass: JavaClass = {
     filePath: './tests/resources/ChildEntity.java',
     name: 'ChildEntity',

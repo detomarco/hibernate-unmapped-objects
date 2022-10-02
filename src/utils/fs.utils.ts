@@ -5,7 +5,7 @@ const CONFIG_FILE = '.huo.json';
 
 export const getConfigFile = (): ConfigProperties => {
     const configContent: string = fs.readFileSync(CONFIG_FILE, 'utf-8');
-    const config =  JSON.parse(configContent);
+    const config = JSON.parse(configContent);
 
     return {
         ...config,
@@ -43,6 +43,4 @@ export const getFiles = (path: string, javaFileRegex: RegExp): string[] => {
 
 export const readFile = (filePath: string): string => fs.readFileSync(filePath, 'utf-8');
 
-export const fileExists = (path: string): boolean => {
-    return fs.existsSync(path);
-};
+export const fileExists = (path: string): boolean => fs.existsSync(path);

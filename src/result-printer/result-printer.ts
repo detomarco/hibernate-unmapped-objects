@@ -16,10 +16,9 @@ export const printResults = (unmappedObjects: UnmappedObjects): void => {
         console.table(unmappedColumnsView);
     }
 
-    if (unmappedObjects.unmappedTables.length === 0 && Object.keys(unmappedObjects.unmappedColumns).length === 0)  {
-        console.log("No unmapped objects have been detected. Good job! 👍")
+    if (unmappedObjects.unmappedTables.length === 0 && Object.keys(unmappedObjects.unmappedColumns).length === 0) {
+        console.log('No unmapped objects have been detected. Good job! 👍');
     }
-
 
     errorRegister.printReport();
 };

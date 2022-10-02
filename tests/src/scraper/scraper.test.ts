@@ -37,7 +37,6 @@ describe('should scrape class', () => {
 
 });
 
-
 describe('should detect and scraper parent class', () => {
 
     it('when parent is in the same folder', () => {
@@ -50,9 +49,7 @@ describe('should detect and scraper parent class', () => {
         expect(javaClass).toEqual([child2Class]);
     });
 
-
 });
-
 
 describe('should raise error', () => {
 

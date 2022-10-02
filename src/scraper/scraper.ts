@@ -7,14 +7,14 @@ import { MapString } from '../model/model';
 import { AnnotationTypeString } from '../data-enhance/data-enhace.model';
 import { fileExists, getFiles, readFile } from '../utils/fs.utils';
 import { ErrorLevel, errorRegister } from '../utils/error-register';
-import { cdUp, findFilePathFromImportPath } from "../utils/path.utils";
+import { cdUp, findFilePathFromImportPath } from '../utils/path.utils';
 
 // regex file
 const javaFileRegex = new RegExp('.*.java$');
 
 // regex class
 const classFieldRegex = new RegExp('(?:@[\\w =,"()@ .]+)? private \\w+ \\w+;', 'g');
-const classCaptureParentName = new RegExp("class \\w+ extends (\\w+) {");
+const classCaptureParentName = new RegExp('class \\w+ extends (\\w+) {');
 
 const captureFieldAnnotationRegex = new RegExp('(@\\w+(?:\\([ \\w=.,")]+)?)', 'g');
 const captureAnnotationNameAndAttribute = new RegExp('@(\\w+)(?:\\(([ \\w=.,"]+)\\))?');
@@ -118,37 +118,37 @@ const getProperties = (content: string): ClassProperty[] => {
     }
 };
 
-const getParentLocation = (superClassName: string, javaFilePath: string, content: string): string | undefined => {
-    const importCaptureLocationRegex = new RegExp(`import ([\\w.]+${superClassName});`)
+const getSuperClassLocation = (superClassName: string, javaFilePath: string, content: string): string | undefined => {
+    const importCaptureLocationRegex = new RegExp(`import ([\\w.]+${superClassName});`);
     const superClassImport = matchGroup(content, importCaptureLocationRegex);
     if (superClassImport === undefined) {
         const superClassLocation = `${cdUp(javaFilePath)}/${superClassName}.java`;
         if (!fileExists(superClassLocation)) {
-            log.debug(`Super class detect in ${javaFilePath} but non found in the same folder. Maybe an internal class of Java?`)
+            log.debug(`Super class detect in ${javaFilePath} but non found in the same folder. Maybe an internal class of Java?`);
             return undefined;
         }
-        return `${cdUp(javaFilePath)}/${superClassName}.java`
+        return `${cdUp(javaFilePath)}/${superClassName}.java`;
     }
 
     const superClassLocation = findFilePathFromImportPath(javaFilePath, superClassImport);
     if (superClassLocation === undefined) {
-        log.debug(`Super class detect in ${javaFilePath} but non found in the same folder. Does it belong to an external library?`)
-        return undefined
+        log.debug(`Super class detect in ${javaFilePath} but non found in the same folder. Does it belong to an external library?`);
+        return undefined;
     }
-    return superClassLocation + '.java';
-}
+    return `${superClassLocation }.java`;
+};
 
 const scrapeSuperClass = (javaFilePath: string, content: string): JavaClass | undefined => {
     const superClassName = matchGroup(content, classCaptureParentName);
     if (superClassName === undefined) {
-        return undefined
+        return undefined;
     }
-    const superClassLocation = getParentLocation(superClassName, javaFilePath, content);
+    const superClassLocation = getSuperClassLocation(superClassName, javaFilePath, content);
     if (superClassLocation === undefined) {
-        log.warn(`Super class detect in ${javaFilePath} but location not found, skip it.`)
-        return undefined
+        log.warn(`Super class detect in ${javaFilePath} but location not found, skip it.`);
+        return undefined;
     }
-    return readAndScrape(superClassLocation, javaFilePath)
+    return readAndScrape(superClassLocation, javaFilePath);
 };
 
 const scrapeJavaClass = (javaFilePath: string, content: string): JavaClass | undefined => {
@@ -159,7 +159,7 @@ const scrapeJavaClass = (javaFilePath: string, content: string): JavaClass | und
         const properties = getProperties(contentSanitized);
         log.trace(`properties ${javaFilePath}`, properties);
 
-        const superClass = scrapeSuperClass(javaFilePath, contentSanitized)
+        const superClass = scrapeSuperClass(javaFilePath, contentSanitized);
         const classInfo = getClassInfo(javaFilePath, contentSanitized);
         return {
             filePath: javaFilePath,
@@ -189,7 +189,6 @@ export const readAndScrape = (javaFilePath: string, origin: string): JavaClass |
     }
 
 };
-
 
 export const scrapePath = (folder: string): JavaClass[] => {
     const javaFiles = getFiles(folder, javaFileRegex);
