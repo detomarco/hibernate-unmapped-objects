@@ -1,12 +1,16 @@
 
 export type MapString = { [key: string]: string }
 
+export interface PrinterProperties {
+    ignoreTables: string[],
+    ignoreColumns: string[]
+}
+
 export interface ConfigProperties {
     logLevel: LogLevel,
     showStacktrace: boolean
     entitiesFolderPath: string,
-    ignoreTables: string[],
-    ignoreColumns: string[]
+    printer: PrinterProperties
     db: DbProperties
 }
 export type SupportedDb = 'mysql';
@@ -18,8 +22,6 @@ export interface DbProperties {
     schema: string,
     port: number
 }
-
-export type LogLevelString = 'TRACE' | 'DEBUG' | 'INFO' | 'WARN' | 'ERROR';
 
 export enum LogLevel {
     ERROR,

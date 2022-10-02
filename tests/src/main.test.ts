@@ -10,6 +10,10 @@ describe('should list unmapped objects', function () {
             showStacktrace: true,
             logLevel: LogLevel.TRACE,
             entitiesFolderPath: './tests',
+            printer: {
+                ignoreTables: ['schema_version'],
+                ignoreColumns: ['modifiedAt'],
+            },
             db: {
                 type: 'mysql',
                 host: 'localhost',

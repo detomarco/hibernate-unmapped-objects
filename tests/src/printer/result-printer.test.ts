@@ -6,9 +6,15 @@ import { printResults } from "../../../src/printer/result-printer";
 
 describe('should print results', () => {
 
-    it('when unmapped table are detected ', () => {
+    fit('when unmapped table are detected ', () => {
         spyOn(console, 'log');
-        printResults({ unmappedTables: ['unmapped Table'], unmappedColumns: {} });
+        printResults(
+            { unmappedTables: ['unmapped Table'], unmappedColumns: {} },
+            {
+                ignoreTables: ['schema_version'],
+                ignoreColumns: ['modifiedAt'],
+            }
+        );
         expect(console.log).toHaveBeenCalledWith('\n 1 unmapped tables detected');
         expect(console.log).toHaveBeenCalledWith(['unmapped Table']);
     });
@@ -20,7 +26,10 @@ describe('should print results', () => {
             unmappedTables: [],
             unmappedColumns: {
                 'entity': ['unmapped column', 'second unmapped column']
-            }
+            },
+        }, {
+            ignoreTables: ['schema_version'],
+            ignoreColumns: ['modifiedAt'],
         });
 
         expect(console.log).toHaveBeenCalledWith('\nUnmapped columns');
@@ -43,7 +52,10 @@ describe('should print no results message', () => {
 
     it('when no unmapped columns are detected', () => {
         spyOn(console, 'log');
-        printResults({ unmappedTables: [], unmappedColumns: {} });
+        printResults({ unmappedTables: [], unmappedColumns: {} }, {
+            ignoreTables: ['schema_version'],
+            ignoreColumns: ['modifiedAt'],
+        });
         expect(console.log).toHaveBeenCalledWith('No unmapped objects have been detected. Good job! 👍');
     });
 

@@ -36,7 +36,7 @@ export const main = async (config: ConfigProperties): Promise<ScriptResults> => 
 
     const unmappedObjects = compare(databaseTables, javaEntities);
 
-    printResults(unmappedObjects, config);
+    printResults(unmappedObjects, config.printer);
 
     return {
         javaEntities: javaEntities,
