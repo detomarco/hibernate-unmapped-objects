@@ -4,7 +4,7 @@ import { LogLevel } from '../../src/model/model';
 
 describe('should list unmapped objects', function () {
 
-    it('when run script', async () => {
+    fit('when run script', async() => {
 
         const { javaEntities, databaseTables, results } = await main({
             showStacktrace: true,
