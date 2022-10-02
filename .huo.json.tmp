@@ -3,7 +3,7 @@
   "logLevel": "INFO",
   "printer": {
       "ignoreColumns": ["modifiedAt"],
-      "ignoreTables": ["migrations"]
+      "ignoreTables": [ "migrations"]
    },
   "db": {
     "type": "",
