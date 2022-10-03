@@ -10,6 +10,7 @@ export const simpleEntityClass: JavaClass = {
     }],
     properties: [{
         name: 'id',
+        type: 'Long',
         annotations: [{
             name: AnnotationType.Id,
             attributes: {}
@@ -28,12 +29,19 @@ export const simpleEntityClass: JavaClass = {
         }]
     }, {
         name: 'date',
+        type: 'Date',
         annotations: []
     }, {
         name: 'field',
+        type: 'String',
+        annotations: []
+    }, {
+        name: 'embedded',
+        type: 'String',
         annotations: []
     }, {
         name: 'who',
+        type: 'User',
         annotations: [{
             name: AnnotationType.ManyToOne,
             attributes: {
@@ -64,6 +72,7 @@ export const tableEntityClass: JavaClass = {
     }],
     properties: [{
         name: 'id',
+        type: 'Long',
         annotations: []
     }]
 };
@@ -107,15 +116,19 @@ export const childClass: JavaClass = {
     }],
     properties: [{
         name: 'id',
+        type: 'Long',
         annotations: []
     }, {
         name: 'protectedField',
+        type: 'String',
         annotations: []
     }, {
         name: 'publicField',
+        type: 'String',
         annotations: []
     }, {
         name: 'field',
+        type: 'String',
         annotations: []
     }]
 };
@@ -130,9 +143,30 @@ export const child2Class: JavaClass = {
     }],
     properties: [{
         name: 'id',
+        type: 'Long',
         annotations: []
     }, {
         name: 'field',
+        type: 'String',
+        annotations: []
+    }]
+};
+
+export const genericClass: JavaClass = {
+    filePath: './tests/resources/GenericEntity.java',
+    name: 'GenericEntity',
+    parentPath: './tests/resources/GenericParent.java',
+    annotations: [{
+        name: AnnotationType.Entity,
+        attributes: {}
+    }],
+    properties: [{
+        name: 'id',
+        type: 'T',
+        annotations: []
+    }, {
+        name: 'values',
+        type: 'Map<String, T>',
         annotations: []
     }]
 };
