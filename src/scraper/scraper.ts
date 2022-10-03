@@ -14,7 +14,7 @@ const javaFileRegex = new RegExp('.*.java$');
 // regex class
 const classFieldRegex = new RegExp('(?:@[\\w =,"()@ .]+)? ?(?:private|protected|public) [\\w<, >.]+ \\w+(?: ?= ?[ \\w<>.,"()]+)?;', 'g');
 
-export const captureClassInfo = new RegExp('(?<annotations>@[\\w =,"()@ .]+)?public (?:abstract )?[@\\w]+ (?<className>\\w+)(?:<[\\w, .]+>)?(?: extends (?<superClass>[\\w.]+)(?:<[\\w, .]+>?)?)?(?: implements [\\w.]+(?:<[\\w, .]+>)?)? ?{')
+export const captureClassInfo = new RegExp('(?<annotations>@[\\w =,"()@ .]+)?public (?:abstract )?[@\\w]+ (?<className>\\w+)(?:<[\\w, .]+>)?(?: extends (?<superClass>[\\w.]+)(?:<[\\w, .]+>?)?)?(?: implements [\\w.]+(?:<[\\w, .]+>)?)? ?{');
 const captureFieldAnnotationRegex = new RegExp('(@\\w+(?:\\([ \\w=.,")]+)?)', 'g');
 const captureAnnotationNameAndAttribute = new RegExp('@(?<name>\\w+)(?:\\((?<attributes>[ \\w=.,"]+)\\))?');
 const captureAnnotationAttributesItems = new RegExp('((?:([\\w ])+=)?[\\w." ]+)', 'g');
@@ -26,7 +26,7 @@ const captureAttributeNameAndValue = new RegExp('(?:(?<name>[\\w ]+)=)?(?:[ "]+)
 const getClassInfo = (javaFilePath: string, contentSanitized: string): ClassInfo | undefined => {
     try {
 
-        const classInfo = matchNamedGroups<{ annotations: string, className: string, superClass: string }>(contentSanitized, captureClassInfo)
+        const classInfo = matchNamedGroups<{ annotations: string, className: string, superClass: string }>(contentSanitized, captureClassInfo);
 
         const annotations = getAnnotations(classInfo.annotations);
 
@@ -51,7 +51,7 @@ const getAnnotationAttributes = (attributesStringOptional: string | undefined): 
 
         return removeUndefinedItems(
             attributes.map(it => matchNamedGroups<{name: string | undefined, value: string}>(it, captureAttributeNameAndValue))
-        ).reduce((agg, {name, value}): Record<string, string> => {
+        ).reduce((agg, { name, value }): Record<string, string> => {
             agg[name ?? 'default'] = value;
             return agg;
         }, {} as Record<string, string>) || {};
@@ -125,7 +125,7 @@ const getProperties = (content: string): ClassProperty[] => {
 
 const getSuperClassLocation = (superClassName: string, javaFilePath: string, content: string): string | undefined => {
     let superClassImport: string | undefined = superClassName;
-    if (!superClassName.includes(".")) {
+    if (!superClassName.includes('.')) {
         const importCaptureLocationRegex = new RegExp(`import (?<import>[\\w.]+${superClassName});`);
         superClassImport = matchNamedGroups<{ import: string }>(content, importCaptureLocationRegex)?.import;
         if (superClassImport === undefined) {

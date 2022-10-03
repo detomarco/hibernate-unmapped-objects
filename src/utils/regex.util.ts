@@ -7,11 +7,11 @@ export const matchGroupList = (s: string, regex: RegExp): string[] => {
 };
 
 export const matchNamedGroups = <T>(s: string, regex: RegExp): T => {
-    const groups = regex.exec(s)?.groups as Record<string, string> || {}
+    const groups = regex.exec(s)?.groups as Record<string, string> || {};
     return Object.entries(groups)
-        .filter(([key, value]) => value !== undefined)
+        .filter(([, value]) => value !== undefined)
         .reduce((acc, [key, value]) => {
-            acc[key] = value.trim()
-            return acc
-        }, {} as any) as T
-}
+            acc[key] = value.trim();
+            return acc;
+        }, {} as any) as T;
+};

@@ -14,14 +14,11 @@ export const printResults = (unmappedObjects: UnmappedObjects, config: PrinterPr
     let unmappedColumnFound = false;
     if (Object.keys(unmappedObjects.unmappedColumns).length > 0) {
 
-        const unmappedColumns = Object.keys(unmappedObjects.unmappedColumns)
-            .map(key => {
-                const unmappedColumnsView = unmappedObjects.unmappedColumns[key];
-                return {
-                    table: key,
+        const unmappedColumns = Object.entries(unmappedObjects.unmappedColumns)
+            .map(([table, unmappedColumnsView]) => ({
+                    table,
                     columns: unmappedColumnsView.filter(it => !config.ignoreColumns.some(t => t === it)).join(', ')
-                };
-            })
+                }))
             .filter(it => it.columns !== '');
         if (Object.keys(unmappedColumns).length > 0) {
             unmappedColumnFound = true;

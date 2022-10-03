@@ -6,8 +6,8 @@ import {
     simpleEntityClass,
     tableEntityClass
 } from '../fixture/scraper.fixture';
-import { matchNamedGroups } from "../../../src/utils/regex.util";
-import { Scenario } from "../utils/model";
+import { matchNamedGroups } from '../../../src/utils/regex.util';
+import { Scenario } from '../utils/model';
 
 describe('should scrape class', () => {
 
@@ -82,26 +82,26 @@ describe('should return correct info', () => {
         description: 'class and parent '
     }, {
         input: '@Entity public class GenericEntity extends org.GenericParent<T>{',
-        output: { annotations: '@Entity', className: 'GenericEntity', superClass: 'org.GenericParent'},
+        output: { annotations: '@Entity', className: 'GenericEntity', superClass: 'org.GenericParent' },
         description: 'annotation, class, parent'
     }, {
         input: 'public class GenericEntity<T> extends GenericParent<T>{',
-        output: {  className: 'GenericEntity', superClass: 'GenericParent' },
+        output: { className: 'GenericEntity', superClass: 'GenericParent' },
         description: 'class and parent with generics'
     }, {
         input: 'public class GenericEntity<T> extends GenericParent<T> implements Interface<T>{',
-        output: {  className: 'GenericEntity', superClass: 'GenericParent' },
+        output: { className: 'GenericEntity', superClass: 'GenericParent' },
         description: 'class, parent, interface'
     }, {
         input: 'public class GenericEntity<T> implements org.Interface<T>{',
-        output: {  className: 'GenericEntity' },
+        output: { className: 'GenericEntity' },
         description: 'class, interface'
-    }]
+    }];
 
     scenarios.forEach(scenario => {
         it(`when capture class info for ${scenario.description}`, () => {
-            expect(matchNamedGroups(scenario.input, captureClassInfo)).toEqual(scenario.output)
+            expect(matchNamedGroups(scenario.input, captureClassInfo)).toEqual(scenario.output);
         });
-    })
+    });
 
-})
+});
