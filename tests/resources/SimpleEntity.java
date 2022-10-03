@@ -28,7 +28,7 @@ public class SimpleEntity {
     private String field;
 
     @Embedded
-    private Embedded embeddable;
+    private Embeddable embeddable;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "USER_FK")

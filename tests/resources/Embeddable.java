@@ -1,4 +1,4 @@
 
-public class Enmeddable {
+public class Embeddable {
     private String embedded;
 }
