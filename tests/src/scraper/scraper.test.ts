@@ -11,7 +11,7 @@ import { Scenario } from '../utils/model';
 
 describe('should scrape class', () => {
 
-    it('when simple entity', () => {
+    fit('when simple entity', () => {
         const javaClass = scrapePath(simpleEntityClass.filePath);
 
         expect(javaClass).toEqual([simpleEntityClass]);
