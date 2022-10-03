@@ -1,7 +1,7 @@
 
-const sanitizeInlineComments = (s: string): string => s.replace(/\/\/(.*)$/, '');
+const sanitizeInlineComments = (s: string): string => s.replace(/\/\/(.*)/g, '');
 
-const sanitizeMultilineComments = (s: string): string => s.replace(/\/\*([\s\S]*?)\*\//, '');
+const sanitizeMultilineComments = (s: string): string => s.replace(/\/\*([\s\S]*?)\*\//g, '');
 
 const sanitizeEscapeCharacters = (s: string): string => s.replace(/\r\n|\n|\r|\t/gm, ' ')
         .replace(/\s\s+/g, ' ');

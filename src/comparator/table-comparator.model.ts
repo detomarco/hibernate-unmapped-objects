@@ -1,5 +1,5 @@
 
 export interface UnmappedObjects {
     unmappedTables: string[],
-    unmappedColumns: {[key: string]: string[]}
+    unmappedColumns: Record<string, string[]>
 }
