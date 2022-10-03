@@ -13,22 +13,22 @@ import { cdUp, findFilePathFromImportPath } from '../utils/path.utils';
 const javaFileRegex = new RegExp('.*.java$');
 
 // regex class
-const classFieldRegex = new RegExp('(?:@[\\w =,"()@ .]+)? (?:private|protected|public) \\w+ \\w+;', 'g');
-const classCaptureParentName = new RegExp('class \\w+ extends (\\w+) {');
+const classFieldRegex = new RegExp('(?:@[\\w =,"()@ .]+)? ?(?:private|protected|public) [\\w<, >]+ \\w+(?: ?= ?[ \\w<>.,"()]+)?;', 'g');
+const classCaptureParentName = new RegExp('class \\w+(?:[\\\\w<>, ]+)? ?(?:(?:extends) (\\w+)(?:[\\w<>]+)?)? ?(?:(?:implements) (?:\\w+)(?:[\\w<> ,]+)?)? ?{');
 
 const captureFieldAnnotationRegex = new RegExp('(@\\w+(?:\\([ \\w=.,")]+)?)', 'g');
 const captureAnnotationNameAndAttribute = new RegExp('@(\\w+)(?:\\(([ \\w=.,"]+)\\))?');
 const captureAnnotationAttributesItems = new RegExp('((?:([\\w ])+=)?[\\w." ]+)', 'g');
 
-const capturePropertyNameAndAnnotations = new RegExp('(@[\\w =,"()@ .]+)?(?:private|protected|public) \\w+ (\\w+);');
+const capturePropertyNameAndAnnotations = new RegExp('(@[\\w =,"()@ .]+)? ?(?:private|protected|public) [\\w<, >]+ (\\w+)(?: ?= ?[ \\w<>.,"()]+)?;');
 const captureClassNameAndAnnotations = new RegExp('(@[\\w =,"()@ .]+)?public (?:abstract )?[@\\w]+ (\\w+)');
 const captureNameAndValueAttribute = new RegExp('(?:([\\w ]+)=)?(?:[ "]+)?([\\w .]+)"?');
 
 const getClassInfo = (javaFilePath: string, contentSanitized: string): { name: string | undefined, annotations: JavaAnnotation[] } | undefined => {
     try {
-        const match = matchGroups(contentSanitized, captureClassNameAndAnnotations);
-        const annotations = getAnnotations(match.first);
-        return { name: match.second, annotations };
+        const annotationAndName = matchGroups(contentSanitized, captureClassNameAndAnnotations);
+        const annotations = getAnnotations(annotationAndName.first);
+        return { name: annotationAndName.second, annotations };
     } catch (e) {
         errorRegister.register(ErrorLevel.Class);
         log.warn('Unable to parse java class info for', javaFilePath, e);
@@ -124,7 +124,7 @@ const getSuperClassLocation = (superClassName: string, javaFilePath: string, con
     if (superClassImport === undefined) {
         const superClassLocation = `${cdUp(javaFilePath)}/${superClassName}.java`;
         if (!fileExists(superClassLocation)) {
-            log.debug(`Super class detect in ${javaFilePath} but non found in the same folder. Maybe an internal class of Java?`);
+            log.debug(`Super class ${superClassName} detected in ${javaFilePath} but non found in the same folder. Maybe an internal class of Java?`);
             return undefined;
         }
         return `${cdUp(javaFilePath)}/${superClassName}.java`;

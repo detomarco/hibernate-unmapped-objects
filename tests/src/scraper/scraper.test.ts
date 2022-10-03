@@ -1,7 +1,7 @@
 import { scrapePath } from '../../../src/scraper/scraper';
 import {
     abstractClass,
-    annotationClass, child2Class, childClass,
+    annotationClass, child2Class, childClass, genericClass,
     interfaceClass,
     simpleEntityClass,
     tableEntityClass
@@ -33,6 +33,11 @@ describe('should scrape class', () => {
     it('when it is an annotation', () => {
         const javaClass = scrapePath(annotationClass.filePath);
         expect(javaClass).toEqual([annotationClass]);
+    });
+
+    it('when it contains generics', () => {
+        const javaClass = scrapePath(genericClass.filePath);
+        expect(javaClass).toEqual([genericClass]);
     });
 
 });

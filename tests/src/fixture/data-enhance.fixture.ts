@@ -18,6 +18,12 @@ export const childEntityTable: JavaTable = {
     columns: ['id', 'protectedField', 'publicField', 'field']
 };
 
+export const genericEntityTable: JavaTable = {
+    filePath: './tests/resources/GenericEntity.java',
+    name: 'GenericEntity',
+    columns: ['id', 'values']
+};
+
 export const childEntity2Table: JavaTable = {
     filePath: './tests/resources/ChildEntity2.java',
     name: 'ChildEntity2',
