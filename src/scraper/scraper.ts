@@ -156,9 +156,9 @@ const getClassLocation = (className: string, javaFilePath: string, content: stri
             return superClassLocation;
         }
     }
-    log.trace('')
+
     const classLocation = findFilePathFromImportPath(javaFilePath, classImport);
-    log.trace('class location', classImport)
+    log.trace('class location', classLocation)
     if (classLocation === undefined) {
         log.debug(`Super class detect in ${javaFilePath} but non found in the same folder. Does it belong to an external library?`);
         return undefined;
