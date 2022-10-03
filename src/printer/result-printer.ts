@@ -7,7 +7,7 @@ export const printResults = (unmappedObjects: UnmappedObjects, config: PrinterPr
         .filter(it => !config.ignoreTables.some(t => t === it));
     const unmappedTablesFound = unmappedTables.length > 0;
     if (unmappedTablesFound) {
-        console.log(`\n ${unmappedTables} unmapped tables detected`);
+        console.log(`\n ${unmappedTables.length} unmapped tables detected`);
         console.log(unmappedTables);
     }
 

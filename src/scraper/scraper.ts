@@ -13,14 +13,14 @@ import { cdUp, findFilePathFromImportPath } from '../utils/path.utils';
 const javaFileRegex = new RegExp('.*.java$');
 
 // regex class
-const classFieldRegex = new RegExp('(?:@[\\w =,"()@ .]+)? (?:private|protected|public) \\w+ \\w+;', 'g');
-const classCaptureParentName = new RegExp('class \\w+ extends (\\w+) {');
+const classFieldRegex = new RegExp('(?:@[\\w =,"()@ .]+)? ?(?:private|protected|public) [\\w<, >]+ \\w+(?: ?= ?[ \\w<>()]+)?;', 'g');
+const classCaptureParentName = new RegExp('class \\w+(?:[\\w<>, ]+)? (?:extends|implement) (\\w+)(?:[\\w<>]+)? ?{');
 
 const captureFieldAnnotationRegex = new RegExp('(@\\w+(?:\\([ \\w=.,")]+)?)', 'g');
 const captureAnnotationNameAndAttribute = new RegExp('@(\\w+)(?:\\(([ \\w=.,"]+)\\))?');
 const captureAnnotationAttributesItems = new RegExp('((?:([\\w ])+=)?[\\w." ]+)', 'g');
 
-const capturePropertyNameAndAnnotations = new RegExp('(@[\\w =,"()@ .]+)?(?:private|protected|public) \\w+ (\\w+);');
+const capturePropertyNameAndAnnotations = new RegExp('(@[\\w =,"()@ .]+)? ?(?:private|protected|public) [\\w<, >]+ (\\w+)(?: ?= ?[ \\w<>()]+)?;');
 const captureClassNameAndAnnotations = new RegExp('(@[\\w =,"()@ .]+)?public (?:abstract )?[@\\w]+ (\\w+)');
 const captureNameAndValueAttribute = new RegExp('(?:([\\w ]+)=)?(?:[ "]+)?([\\w .]+)"?');
 
@@ -124,7 +124,7 @@ const getSuperClassLocation = (superClassName: string, javaFilePath: string, con
     if (superClassImport === undefined) {
         const superClassLocation = `${cdUp(javaFilePath)}/${superClassName}.java`;
         if (!fileExists(superClassLocation)) {
-            log.debug(`Super class detect in ${javaFilePath} but non found in the same folder. Maybe an internal class of Java?`);
+            log.debug(`Super class ${superClassName} detected in ${javaFilePath} but non found in the same folder. Maybe an internal class of Java?`);
             return undefined;
         }
         return `${cdUp(javaFilePath)}/${superClassName}.java`;
