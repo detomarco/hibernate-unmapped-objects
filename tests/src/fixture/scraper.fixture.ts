@@ -136,3 +136,20 @@ export const child2Class: JavaClass = {
         annotations: []
     }]
 };
+
+export const genericClass: JavaClass = {
+    filePath: './tests/resources/GenericEntity.java',
+    name: 'GenericEntity',
+    parentPath: './tests/resources/GenericParent.java',
+    annotations: [{
+        name: AnnotationType.Entity,
+        attributes: {}
+    }],
+    properties: [{
+        name: 'id',
+        annotations: []
+    }, {
+        name: 'values',
+        annotations: []
+    }]
+};
