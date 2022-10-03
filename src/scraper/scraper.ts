@@ -19,7 +19,7 @@ const captureFieldAnnotationRegex = new RegExp('(@\\w+(?:\\([ \\w=.,")]+)?)', 'g
 const captureAnnotationNameAndAttribute = new RegExp('@(?<name>\\w+)(?:\\((?<attributes>[ \\w=.,"]+)\\))?');
 const captureAnnotationAttributesItems = new RegExp('((?:([\\w ])+=)?[\\w." ]+)', 'g');
 
-const capturePropertyNameAndAnnotations = new RegExp('(?<annotations>@[\\w =,"()@ .]+)? ?(?:private|protected|public) [\\w<, >]+ (?<name>\\w+)(?: ?= ?[ \\w<>.,"()]+)?;');
+const capturePropertyNameAndAnnotations = new RegExp('(?<annotations>@[\\w =,"()@ .]+)? ?(?:private|protected|public) [\\w.<, >]+ (?<name>\\w+)(?: ?= ?[ \\w<>.,"()]+)?;');
 
 const captureAttributeNameAndValue = new RegExp('(?:(?<name>[\\w ]+)=)?(?:[ "]+)?(?<value>[\\w .]+)"?');
 
@@ -50,7 +50,7 @@ const getAnnotationAttributes = (attributesStringOptional: string | undefined): 
         const attributes = matchGroupList(attributesStringOptional, captureAnnotationAttributesItems);
 
         return removeUndefinedItems(
-            attributes.map(it => matchNamedGroups<{name: string | undefined, value: string}>(it, captureAttributeNameAndValue))
+            attributes.map(it => matchNamedGroups<{ name: string | undefined, value: string }>(it, captureAttributeNameAndValue))
         ).reduce((agg, { name, value }): Record<string, string> => {
             agg[name ?? 'default'] = value;
             return agg;
@@ -64,7 +64,7 @@ const getAnnotationAttributes = (attributesStringOptional: string | undefined): 
 
 const getAnnotation = (annotation: string): JavaAnnotation | undefined => {
     try {
-        const match = matchNamedGroups<{name: string, attributes: string | undefined}>(annotation, captureAnnotationNameAndAttribute);
+        const match = matchNamedGroups<{ name: string, attributes: string | undefined }>(annotation, captureAnnotationNameAndAttribute);
         const attributes = getAnnotationAttributes(match.attributes);
         const name = AnnotationType[match.name as AnnotationTypeString];
 
@@ -98,7 +98,7 @@ const getProperty = (property: string): ClassProperty | undefined => {
     try {
         const annotationsName = matchGroupList(property, captureFieldAnnotationRegex);
 
-        const match = matchNamedGroups<{name: string, annotations: string | undefined}>(property, capturePropertyNameAndAnnotations);
+        const match = matchNamedGroups<{ name: string, annotations: string | undefined }>(property, capturePropertyNameAndAnnotations);
         log.trace('annotations name', annotationsName);
 
         const annotations = getAnnotations(match.annotations);
@@ -111,11 +111,22 @@ const getProperty = (property: string): ClassProperty | undefined => {
     }
 };
 
-const getProperties = (content: string): ClassProperty[] => {
+const replaceEmbeddedPropertiesWithRelativeClassProperties = (javaFilePath: string, content: string, properties: ClassProperty[]): ClassProperty[] => {
+    return properties.flatMap(property => {
+        if (property.annotations.some(ann => ann.name === AnnotationType.Embedded)) {
+            const embeddedClass = scrapeClass(javaFilePath, property.name, content);
+            return embeddedClass?.properties || [];
+        }
+        return [property];
+    });
+}
+
+const getProperties = (javaFilePath: string, content: string): ClassProperty[] => {
     try {
         const propertiesString = matchGroupList(content, classFieldRegex);
         const propertiesOpt = propertiesString.map(property => getProperty(property));
-        return removeUndefinedItems(propertiesOpt);
+        const properties = removeUndefinedItems(propertiesOpt);
+        return replaceEmbeddedPropertiesWithRelativeClassProperties(javaFilePath, content, properties)
     } catch (e) {
         errorRegister.register(ErrorLevel.Property);
         log.warn('Unable to parse properties for', content, e);
@@ -123,7 +134,7 @@ const getProperties = (content: string): ClassProperty[] => {
     }
 };
 
-const getSuperClassLocation = (superClassName: string, javaFilePath: string, content: string): string | undefined => {
+const getClassLocation = (superClassName: string, javaFilePath: string, content: string): string | undefined => {
     let superClassImport: string | undefined = superClassName;
     if (!superClassName.includes('.')) {
         const importCaptureLocationRegex = new RegExp(`import (?<import>[\\w.]+${superClassName});`);
@@ -145,29 +156,29 @@ const getSuperClassLocation = (superClassName: string, javaFilePath: string, con
     return `${superClassLocation}.java`;
 };
 
-const scrapeSuperClass = (javaFilePath: string, classInfo: ClassInfo | undefined, content: string): JavaClass | undefined => {
-    if (classInfo?.superClass === undefined) {
+const scrapeClass = (javaFilePath: string, className: string | undefined, content: string): JavaClass | undefined => {
+    if (className === undefined) {
         return undefined;
     }
 
-    const superClassLocation = getSuperClassLocation(classInfo.superClass, javaFilePath, content);
+    const superClassLocation = getClassLocation(className, javaFilePath, content);
     if (superClassLocation === undefined) {
-        log.warn(`Super class detect in ${javaFilePath} but location not found, skip it.`);
         return undefined;
     }
     return readAndScrape(superClassLocation, javaFilePath);
 };
+
 
 const scrapeJavaClass = (javaFilePath: string, content: string): JavaClass | undefined => {
     try {
         const contentSanitized = getFileContentSanitized(content);
         log.trace(`content file sanitized ${javaFilePath}`, contentSanitized);
 
-        const properties = getProperties(contentSanitized);
+        const properties = getProperties(javaFilePath, contentSanitized)
         log.trace(`properties ${javaFilePath}`, properties);
 
         const classInfo = getClassInfo(javaFilePath, contentSanitized);
-        const superClass = scrapeSuperClass(javaFilePath, classInfo, contentSanitized);
+        const superClass = scrapeClass(javaFilePath, classInfo?.superClass, contentSanitized);
         return {
             filePath: javaFilePath,
             name: classInfo?.name || javaFilePath,

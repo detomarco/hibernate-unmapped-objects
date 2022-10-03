@@ -6,7 +6,8 @@ export enum AnnotationType {
     Id = 'Id',
     GeneratedValue = 'GeneratedValue',
     GenericGenerator = 'GenericGenerator',
-    ManyToOne = 'ManyToOne'
+    ManyToOne = 'ManyToOne',
+    Embedded = 'Embedded'
 }
 
 export interface JavaClass {

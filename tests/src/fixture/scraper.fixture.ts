@@ -33,6 +33,9 @@ export const simpleEntityClass: JavaClass = {
         name: 'field',
         annotations: []
     }, {
+        name: 'embedded',
+        annotations: []
+    }, {
         name: 'who',
         annotations: [{
             name: AnnotationType.ManyToOne,
