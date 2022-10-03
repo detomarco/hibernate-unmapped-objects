@@ -111,22 +111,20 @@ const getProperty = (property: string): ClassProperty | undefined => {
     }
 };
 
-const replaceEmbeddedPropertiesWithRelativeClassProperties = (javaFilePath: string, content: string, properties: ClassProperty[]): ClassProperty[] => {
-    return properties.flatMap(property => {
+const replaceEmbeddedPropertiesWithRelativeClassProperties = (javaFilePath: string, content: string, properties: ClassProperty[]): ClassProperty[] => properties.flatMap(property => {
         if (property.annotations.some(ann => ann.name === AnnotationType.Embedded)) {
             const embeddedClass = scrapeClass(javaFilePath, property.name, content);
             return embeddedClass?.properties || [];
         }
         return [property];
     });
-}
 
 const getProperties = (javaFilePath: string, content: string): ClassProperty[] => {
     try {
         const propertiesString = matchGroupList(content, classFieldRegex);
         const propertiesOpt = propertiesString.map(property => getProperty(property));
         const properties = removeUndefinedItems(propertiesOpt);
-        return replaceEmbeddedPropertiesWithRelativeClassProperties(javaFilePath, content, properties)
+        return replaceEmbeddedPropertiesWithRelativeClassProperties(javaFilePath, content, properties);
     } catch (e) {
         errorRegister.register(ErrorLevel.Property);
         log.warn('Unable to parse properties for', content, e);
@@ -168,13 +166,12 @@ const scrapeClass = (javaFilePath: string, className: string | undefined, conten
     return readAndScrape(superClassLocation, javaFilePath);
 };
 
-
 const scrapeJavaClass = (javaFilePath: string, content: string): JavaClass | undefined => {
     try {
         const contentSanitized = getFileContentSanitized(content);
         log.trace(`content file sanitized ${javaFilePath}`, contentSanitized);
 
-        const properties = getProperties(javaFilePath, contentSanitized)
+        const properties = getProperties(javaFilePath, contentSanitized);
         log.trace(`properties ${javaFilePath}`, properties);
 
         const classInfo = getClassInfo(javaFilePath, contentSanitized);
