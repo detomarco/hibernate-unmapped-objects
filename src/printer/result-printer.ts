@@ -19,14 +19,10 @@ export const printResults = (unmappedObjects: UnmappedObjects, config: PrinterPr
                 const unmappedColumnsView = unmappedObjects.unmappedColumns[key];
                 return {
                     table: key,
-                    columns: unmappedColumnsView.filter(it => !config.ignoreColumns.some(t => t === it))
+                    columns: unmappedColumnsView.filter(it => !config.ignoreColumns.some(t => t === it)).join(', ')
                 };
             })
-            .filter(it => it.columns.length > 0)
-            .map(it => ({
-                table: it.table,
-                columns: it.columns.join(', ')
-            }));
+            .filter(it => it.columns !== '');
         if (Object.keys(unmappedColumns).length > 0) {
             unmappedColumnFound = true;
             console.log(`\n ${Object.keys(unmappedColumns).length} unmapped columns detected`);
