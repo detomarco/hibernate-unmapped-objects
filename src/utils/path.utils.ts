@@ -13,7 +13,7 @@ export const findFilePathFromImportPath = (filePath: string, importPath: string)
     let found = false;
     const resultParts = [];
     for (let i = 0; i < filePathParts.length; i++) {
-        if (filePathParts[i] !== importPathParts[0]) {
+        if (filePathParts[i] !== importPathParts[0] || filePathParts[i] === 'java') {
             resultParts.push(filePathParts[i]);
         } else {
             resultParts.push(...importPathParts);
