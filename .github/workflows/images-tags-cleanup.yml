@@ -12,6 +12,7 @@ env:
 
 jobs:
   get_tags:
+    name: Get PR tags
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.matrix.outputs.value }}
@@ -35,7 +36,8 @@ jobs:
           echo ${{ steps.tags_list.outputs.value }}
           echo '::set-output name=value::${{ steps.tags_list.outputs.value }}'
 
-  delete_image:
+  delete:
+    name: Delete tags and images
     needs: get_tags
     runs-on: ubuntu-latest
     permissions:
