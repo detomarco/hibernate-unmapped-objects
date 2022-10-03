@@ -1,4 +1,9 @@
-import { childEntityTable, simpleEntityTable, tableEntityTable } from './fixture/data-enhance.fixture';
+import {
+    childEntityTable,
+    genericEntityTable,
+    simpleEntityTable,
+    tableEntityTable
+} from './fixture/data-enhance.fixture';
 import { main } from '../../src/main';
 import { LogLevel } from '../../src/model/model';
 
@@ -23,10 +28,14 @@ describe('should list unmapped objects', () => {
                 schema: 'huo'
             }
         });
-        expect(databaseTables).toHaveSize(4);
 
+        const javaClasses = [simpleEntityTable, tableEntityTable, childEntityTable, childEntityTable, genericEntityTable];
         expect(javaEntities)
-            .toEqual(jasmine.arrayWithExactContents([simpleEntityTable, tableEntityTable, childEntityTable, childEntityTable]));
+            .toHaveSize(5);
+        expect(javaEntities)
+            .toEqual(jasmine.arrayWithExactContents(javaClasses));
+
+        expect(databaseTables).toHaveSize(4);
 
         expect(results.unmappedTables)
             .toEqual(jasmine.arrayWithExactContents(['UnmappedTable', 'schema_version']));

@@ -1,7 +1,7 @@
 {
   "entitiesFolderPath": "./tests",
   "showStacktrace": true,
-  "logLevel": "INFO",
+  "logLevel": "TRACE",
   "printer": {
     "ignoreColumns": [
       "modified",
