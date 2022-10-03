@@ -115,17 +115,16 @@ const getProperty = (property: string): ClassProperty | undefined => {
 };
 
 const replaceEmbeddedPropertiesWithRelativeClassProperties = (javaFilePath: string, content: string, properties: ClassProperty[]): ClassProperty[] => {
-    log.trace("start replaceEmbeddedPropertiesWithRelativeClassProperties")
+    log.trace('start replaceEmbeddedPropertiesWithRelativeClassProperties');
     return properties.flatMap(property => {
         if (property.annotations.some(ann => ann.name === AnnotationType.Embedded)) {
-            log.trace("embedded class found", property.type)
+            log.trace('embedded class found', property.type);
             const embeddedClass = scrapeClass(javaFilePath, property.type, content);
             return embeddedClass?.properties || [];
         }
         return [property];
     });
-}
-
+};
 
 const getProperties = (javaFilePath: string, content: string): ClassProperty[] => {
     try {
@@ -141,14 +140,14 @@ const getProperties = (javaFilePath: string, content: string): ClassProperty[] =
 };
 
 const getClassLocation = (className: string, javaFilePath: string, content: string): string | undefined => {
-    log.trace("get class location", className)
+    log.trace('get class location', className);
     let classImport: string | undefined = className;
     if (!className.includes('.')) {
         const importCaptureLocationRegex = new RegExp(`import (?<import>[\\w.]+${className});`);
         classImport = matchNamedGroups<{ import: string }>(content, importCaptureLocationRegex)?.import;
         if (classImport === undefined) {
             const superClassLocation = `${cdUp(javaFilePath)}/${className}.java`;
-            log.trace("class location import not found, looking in the same folder", superClassLocation)
+            log.trace('class location import not found, looking in the same folder', superClassLocation);
             if (!fileExists(superClassLocation)) {
                 log.debug(`Super class ${className} detected in ${javaFilePath} but non found in the same folder. Maybe an internal class of Java?`);
                 return undefined;
@@ -158,7 +157,7 @@ const getClassLocation = (className: string, javaFilePath: string, content: stri
     }
 
     const classLocation = findFilePathFromImportPath(javaFilePath, classImport);
-    log.trace('class location', classLocation)
+    log.trace('class location', classLocation);
     if (classLocation === undefined) {
         log.debug(`Super class detect in ${javaFilePath} but non found in the same folder. Does it belong to an external library?`);
         return undefined;
