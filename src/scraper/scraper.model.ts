@@ -1,5 +1,3 @@
-import { MapString } from '../model/model';
-
 export enum AnnotationType {
     JoinColumn = 'JoinColumn',
     Column = 'Column',
@@ -26,5 +24,11 @@ export interface ClassProperty {
 
 export interface JavaAnnotation {
     name: AnnotationType,
-    attributes: MapString
+    attributes: Record<string, string>
+}
+
+export interface ClassInfo {
+    name: string | undefined,
+    superClass: string | undefined,
+    annotations: JavaAnnotation[] | undefined
 }
