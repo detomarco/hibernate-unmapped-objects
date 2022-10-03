@@ -29,7 +29,7 @@ describe('should list unmapped objects', () => {
             }
         });
 
-        const javaClasses = [simpleEntityTable, tableEntityTable, childEntityTable, childEntityTable, genericEntityTable]
+        const javaClasses = [simpleEntityTable, tableEntityTable, childEntityTable, childEntityTable, genericEntityTable];
         expect(javaEntities)
             .toHaveSize(5);
         expect(javaEntities)
