@@ -144,16 +144,16 @@ const getClassLocation = (className: string, javaFilePath: string, content: stri
     log.trace("get class location", className)
     let classImport: string | undefined = className;
     if (!className.includes('.')) {
-        log.trace("class with static import detected")
         const importCaptureLocationRegex = new RegExp(`import (?<import>[\\w.]+${className});`);
         classImport = matchNamedGroups<{ import: string }>(content, importCaptureLocationRegex)?.import;
         if (classImport === undefined) {
             const superClassLocation = `${cdUp(javaFilePath)}/${className}.java`;
+            log.trace("class location import not found, looking in the same folder", superClassLocation)
             if (!fileExists(superClassLocation)) {
                 log.debug(`Super class ${className} detected in ${javaFilePath} but non found in the same folder. Maybe an internal class of Java?`);
                 return undefined;
             }
-            return `${cdUp(javaFilePath)}/${className}.java`;
+            return superClassLocation;
         }
     }
     log.trace('')
