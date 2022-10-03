@@ -51,7 +51,7 @@ jobs:
         with:
           owner: ${{ env.ORG }}
           name: ${{ env.REPOSITORY }}
-          token: ${{ secrets.GHCR_ACCESS_TOKEN }}
+          token: ${{ secrets.GHCR_TOKEN }}
           tag: ${{ matrix.value }}
 
       - name: Delete tag
