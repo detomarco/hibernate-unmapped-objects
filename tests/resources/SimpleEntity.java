@@ -27,7 +27,7 @@ public class SimpleEntity {
     private Date date;
     private String field;
 
-    @Embeddable
+    @Embedded
     private Embeddable embeddable;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
