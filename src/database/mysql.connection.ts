@@ -13,7 +13,7 @@ export const handleResults = (resultSet: MysqlResultType[]): DbTable[] => {
         acc[result.TABLE_NAME] = acc[result.TABLE_NAME] || [];
         acc[result.TABLE_NAME].push(result.COLUMN_NAME);
         return acc;
-    }, {} as { [key: string]: string[] });
+    }, {} as Record<string, string[]>);
 
     return Object.keys(resultsByTableName)
         .map((key): DbTable => ({

@@ -1,11 +1,13 @@
-import { scrapePath } from '../../../src/scraper/scraper';
+import { captureClassInfo, scrapePath } from '../../../src/scraper/scraper';
 import {
     abstractClass,
-    annotationClass, child2Class, childClass,
+    annotationClass, child2Class, childClass, genericClass,
     interfaceClass,
     simpleEntityClass,
     tableEntityClass
 } from '../fixture/scraper.fixture';
+import { matchNamedGroups } from "../../../src/utils/regex.util";
+import { Scenario } from "../utils/model";
 
 describe('should scrape class', () => {
 
@@ -35,6 +37,11 @@ describe('should scrape class', () => {
         expect(javaClass).toEqual([annotationClass]);
     });
 
+    it('when it contains generics', () => {
+        const javaClass = scrapePath(genericClass.filePath);
+        expect(javaClass).toEqual([genericClass]);
+    });
+
 });
 
 describe('should detect and scraper parent class', () => {
@@ -58,3 +65,43 @@ describe('should raise error', () => {
     });
 
 });
+
+describe('should return correct info', () => {
+
+    const scenarios: Scenario<string, any>[] = [{
+        input: 'public class GenericEntity {',
+        output: { className: 'GenericEntity' },
+        description: 'class'
+    }, {
+        input: '@Entity public class GenericEntity{',
+        output: { annotations: '@Entity', className: 'GenericEntity' },
+        description: 'annotation and class '
+    }, {
+        input: '@Entity public class ChildEntity extends Parent implements Serializable {',
+        output: { annotations: '@Entity', className: 'ChildEntity', superClass: 'Parent' },
+        description: 'class and parent '
+    }, {
+        input: '@Entity public class GenericEntity extends org.GenericParent<T>{',
+        output: { annotations: '@Entity', className: 'GenericEntity', superClass: 'org.GenericParent'},
+        description: 'annotation, class, parent'
+    }, {
+        input: 'public class GenericEntity<T> extends GenericParent<T>{',
+        output: {  className: 'GenericEntity', superClass: 'GenericParent' },
+        description: 'class and parent with generics'
+    }, {
+        input: 'public class GenericEntity<T> extends GenericParent<T> implements Interface<T>{',
+        output: {  className: 'GenericEntity', superClass: 'GenericParent' },
+        description: 'class, parent, interface'
+    }, {
+        input: 'public class GenericEntity<T> implements org.Interface<T>{',
+        output: {  className: 'GenericEntity' },
+        description: 'class, interface'
+    }]
+
+    scenarios.forEach(scenario => {
+        it(`when capture class info for ${scenario.description}`, () => {
+            expect(matchNamedGroups(scenario.input, captureClassInfo)).toEqual(scenario.output)
+        });
+    })
+
+})
