@@ -96,14 +96,14 @@ const getAnnotations = (annotationString: string | undefined): JavaAnnotation[] 
 
 const getProperty = (property: string): ClassProperty | undefined => {
     try {
-        console.log('TEST CLASS property', property)
+        log.trace('get property', property)
         const annotationsName = matchGroupList(property, captureFieldAnnotationRegex);
-        console.log('TEST CLASS annotation', annotationsName)
-        const match = matchNamedGroups<{ name: string, annotations: string | undefined }>(property, capturePropertyNameAndAnnotations);
         log.trace('annotations name', annotationsName);
-        console.log('TEST CLASS match', match)
-        const annotations = getAnnotations(match.annotations);
 
+        const match = matchNamedGroups<{ name: string, annotations: string | undefined }>(property, capturePropertyNameAndAnnotations);
+        log.trace('property name and annotations match', match)
+        const annotations = getAnnotations(match.annotations);
+        log.trace('annotations', annotations)
         return { name: match.name, annotations };
     } catch (e) {
         errorRegister.register(ErrorLevel.Property);
