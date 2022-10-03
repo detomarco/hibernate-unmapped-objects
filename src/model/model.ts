@@ -1,6 +1,4 @@
 
-export type MapString = { [key: string]: string }
-
 export interface PrinterProperties {
     ignoreTables: string[],
     ignoreColumns: string[]
