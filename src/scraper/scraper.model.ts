@@ -20,6 +20,7 @@ export interface JavaClass {
 
 export interface ClassProperty {
     name: string;
+    type: string;
     annotations: JavaAnnotation[]
 }
 

@@ -19,7 +19,7 @@ const captureFieldAnnotationRegex = new RegExp('(@\\w+(?:\\([ \\w=.,")]+)?)', 'g
 const captureAnnotationNameAndAttribute = new RegExp('@(?<name>\\w+)(?:\\((?<attributes>[ \\w=.,"]+)\\))?');
 const captureAnnotationAttributesItems = new RegExp('((?:([\\w ])+=)?[\\w." ]+)', 'g');
 
-const capturePropertyNameAndAnnotations = new RegExp('(?<annotations>@[\\w =,"()@ .]+)? ?(?:private|protected|public) [\\w.<, >]+ (?<name>\\w+)(?: ?= ?[ \\w<>.,"()]+)?;');
+const capturePropertyNameAndAnnotations = new RegExp('(?<annotations>@[\\w =,"()@ .]+)? ?(?:private|protected|public) (?<type>[\\w.<, >]+) (?<name>\\w+)(?: ?= ?[ \\w<>.,"()]+)?;');
 
 const captureAttributeNameAndValue = new RegExp('(?:(?<name>[\\w ]+)=)?(?:[ "]+)?(?<value>[\\w .]+)"?');
 
@@ -100,13 +100,13 @@ const getProperty = (property: string): ClassProperty | undefined => {
         const annotationsName = matchGroupList(property, captureFieldAnnotationRegex);
         log.trace('annotations name', annotationsName);
 
-        const match = matchNamedGroups<{ name: string, annotations: string | undefined }>(property, capturePropertyNameAndAnnotations);
+        const match = matchNamedGroups<{ name: string, annotations: string | undefined, type: string }>(property, capturePropertyNameAndAnnotations);
         log.trace('property name and annotations match', match);
 
         const annotations = getAnnotations(match.annotations);
         log.trace('annotations', annotations);
 
-        return { name: match.name, annotations };
+        return { name: match.name, type: match.type, annotations };
     } catch (e) {
         errorRegister.register(ErrorLevel.Property);
         log.error('Unable to property for', property, e);
@@ -118,8 +118,8 @@ const replaceEmbeddedPropertiesWithRelativeClassProperties = (javaFilePath: stri
     log.trace("start replaceEmbeddedPropertiesWithRelativeClassProperties")
     return properties.flatMap(property => {
         if (property.annotations.some(ann => ann.name === AnnotationType.Embedded)) {
-            log.trace("embedded class found", property.name)
-            const embeddedClass = scrapeClass(javaFilePath, property.name, content);
+            log.trace("embedded class found", property.type)
+            const embeddedClass = scrapeClass(javaFilePath, property.type, content);
             return embeddedClass?.properties || [];
         }
         return [property];
