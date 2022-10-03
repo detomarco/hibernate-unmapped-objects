@@ -5,8 +5,9 @@ import { simpleEntityTable, tableEntityTable } from '../fixture/data-enhance.fix
 
 describe('should enhance date', () => {
 
-    it('when simple class', () => {
+    fit('when simple class', () => {
         const javaClass = scrapePath(simpleEntityClass.filePath);
+        console.log("JAVA CLASS", javaClass);
         const table = enhanceJavaClass(javaClass[0]);
         expect(table).toEqual(simpleEntityTable);
     });

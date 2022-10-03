@@ -7,7 +7,7 @@ export enum ErrorLevel {
 
 class ErrorRegister {
 
-    registry: { [key: string]: number } | undefined = undefined;
+    registry: Record<string, number> | undefined = undefined;
 
     private static instance: ErrorRegister | undefined = undefined;
 
