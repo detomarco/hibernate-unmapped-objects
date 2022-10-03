@@ -7,26 +7,19 @@ export const printResults = (unmappedObjects: UnmappedObjects, config: PrinterPr
         .filter(it => !config.ignoreTables.some(t => t === it));
     const unmappedTablesFound = unmappedTables.length > 0;
     if (unmappedTablesFound) {
-        console.log(`\n ${unmappedTables} unmapped tables detected`);
+        console.log(`\n ${unmappedTables.length} unmapped tables detected`);
         console.log(unmappedTables);
     }
 
     let unmappedColumnFound = false;
     if (Object.keys(unmappedObjects.unmappedColumns).length > 0) {
 
-        const unmappedColumns = Object.keys(unmappedObjects.unmappedColumns)
-            .map(key => {
-                const unmappedColumnsView = unmappedObjects.unmappedColumns[key];
-                return {
-                    table: key,
-                    columns: unmappedColumnsView.filter(it => !config.ignoreColumns.some(t => t === it))
-                };
-            })
-            .filter(it => it.columns.length > 0)
-            .map(it => ({
-                table: it.table,
-                columns: it.columns.join(', ')
-            }));
+        const unmappedColumns = Object.entries(unmappedObjects.unmappedColumns)
+            .map(([table, unmappedColumnsView]) => ({
+                    table,
+                    columns: unmappedColumnsView.filter(it => !config.ignoreColumns.some(t => t === it)).join(', ')
+                }))
+            .filter(it => it.columns !== '');
         if (Object.keys(unmappedColumns).length > 0) {
             unmappedColumnFound = true;
             console.log(`\n ${Object.keys(unmappedColumns).length} unmapped columns detected`);
