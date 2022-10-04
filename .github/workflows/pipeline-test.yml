@@ -38,7 +38,7 @@ jobs:
         run: sleep 10
 
       - name: Run tests
-        run: npm run test:init && npm test
+        run: npm test
 
       - name: Stop test database
         run: docker container rm -f huo-mysql
@@ -54,6 +54,7 @@ jobs:
 
   tag:
     name: Tag
+    if: ${{ github.actor != 'dependabot[bot]' }}
     runs-on: ubuntu-latest
     concurrency:
       group: tag
@@ -80,6 +81,7 @@ jobs:
 
   publish:
     name: Publish
+    if: ${{ github.actor != 'dependabot[bot]' }}
     runs-on: ubuntu-latest
     needs: tag
     permissions:
@@ -127,6 +129,7 @@ jobs:
 
   update_tag_comment:
     name: Update tag comment
+    if: ${{ github.actor != 'dependabot[bot]' }}
     runs-on: ubuntu-latest
     needs: publish
     permissions:

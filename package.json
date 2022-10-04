@@ -4,10 +4,9 @@
   "description": "",
   "main": "src/main.ts",
   "scripts": {
-    "start": "ts-node src/main.ts",
+    "start": "ts-node src/main.ts configFile=.huo.json",
     "lint:dry": "eslint . --ext .ts",
     "lint": "eslint --fix . --ext .ts",
-    "test:init": "cp ./tests/.huo.test.json .huo.json",
     "test": "ts-node node_modules/jasmine/bin/jasmine --config=jasmine.json configFile=tests/.huo.test.json",
     "coverage": "nyc --reporter=lcov -r text -e .ts -x \"tests/*.test.ts\" npm run test",
     "package": "ncc build --source-map"
