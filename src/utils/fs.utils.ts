@@ -3,8 +3,18 @@ import { ConfigProperties, LogLevel } from '../model/model';
 
 const CONFIG_FILE = '.huo.json';
 
+const getArgs = (): Record<string, string> => {
+    const args = process.argv.slice(2);
+    return args.reduce((agg, it) => {
+        const nameValue = it.split('=');
+        agg[nameValue[0]] = nameValue[1];
+        return agg;
+    }, {} as Record<string, string>);
+};
+
 export const getConfigFile = (): ConfigProperties => {
-    const configContent: string = fs.readFileSync(CONFIG_FILE, 'utf-8');
+    const args = getArgs()
+    const configContent: string = fs.readFileSync(args.configFile ?? CONFIG_FILE, 'utf-8');
     const config = JSON.parse(configContent);
 
     return {
