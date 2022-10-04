@@ -39,7 +39,7 @@ jobs:
         run: sleep 10
 
       - name: Run tests
-        run: npm run test:init && npm test
+        run: npm test
 
       - name: Stop test database
         run: docker container rm -f huo-mysql
