@@ -21,7 +21,6 @@ export class MysqlConnection extends DatabaseConnection {
             .map(([name, columns]): DbTable => ({ name, columns }));
     };
 
-
     getTables(db: DbProperties): Promise<DbTable[]> {
         log.trace(`connection parameters: host:${db.host}, port:${db.port}, database: information_schema, user:${db.user}, password:****`);
         const connection = mysql.createConnection({
@@ -54,4 +53,3 @@ export class MysqlConnection extends DatabaseConnection {
     }
 
 }
-

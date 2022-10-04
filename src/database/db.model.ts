@@ -1,4 +1,4 @@
-import { DbProperties } from "../model/model";
+import { DbProperties } from '../model/model';
 
 export type DbTable = {
     name: string,

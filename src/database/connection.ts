@@ -8,7 +8,7 @@ export const getDatabaseTables = (dbProps: DbProperties): Promise<DbTable[]> => 
     log.trace(`${dbProps.type} connection detected`);
     switch (dbProps.type) {
         case 'mysql':
-            dbConnection = new MysqlConnection()
+            dbConnection = new MysqlConnection();
     }
 
     return Promise.resolve(dbConnection?.getTables(dbProps) || []);
