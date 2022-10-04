@@ -48,6 +48,7 @@ jobs:
           fail_on_error: true
 
   lint-actions:
+    name: Lint Github actions
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
