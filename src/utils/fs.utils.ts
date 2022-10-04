@@ -13,7 +13,7 @@ const getArgs = (): Record<string, string> => {
 };
 
 export const getConfigFile = (): ConfigProperties => {
-    const args = getArgs();
+    const args = getArgs()
     const configContent: string = fs.readFileSync(args.configFile ?? CONFIG_FILE, 'utf-8');
     const config = JSON.parse(configContent);
 
