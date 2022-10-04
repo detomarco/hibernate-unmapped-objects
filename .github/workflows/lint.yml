@@ -23,17 +23,10 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Node setup
-        uses: actions/setup-node@v3.5.0
+      - uses: reviewdog/action-eslint@v1
         with:
-          node-version: 14
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Lint
-        run: npm run lint:dry
+          reporter: github-pr-review # Change reporter.
+          eslint_flags: 'src/'
 
   lint-dockerfile:
     name: Lint Dockerfiles
