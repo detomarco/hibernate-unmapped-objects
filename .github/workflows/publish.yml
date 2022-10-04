@@ -39,7 +39,7 @@ jobs:
         run: sleep 10
 
       - name: Run tests
-        run: npm run test:init && npm test
+        run: npm test
 
       - name: Stop test database
         run: docker container rm -f huo-mysql
@@ -68,8 +68,8 @@ jobs:
 
       - name: Push new tag
         id: pushtag
-        # v1.38.0 does not work (see issue https://github.com/anothrNick/github-tag-action/issues/135)
-        uses: anothrNick/github-tag-action@1.36.0
+        # v1.51.0 does not create tags with PR suffix
+        uses: anothrNick/github-tag-action@1.44.0
         env:
           GITHUB_TOKEN: ${{ secrets.GHCR_TOKEN }}
           WITH_V: true
