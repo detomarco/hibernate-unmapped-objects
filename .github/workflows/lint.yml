@@ -7,25 +7,48 @@ on:
     branches:
       - main
 
+permissions:
+  pull-requests: write
+  checks: write
+  contents: read
+
 concurrency:
   group: lint
   cancel-in-progress: true
 
 jobs:
-  test:
-    name: Lint
+  lint-typescript:
+    name: Lint Typescript
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
 
-      - name: Node setup
-        uses: actions/setup-node@v3.5.0
+      - uses: reviewdog/action-eslint@v1
         with:
-          node-version: 14
-          cache: 'npm'
+          reporter: github-pr-review # Change reporter.
+          eslint_flags: 'src/'
 
-      - name: Install dependencies
-        run: npm ci
+  lint-dockerfile:
+    name: Lint Dockerfiles
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: hadolint
+        uses: reviewdog/action-hadolint@v1
+        with:
+          reporter: github-pr-review
+          level: warning
+          fail_on_error: true
 
-      - name: Lint
-        run: npm run lint:dry
+  lint-actions:
+    name: Lint Github actions
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Lint Github Actions
+        uses: reviewdog/action-actionlint@v1
+        env:
+          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          reporter: github-pr-review
