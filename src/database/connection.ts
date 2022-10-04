@@ -1,14 +1,15 @@
 import { DbProperties } from '../model/model';
-import { DbTable } from './db.model';
-import { getMysqlColumns } from './mysql.connection';
+import { DatabaseConnection, DbTable } from './db.model';
+import { MysqlConnection } from './mysql.connection';
 import { log } from '../utils/log.utils';
 
 export const getDatabaseTables = (dbProps: DbProperties): Promise<DbTable[]> => {
+    let dbConnection: DatabaseConnection | undefined;
+    log.trace(`${dbProps.type} connection detected`);
     switch (dbProps.type) {
         case 'mysql':
-            log.trace('mysql connection detected');
-            return getMysqlColumns(dbProps);
+            dbConnection = new MysqlConnection()
     }
 
-    return Promise.resolve([]);
+    return Promise.resolve(dbConnection?.getTables(dbProps) || []);
 };
