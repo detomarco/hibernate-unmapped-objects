@@ -17,7 +17,7 @@ interface ScriptResults {
     results: UnmappedObjects
 }
 
-export const main = async(config: ConfigProperties): Promise<ScriptResults> => {
+export const main = async (config: ConfigProperties): Promise<ScriptResults> => {
 
     const databaseTables = await getDatabaseTables(config.db);
     log.debug('database table', databaseTables);
@@ -45,5 +45,5 @@ export const main = async(config: ConfigProperties): Promise<ScriptResults> => {
     };
 };
 
-const config = getConfigFile();
-main(config);
+const configs = getConfigFile();
+main(configs);

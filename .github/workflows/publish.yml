@@ -13,8 +13,8 @@ env:
   ACTOR: ${{ github.actor }}
 
 concurrency:
-  group: unit-tests
-  cancel-in-progress: true
+  group: publish
+  cancel-in-progress: false
 
 jobs:
   unit-tests:
