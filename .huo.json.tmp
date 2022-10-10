@@ -2,9 +2,9 @@
   "entitiesFolderPath": "",
   "logLevel": "INFO",
   "printer": {
-      "ignoreColumns": ["modifiedAt"],
-      "ignoreTables": [ "migrations"]
-   },
+    "ignoreColumns": [],
+    "ignoreTables": []
+  },
   "db": {
     "type": "",
     "host": "",
