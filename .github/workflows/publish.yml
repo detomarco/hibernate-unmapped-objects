@@ -108,7 +108,7 @@ jobs:
 
       - name: Set image name
         id: image_name
-        uses: ASzc/change-string-case-action@v2
+        uses: ASzc/change-string-case-action@v5
         with:
           string: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
