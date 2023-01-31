@@ -26,6 +26,7 @@ Detect tables and columns that are no longer used in the code base
 ```bash
 npm install 
 ```
+
 2. Run application
 ```shell
 npm start   
