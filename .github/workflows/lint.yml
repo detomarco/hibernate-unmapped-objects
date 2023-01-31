@@ -13,7 +13,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: lint
+  group: lint-${{ github.head_ref }}
   cancel-in-progress: true
 
 jobs:
