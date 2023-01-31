@@ -23,6 +23,7 @@ Detect tables and columns that are no longer used in the code base
 ## Run with Node
 
 1. Install dependencies
+
 ```bash
 npm install 
 ```
