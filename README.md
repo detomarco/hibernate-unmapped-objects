@@ -18,7 +18,7 @@ Detect tables and columns that are no longer used in the code base
 ## Setup
 
 1. Create config file
-   - Rename `.huo.json.tmp` in `.huo.json` and fill with the required data 
+   - Rename `.huo.json.tmp` in `.huo.json` and fill with the required data
 
 ## Run with Node
 
