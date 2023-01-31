@@ -1,4 +1,4 @@
-
+---
 name: Images and tags cleanup
 
 on:
@@ -28,24 +28,28 @@ jobs:
           printf -v tags_string '"%s",' $(git tag -l "*PR${{ env.PR_NUMBER }}*")
           tags_list=$(echo "[${tags_string%,}]")
           echo "$tags_list"
-          echo "::set-output name=value::$tags_list"
+          echo "value=$tags_list" >> $GITHUB_OUTPUT
 
       - name: set tags list output
         id: matrix
         run: |
           echo ${{ steps.tags_list.outputs.value }}
-          echo '::set-output name=value::${{ steps.tags_list.outputs.value }}'
+          echo "value=${{ toJson(steps.tags_list.outputs.value) }}" >> $GITHUB_OUTPUT
 
   delete:
     name: Delete tags and images
     needs: get_tags
     runs-on: ubuntu-latest
-    permissions:
-      packages: write
+    outputs:
+      matrix: ${{ steps.matrix.outputs.value }}
+
     strategy:
       matrix:
         value: ${{ fromJson(needs.get_tags.outputs.matrix) }}
+
     steps:
+      - uses: actions/checkout@v3
+
       - name: Delete image
         uses: bots-house/ghcr-delete-image-action@v1.0.1
         with:
@@ -55,4 +59,6 @@ jobs:
           tag: ${{ matrix.value }}
 
       - name: Delete tag
-        run: git push -d origin ${{ matrix.value }}
+        run: |
+          git fetch --tags
+          git push -d origin ${{ matrix.value }}
