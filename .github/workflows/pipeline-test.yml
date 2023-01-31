@@ -69,7 +69,7 @@ jobs:
       - name: Push new tag
         id: pushtag
         # v1.51.0 does not create tags with PR suffix
-        uses: anothrNick/github-tag-action@1.44.0
+        uses: anothrNick/github-tag-action@1.61.0
         env:
           GITHUB_TOKEN: ${{ secrets.GHCR_TOKEN }}
           WITH_V: true
