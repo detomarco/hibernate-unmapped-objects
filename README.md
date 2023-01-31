@@ -28,6 +28,7 @@ npm install
 ```
 
 2. Run application
+
 ```shell
 npm start   
 ```
