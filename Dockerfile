@@ -1,4 +1,4 @@
-FROM node:14.21.2-alpine3.16 as build
+FROM node:14.21.3-alpine3.16 as build
 
 WORKDIR /usr/src/prj
 
@@ -8,7 +8,7 @@ RUN npm ci
 
 RUN npm run package
 
-FROM node:14.21.2-alpine3.16
+FROM node:14.21.3-alpine3.16
 
 CMD ["mkdir", "~/config"]
 
